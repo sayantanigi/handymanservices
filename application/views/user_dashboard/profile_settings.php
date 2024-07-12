@@ -121,7 +121,7 @@ if($data_request=='user') {
                                                 <label for="first_name">
                                                     <h4>Email Address <span style="color:red;">*</span></h4>
                                                 </label>
-                                                <input type="text" class="form-control" name="email" id="email" placeholder="xyz@example.com" readonly value="<?php echo $userinfo->email;?>" />
+                                                <input type="text" class="form-control" name="email" id="email" placeholder="xyz@example.com" value="<?php echo $userinfo->email;?>" />
                                             </div>
                                             <div class="col-lg-6">
                                                 <label for="first_name">
@@ -146,7 +146,7 @@ if($data_request=='user') {
                                                     <h4>Resume upload <span style="font-weight: 500; font-size: 13px !important;">(Please upload '.doc, .docx, .pdf' only)</span></h4>
                                                 </label>
                                                 <input type="file" class="form-control" name="resume" id="resume" />
-                                                
+
                                                 <?php
                                                 if(!empty($userinfo->resume)){
                                                     if(!file_exists('uploads/users/resume/'.$userinfo->resume)){
