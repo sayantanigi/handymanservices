@@ -438,4 +438,25 @@ class Welcome extends CI_Controller {
 		}
 		echo $html;
 	}
+
+    public function view_as_guest() {
+        //echo "<pre>"; print_r($_SESSION['afrebay']); die();
+        if (empty($_SESSION['userId'])) {
+            // Generate a unique guest identifier
+            $data['afrebay'] = array(
+                'userId' => uniqid('guest_')
+            );
+            $this->session->set_userdata($data);
+            $userdata = array(
+                'guest_id' => $data['userId'],
+                'address' => $this->input->post('location_guest'),
+                'latitude' => $this->input->post('s_lat_guest'),
+                'longitude' => $this->input->post('s_lon_guest')
+            );
+            $guestView = $this->db->insert('guest_session', $userdata);
+            redirect(base_url("homepage"));
+        } else {
+            redirect(base_url("homepage"));
+        }
+    }
 }

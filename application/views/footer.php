@@ -227,8 +227,11 @@ function displayLocation(latitude, longitude) {
                if (results[0]) {
                    var add = results[0].formatted_address;
                    $('#location').val(results[0].formatted_address);
+                   $('#location_guest').val(results[0].formatted_address);
                    $('#search_lat').val(latitude);
+                   $('#search_lat_guest').val(latitude);
                    $('#search_lon').val(longitude);
+                   $('#search_lon_guest').val(longitude);
                    var value = add.split(",");
                    count = value.length;
                    country = value[count - 1];

@@ -58,7 +58,7 @@ $route['save'] = "user/login/reg";
 $route['email-verification/(:any)'] = "user/login/emailVerification/$1";
 $route['login'] = "home/login_page";
 $route['validate'] = "user/login/validate_user";
-
+$route['view_as_guest'] = "welcome/view_as_guest";
 $route['forgot-password'] = "user/login/forgot_password";
 $route['new-password/(:any)'] = "user/login/new_password/$1";
 $route['about-us'] = "home/about";

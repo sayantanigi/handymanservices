@@ -154,9 +154,14 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                             <a href="<?= base_url()?>login" class="text-primary font-weight-bold">Sign In</a>
                         </div>
                     </div>
-                    <div class="logForm" style="width :48%; margin-top: 10px; display: flex; float: left;">
+                    <div class="logForm" style="width :48%; margin-top: 10px; display: flex; float: left; padding: 19px;">
                         <div class="col-lg-12 text-center">
-                            <a href="#" class="text-primary font-weight-bold">Proceed as Guest</a>
+                            <form id="signUp_form" action="<?= base_url()?>view_as_guest" method="post">
+                                <input type="hidden" name="location_guest" id="location_guest" value="<?= @$loc ?>" placeholder="Set Location" />
+                                <input type="hidden" id="search_lat_guest" name="s_lat_guest" value="<?= @$lat ?>">
+                                <input type="hidden" id="search_lon_guest" name="s_lon_guest" value="<?= @$lon ?>">
+                                <input type="submit" class="text-primary font-weight-bold" name="submit" value="Proceed as Guest" style="border: none; background: none;">
+                            </form>
                         </div>
                     </div>
                 </div>
