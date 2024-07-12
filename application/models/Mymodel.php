@@ -29,19 +29,30 @@ class Mymodel extends MY_Model {
 		return $this->fetch($sql,false);
 	}
 	public function check_record($email, $password){
-		$this->db->select ( "*" );
-		$this->db->from("users");
-		$this->db->where("email", $email);
-		$this->db->where("password", base64_encode($password));
-        $this->db->where("status", '1');
-		$query = $this->db->get();
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $email = $email;
+            $this->db->select ( "*" );
+            $this->db->from("users");
+            $this->db->where("email", $email);
+            $this->db->where("password", base64_encode($password));
+            $this->db->where("status", '1');
+            $query = $this->db->get();
+        } else {
+            $mobile = $email;
+            $this->db->select ( "*" );
+            $this->db->from("users");
+            $this->db->where("mobile", $mobile);
+            $this->db->where("password", base64_encode($password));
+            $this->db->where("status", '1');
+            $query = $this->db->get();
+        }
 		if($query->num_rows() > 0) {
             $result = $query->row();
             $data['afrebay'] = array(
                 'userId'=>$result->userId,
-				'companyname'=>$result->companyname,
-                'firstname'=>$result->firstname,
-				'lastname'=>$result->lastname,
+				//'companyname'=>$result->companyname,
+                //'firstname'=>$result->firstname,
+				//'lastname'=>$result->lastname,
                 'userEmail'=>$result->email,
                 'userMobile'=>$result->mobile,
                 'userType'=>$result->userType,

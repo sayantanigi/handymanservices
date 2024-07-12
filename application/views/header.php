@@ -357,7 +357,7 @@ $(function () {
                                     <a href="<?=base_url(); ?>signup"><i class="la la-key"></i> Sign Up</a>
                                 </li>
                                 <li class="">
-                                    <a href="<?=base_url(); ?>login"><i class="la la-external-link-square"></i> Login</a>
+                                    <a href="<?=base_url(); ?>login"><i class="la la-external-link-square"></i> Sign In</a>
                                 </li>
                             <?php } ?>
                             <!-- <li><a href="#" class="text-primary">

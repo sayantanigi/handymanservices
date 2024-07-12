@@ -146,7 +146,7 @@ class Login extends CI_Controller {
 							} else {
 								$profile_check = $this->db->query("SELECT `firstname`, `lastname`, `email`, `gender`, `address`, `zip`, `short_bio` FROM `users` WHERE userId = '".@$_SESSION['afrebay']['userId']."'")->result_array();
 								if(empty($profile_check[0]['firstname']) || empty($profile_check[0]['lastname']) || empty($profile_check[0]['email']) || empty($profile_check[0]['gender']) || empty($profile_check[0]['address']) || empty($profile_check[0]['zip']) || empty($profile_check[0]['short_bio'])) {
-									redirect('profile');
+									redirect('homepage');
 								} else {
 									redirect('jobbid');
 								}
@@ -158,7 +158,7 @@ class Login extends CI_Controller {
 							} else {
 								$profile_check = $this->db->query("SELECT `profilePic`, `companyname`, `email`, `mobile`,`address`, `foundedyear`, `teamsize`, `short_bio` FROM `users` WHERE userId = '".@$_SESSION['afrebay']['userId']."'")->result_array();
 								if(empty($profile_check[0]['companyname']) || empty($profile_check[0]['email']) || empty($profile_check[0]['address']) || empty($profile_check[0]['teamsize'])  || empty($profile_check[0]['short_bio'])) {
-									redirect('profile');
+									redirect('homepage');
 								} else {
 									redirect('dashboard');
 								}
@@ -170,14 +170,14 @@ class Login extends CI_Controller {
 						if($_SESSION['afrebay']['userType'] == '1') {
 							$profile_check = $this->db->query("SELECT `firstname`, `lastname`, `email`, `gender`, `address`, `zip`, `short_bio` FROM `users` WHERE userId = '".@$_SESSION['afrebay']['userId']."'")->result_array();
 							if(empty($profile_check[0]['firstname']) || empty($profile_check[0]['lastname']) || empty($profile_check[0]['email']) || empty($profile_check[0]['gender']) || empty($profile_check[0]['address']) || empty($profile_check[0]['zip']) || empty($profile_check[0]['short_bio'])) {
-								redirect('profile');
+								redirect('homepage');
 							} else {
 								redirect('jobbid');
 							}
 						} else if ($_SESSION['afrebay']['userType'] == '2') {
 							$profile_check = $this->db->query("SELECT `profilePic`, `companyname`, `email`, `mobile`,`address`, `foundedyear`, `teamsize`, `short_bio` FROM `users` WHERE userId = '".@$_SESSION['afrebay']['userId']."'")->result_array();
 							if(empty($profile_check[0]['companyname']) || empty($profile_check[0]['email']) || empty($profile_check[0]['address']) || empty($profile_check[0]['teamsize'])  || empty($profile_check[0]['short_bio'])) {
-								redirect('profile');
+								redirect('homepage');
 							} else {
 								redirect('dashboard');
 							}
@@ -189,7 +189,7 @@ class Login extends CI_Controller {
 					redirect($_SESSION['url']);
 				}
 			} else {
-				$this->session->set_flashdata('message', 'Invalid Email Address or Password !');
+				$this->session->set_flashdata('error', 'Invalid Login Credential');
 				redirect('login');
 			}
 		}

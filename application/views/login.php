@@ -23,21 +23,23 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                             <div class="row m-0">
                                 <div class="col-lg-12 col-md-12 col-sm-12 text-center mb-3">
                                     <h3 class="h3 font-weight-bold text-dark">Welcome Back</h3>
-                                    <span>Enter your email address / username and password</span>
+                                    <span>Enter your email address / phone number and password</span>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 SignIn_Right">
-                                    <div id="register-messages" class="text-invalid f-20">
-                                        <span class="text-invalid f-15" style="text-align: center;">
-                                            <?php if($this->session->flashdata('message')) {
-                                                echo $this->session->flashdata('message');
-                                                unset($_SESSION['message']);
-                                            } ?>
+                                    <?php if($this->session->flashdata('message')) { ?>
+                                    <div id="register-messages" class="text-invalid f-20 text-center">
+                                        <span class="text-invalid f-15" style="text-align: center; margin-bottom: 10px;">
+                                        <?php
+                                        echo $this->session->flashdata('message');
+                                        unset($_SESSION['message']);
+                                        ?>
                                         </span>
                                     </div>
-                                    <?php if($this->session->userdata('error')) { ?>
+                                    <?php } ?>
+                                    <?php if($this->session->flashdata('error')) { ?>
                                     <div id="err-messages">
-                                        <span class="text-danger f-15" style="text-align: center;">
-                                            <?php echo $this->session->userdata('error');
+                                        <span class="text-danger f-15 d-block" style="text-align: center; margin-bottom: 10px;">
+                                            <?php echo $this->session->flashdata('error');
                                                 unset($_SESSION['error']); ?>
                                         </span>
                                     </div>

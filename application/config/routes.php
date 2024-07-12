@@ -55,9 +55,10 @@ $route['homepage'] = 'home/home';
 //$route['signup'] = "home/signup";
 $route['signup'] = "home/index";
 $route['save'] = "user/login/reg";
-
 $route['email-verification/(:any)'] = "user/login/emailVerification/$1";
 $route['login'] = "home/login_page";
+$route['validate'] = "user/login/validate_user";
+
 $route['forgot-password'] = "user/login/forgot_password";
 $route['new-password/(:any)'] = "user/login/new_password/$1";
 $route['about-us'] = "home/about";
@@ -78,7 +79,6 @@ $route['workdetail/(:any)'] = "home/post_bidding/$1";
 $route['stripe/(:any)'] = "Stripe/index/$1";
 $route['career-tips'] = "home/career_tipsList";
 $route['career-tips/(:any)'] = "home/career_tip/$1";
-$route['validate'] = "user/login/validate_user";
 $route['logout'] = "user/login/logout";
 $route['profile'] = "user/dashboard/profile";
 $route['profile/(:any)'] = "user/dashboard/profile/$1";
