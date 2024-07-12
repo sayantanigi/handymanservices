@@ -122,7 +122,11 @@ function get_time_ago($time) {
             <div class="row">
                 <div class="col-lg-6 order-lg-2">
                     <div class="fixdPosthead sticky-top">
+                        <?php if(!empty($_SESSION['afrebay']['userType'])){ ?>
                         <div class="createPost mb-3" data-toggle="modal" data-target="#postModal">
+                            <?php } else { ?>
+                            <div class="createPost mb-3 loginURL">
+                            <?php } ?>
                             <div class="d-flex">
                                 <div class="crpostUser mr-3">
                                     <img src="https://techg.igiapp.com/handymanservices/uploads/users/2875_dafc3addfd37737b93fa9ecce064f73d.jpg">
@@ -132,7 +136,7 @@ function get_time_ago($time) {
                                         <textarea name="" class="typePost" placeholder="Post your task"></textarea>
                                         <button class="submitpost">Post</button>
                                     </div>
-                                    <div class="uploadOptionPost ">
+                                    <div class="uploadOptionPost">
                                         <div>
                                             <label id="postBoximgup"><img src="<?php base_url();?>assets/images/photo-icon.png"> Image</label>
                                             <label id="postBoxvidup"><img src="<?php base_url();?>assets/images/video-icon.png"> Video</label>
@@ -859,4 +863,7 @@ function dislikeuserrply(postId, commentid) {
         $('#videoUpload').show();
         $('#imageUpload').hide();
     });
+    $('.loginURL').click(function(){
+        window.location.href = '<?= base_url() ?>logout';
+    })
 </script>
