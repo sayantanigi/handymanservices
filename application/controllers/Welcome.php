@@ -448,7 +448,7 @@ class Welcome extends CI_Controller {
             );
             $this->session->set_userdata($data);
             $userdata = array(
-                'guest_id' => $data['userId'],
+                'guest_id' => $data['afrebay']['userId'],
                 'address' => $this->input->post('location_guest'),
                 'latitude' => $this->input->post('s_lat_guest'),
                 'longitude' => $this->input->post('s_lon_guest')
