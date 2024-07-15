@@ -87,7 +87,7 @@ class Dashboard extends CI_Controller {
 				$bimage  = '';
 			}
 		}
-		if ($_FILES['resume']['name'] != '') {
+		/*if ($_FILES['resume']['name'] != '') {
 			$src = $_FILES['resume']['tmp_name'];
 			$filEnc = time();
 			$avatar = rand(0000, 9999) . "_" . $_FILES['resume']['name'];
@@ -104,6 +104,50 @@ class Dashboard extends CI_Controller {
 				$resume  = '';
 			}
 		}
+        if ($_FILES['work_sample']['name'] != '') {
+			$src = $_FILES['work_sample']['tmp_name'];
+			$filEnc = time();
+			$avatar = rand(0000, 9999) . "_" . $_FILES['work_sample']['name'];
+			$avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+			$dest = getcwd() . '/uploads/users/work_sample/' . $avatar1;
+			if (move_uploaded_file($src, $dest)) {
+				$work_sample  = $avatar1;
+				@unlink('uploads/users/work_sample/' . $_POST['old_work_sample']);
+			}
+		} else {
+			if(!empty($_POST['old_work_sample'])) {
+				$work_sample  = $_POST['old_work_sample'];
+			} else {
+				$work_sample  = '';
+			}
+		}*/
+
+        if (!empty($_FILES['work_sample']['size'])) {
+        	$count = count($_FILES['work_sample']['name']);
+        	for ($i=0; $i < $count; $i++) {
+	            $src = $_FILES['work_sample']['tmp_name'][$i];
+	            $filEnc = time();
+	            $avatar = rand(0000, 9999) . "_" . $_FILES['work_sample']['name'][$i];
+	            $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+	            $dest = getcwd() . '/uploads/users/work_sample/' . $avatar1;
+	            if (move_uploaded_file($src, $dest)) {
+	                $file1  = $avatar1;
+	            }
+				if(!empty($file1)) {
+					$file  = $file1;
+				} else if(!empty($_POST['old_work_sample'])) {
+					$file  = $_POST['old_work_sample'];
+				} else {
+					$file  = "";
+				}
+	            $details_data = array(
+                    'user_id'=> $_SESSION['afrebay']['userId'],
+                    'work_sample'=> $file,
+                    'created_at'=> date('Y-m-d H:m:s')
+                );
+                $this->Crud_model->SaveData('users_work_sample',$details_data);
+	        }
+        }
 		if(!empty($this->input->post('key_skills'))) {
 			$key_skills = $this->input->post('key_skills');
 			for ($i=0; $i < count($key_skills); $i++) {
@@ -120,6 +164,25 @@ class Dashboard extends CI_Controller {
 		} else {
 			$skills = '';
 		}
+
+        if(!empty($this->input->post('business_category'))) {
+			$business_category = $this->input->post('business_category');
+			for ($i=0; $i < count($business_category); $i++) {
+				$get_category = $this->db->query("SELECT * FROM category WHERE category_name LIKE '%".$business_category[$i]."%'")->result();
+				if(empty($get_category)) {
+					$insrt = array(
+						'category_name'=>ucfirst($business_category[$i]),
+                        'status'=> 'Active',
+						'created_date'=>date('Y-m-d H:i:s'),
+					);
+					$this->db->insert('category',$insrt);
+				}
+			}
+			$business_category = implode(", ",$this->input->post('business_category',TRUE));
+		} else {
+			$business_category = '';
+		}
+
 		$data = array(
 			'companyname' => $_POST['companyname'],
 			'firstname' => $_POST['firstname'],
@@ -128,6 +191,7 @@ class Dashboard extends CI_Controller {
 			'mobile' => $_POST['mobile'],
 			'gender' => $this->input->post('gender', TRUE),
 			'skills' => $skills,
+            'serviceType' => $business_category,
 			'profilePic' => $image,
 			'backgroundPic' => $bimage,
 			'zip' => $_POST['zip'],
@@ -137,7 +201,11 @@ class Dashboard extends CI_Controller {
 			'latitude' => $_POST['latitude'],
 			'longitude' => $_POST['longitude'],
 			'short_bio' => $_POST['short_bio'],
-			'resume' => $resume,
+			//'resume' => $resume,
+            //'additional_image' => $work_sample,
+            'reference_link' => $_POST['reference_link'],
+            'taxid' => $_POST['taxid'],
+            'hourly_rate' => $_POST['hourly_rate'],
 		);
 		//print_r($data); die();
 		$this->Crud_model->SaveData('users', $data, "userId='" . $_POST['id'] . "'");

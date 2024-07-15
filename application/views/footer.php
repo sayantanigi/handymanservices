@@ -248,7 +248,7 @@ setInterval(function () {
 }, 5000);
 var targetDiv = $('.about_widget img').attr('src');
 var targetDiv1 = $('.hidden-logo').val();
-$(window).scroll(function () {
+/*$(window).scroll(function () {
     var windowpos = $(window).scrollTop();
     if (windowpos >= 50) {
         $(".Header_Menu_Nav img").attr("src", targetDiv);
@@ -257,7 +257,7 @@ $(window).scroll(function () {
         $(".Header_Menu_Nav img").attr("src", targetDiv1);
         $(".Header_Menu_Nav img").attr("src", targetDiv1);
     }
-});
+});*/
 function receiveVideoCallWindow(fid) {
     $('#video_modal').css('display', 'none');
     var callPath = "<?php echo base_url('livevideo/video/');?>" + fid;
@@ -268,6 +268,12 @@ function loginAlert() {
     $.alert({
 	    title: '',
 	    content: "Already Logged In. Please logout for new registration",
+	});
+}
+function forguestAlert() {
+    $.alert({
+	    title: '',
+	    content: "Kindly register or login to participate in this activity.",
 	});
 }
 </script>

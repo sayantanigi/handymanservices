@@ -125,7 +125,7 @@ function get_time_ago($time) {
                         <?php if(!empty($_SESSION['afrebay']['userType'])){ ?>
                         <div class="createPost mb-3" data-toggle="modal" data-target="#postModal">
                             <?php } else { ?>
-                            <div class="createPost mb-3 loginURL">
+                            <div class="createPost mb-3" onclick="forguestAlert()">
                             <?php } ?>
                             <div class="d-flex">
                                 <div class="crpostUser mr-3">
@@ -398,6 +398,7 @@ function get_time_ago($time) {
                 </div>
                 <div class="col-lg-3 mb-3 order-lg-1">
                     <div class="add-sidebar sticky-top">
+                        <?php if(is_numeric($_SESSION['afrebay']['userId'])) { ?>
                         <div class="ProfileBlock mb-3">
                             <div class="profilecover">
                                 <img src="<?= base_url('assets/images/cover.png') ?>">
@@ -422,6 +423,7 @@ function get_time_ago($time) {
                             </div>
                             <a href="#" class="profileBtn">My Profile</a>
                         </div>
+                        <?php } ?>
                         <div class="activityBox mb-3">
                             <div class="d-flex justify-content-between mb-3">
                                 <h6 class="font-weight-bold">Activity</h6>

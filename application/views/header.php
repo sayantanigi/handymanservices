@@ -1,6 +1,12 @@
 <?php
 $get_setting=$this->Crud_model->get_single('setting');
 $get_category=$this->Crud_model->GetData('category','',"status='Active'");
+print_r($_SESSION);
+if(is_numeric($_SESSION['afrebay']['userId'])){  // return **TRUE** if it is numeric
+    echo "The input is numeric";
+}else{
+    echo "The input is not numeric";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -216,9 +222,12 @@ $(function () {
                                     <?php } ?>
                                     <li class="">
                                     <?php
-                                    if(!empty($_SESSION['afrebay']['userId'])) { ?>
-                                    <a href="<?= base_url('postwork')?>" title=""><i class="fa-solid fa-comment-dots"></i></a>
-                                    <?php } ?>
+                                    if(!empty($_SESSION['afrebay']['userId'])) {
+                                        if(is_numeric($_SESSION['afrebay']['userId'])) { ?>
+                                        <a href="<?= base_url('postwork')?>" title=""><i class="fa-solid fa-comment-dots"></i></a>
+                                    <?php } else { ?>
+                                        <a href="javasctipt:void(0)" title="" onclick="forguestAlert()"><i class="fa-solid fa-comment-dots"></i></a>
+                                    <?php } } ?>
                                     </li>
                                 </ul>
                             </nav>
@@ -226,16 +235,17 @@ $(function () {
                     </div>
                     <div class="btn-extars">
                         <ul class="account-btns">
-                            <?php if(!empty($_SESSION['afrebay']['userId'])) { ?>
+                            <?php if(!empty($_SESSION['afrebay']['userId'])) {
+                                if(!empty($_SESSION['afrebay']['firstname'])) {
+                                    $fullname = $_SESSION['afrebay']['firstname']." ".$_SESSION['afrebay']['lastname'];
+                                } else {
+                                    $fullname = $_SESSION['afrebay']['companyname'];
+                                }
+                                ?>
                                 <li class="menu-item-has-children User_Dashboard_Menu">
                                     <a class="Profile_dashboard_btn" href="javascript:void(0)" title="">
                                         <img src="https://techg.igiapp.com/handymanservices/uploads/users/2875_dafc3addfd37737b93fa9ecce064f73d.jpg" class="headprofileimg">
-                                        <?php if(!empty($_SESSION['afrebay']['firstname'])) {
-                                            $fullname = $_SESSION['afrebay']['firstname']." ".$_SESSION['afrebay']['lastname'];
-                                        } else {
-                                            $fullname = $_SESSION['afrebay']['companyname'];
-                                        }
-                                        echo ucwords($fullname); ?>
+                                        <?= ucwords($fullname);?>
                                     </a>
                                     <ul>
                                         <li>
