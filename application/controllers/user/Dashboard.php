@@ -78,11 +78,11 @@ class Dashboard extends CI_Controller {
 			$dest = getcwd() . '/uploads/users/background/' . $avatar1;
 			if (move_uploaded_file($src, $dest)) {
 				$bimage  = $avatar1;
-				@unlink('uploads/users/background/' . $_POST['old_resume']);
+				@unlink('uploads/users/background/' . $_POST['old_bimage']);
 			}
 		} else {
-			if(!empty($_POST['old_resume'])) {
-				$bimage  = $_POST['old_resume'];
+			if(!empty($_POST['old_bimage'])) {
+				$bimage  = $_POST['old_bimage'];
 			} else {
 				$bimage  = '';
 			}

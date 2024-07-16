@@ -1,12 +1,12 @@
 <?php
 $get_setting=$this->Crud_model->get_single('setting');
 $get_category=$this->Crud_model->GetData('category','',"status='Active'");
-print_r($_SESSION);
-if(is_numeric($_SESSION['afrebay']['userId'])){  // return **TRUE** if it is numeric
-    echo "The input is numeric";
-}else{
-    echo "The input is not numeric";
-}
+// print_r($_SESSION);
+// if(is_numeric($_SESSION['afrebay']['userId'])){  // return **TRUE** if it is numeric
+//     echo "The input is numeric";
+// }else{
+//     echo "The input is not numeric";
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
