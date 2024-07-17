@@ -22,9 +22,6 @@ class Login extends CI_Controller {
 		if(empty($validate)) {
 			$data=array(
 				'userType' => $_POST['user_type'],
-				//'firstname' => $_POST['first_name'],
-				//'lastname' => $_POST['last_name'],
-				//'companyname' => $_POST['company_name'],
 				'email' => @$email,
                 'mobile' => @$mobile,
 				'address' => $_POST['location'],
@@ -35,13 +32,7 @@ class Login extends CI_Controller {
 				'status' => 1,
 				'email_verified' => 1
 			);
-            //print_r($data); die();
 			$result = $this->Mymodel->insert('users',$data);
-			// if($_POST['first_name']) {
-			// 		$fullname = $_POST['first_name']." ".$_POST['last_name'];
-			// } else {
-			// 	$fullname = $_POST['company_name'];
-			// }
 			$insert_id = $this->db->insert_id();
 			if($_POST['user_type'] == '1') {
 				$sitemap_date = array(
@@ -97,6 +88,12 @@ class Login extends CI_Controller {
 			}
 		}
 		echo json_encode($data); exit;
+    }
+    public function email_verification() {
+        $data['title'] = 'Authenticate your account';
+   	   	$this->load->view('header', $data);
+		$this->load->view('email_verification');
+		$this->load->view('footer');
     }
     public function emailVerification($otp=null) {
 		if(empty($otp)) {

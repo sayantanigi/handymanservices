@@ -330,7 +330,6 @@ function show_location() {
 $(document).ready(function() {
     var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     $("#timeZone").val(userTimezone);
-    alert(userTimezone);
     $("#advanceFieldheading").click(function(){
         $("#advanceFieldcontent").toggleClass('active');
     })

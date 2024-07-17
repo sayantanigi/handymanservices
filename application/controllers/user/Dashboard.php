@@ -184,40 +184,68 @@ class Dashboard extends CI_Controller {
 		}
 
 		$data = array(
-			'companyname' => $_POST['companyname'],
 			'firstname' => $_POST['firstname'],
 			'lastname' => $_POST['lastname'],
-			'email' => $_POST['email'],
-			'mobile' => $_POST['mobile'],
-			'gender' => $this->input->post('gender', TRUE),
-			'skills' => $skills,
-            'serviceType' => $business_category,
-			'profilePic' => $image,
+            'profilePic' => $image,
 			'backgroundPic' => $bimage,
 			'zip' => $_POST['zip'],
+            'short_bio' => $_POST['short_bio'],
+        );
+		//print_r($data); die();
+		$this->Crud_model->SaveData('users', $data, "userId='" . $_SESSION['afrebay']['userId'] . "'");
+		if($_POST['from_data_request']=='admin'){
+		    $this->session->set_flashdata('message', 'Profile Updated Successfull !');
+		    redirect(base_url('admin/users'));
+		}
+		else{
+            $this->session->set_flashdata('message', 'Profile Updated Successfull !');
+            redirect(base_url('profile'));
+		}
+	}
+
+    public function business_details() {
+        $user_info = $this->Crud_model->get_single('users', "userId='" . $_SESSION['afrebay']['userId'] . "'");
+		$data = array(
+			'userinfo' => $user_info,
+			'data_request'=>'user',
+		);
+        $data1['title'] = 'Business Details';
+        $this->load->view('header', $data1);
+		$this->load->view('user_dashboard/business_details', $data);
+		$this->load->view('footer');
+    }
+    public function update_businessDetails() {
+        if(!empty($this->input->post('business_category'))) {
+			$business_category = $this->input->post('business_category');
+			for ($i=0; $i < count($business_category); $i++) {
+				$get_category = $this->db->query("SELECT * FROM category WHERE category_name LIKE '%".$business_category[$i]."%'")->result();
+				if(empty($get_category)) {
+					$insrt = array(
+						'category_name'=>ucfirst($business_category[$i]),
+                        'status'=> 'Active',
+						'created_date'=>date('Y-m-d H:i:s'),
+					);
+					$this->db->insert('category',$insrt);
+				}
+			}
+			$business_category = implode(", ",$this->input->post('business_category',TRUE));
+		} else {
+			$business_category = '';
+		}
+        $data = array(
+			'companyname' => $_POST['companyname'],
+			'mobile' => $_POST['mobile'],
+            'serviceType' => $business_category,
 			'address' => $_POST['address'],
-			'foundedyear' => $_POST['foundedyear'],
-			'teamsize' => $_POST['teamsize'],
-			'latitude' => $_POST['latitude'],
+            'latitude' => $_POST['latitude'],
 			'longitude' => $_POST['longitude'],
-			'short_bio' => $_POST['short_bio'],
-			//'resume' => $resume,
-            //'additional_image' => $work_sample,
             'reference_link' => $_POST['reference_link'],
-            'taxid' => $_POST['taxid'],
             'hourly_rate' => $_POST['hourly_rate'],
 		);
 		//print_r($data); die();
 		$this->Crud_model->SaveData('users', $data, "userId='" . $_POST['id'] . "'");
-		if($_POST['from_data_request']=='admin'){
-		$this->session->set_flashdata('message', 'Profile Updated Successfull !');
-		redirect(base_url('admin/users'));
-		}
-		else{
-		$this->session->set_flashdata('message', 'Profile Updated Successfull !');
-		redirect(base_url('profile'));
-		}
-	}
+        redirect(base_url('homepage'));
+    }
 	function getVisIpAddr() {
     	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         	return $_SERVER['HTTP_CLIENT_IP'];

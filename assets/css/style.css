@@ -19406,3 +19406,107 @@ body.loaded .content {
 .posttabcontent::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+.uploadProfilephoto {
+  width: 100%;
+  justify-content: space-between;
+}
+.uploadProfilephoto .profileImgBox{
+  width:calc(100% - 200px);
+  border: 3px dashed #F5F5F5;
+  border-radius: 10px 0 0 10px;
+  text-align: center;
+  padding: 10px;
+  border-right: 0;
+}
+.uploadProfilephoto .profile-ak{
+  width: 200px;
+  margin: 0;
+  background: #F5F5F5;
+  border-radius: 0 10px 10px 0;
+  text-align: center;
+      padding: 62px 10px;
+}
+.uploadProfilephoto .profileImgBox.profilenoImg{
+  padding: 26px 10px;
+}
+.uploadProfilephoto .profileImgBox img{
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.uploadProfilephoto .profileImgBox.profilenoImg img{
+  height: 70px;
+  object-fit: contain;
+}
+.uploadProfilephoto .profileImgBox.profilenoImg h6{
+  font-size: 13px;
+  font-weight: 600;
+  margin: 18px 0 5px;
+}
+.uploadProfilephoto .profileImgBox.profilenoImg p{
+  margin: 0;
+  font-size: 12px;
+  color: #b7b7b7;
+  line-height: 1.5;
+}
+.uploadProfilephoto .profile-ak label h6{
+  display: inline-block;
+  font-size: 15px;
+  background: #2892ff;
+  color: #fff;
+  padding: 12px 26px;
+  border-radius: 30px;
+  font-weight: 500;
+}
+.workupload.uploadProfilephoto .profile-ak{
+    width: 200px;
+}
+.workupload.uploadProfilephoto .profileImgBox.profilenoImg{
+  width: calc(100% - 200px);
+}
+.tabBox{
+  background: #fff;
+  position: relative;
+  z-index: 1;
+  width: auto;
+}
+.tabBox .tabnav{
+  background: #cccccc;
+  color: #000;
+  margin-right: 10px;
+  display: inline-block;
+  padding: 8px 20px;
+  font-weight: 600;
+  border-radius: 30px;
+  font-size: 13px;
+}
+.tabBox .tabnav.active{
+  background: #2892ff;
+  color: #fff;
+}
+.tabBox .tabnav:hover{
+  text-decoration: none;
+}
+.profiletab:after {
+  width: 100%;
+  height: 2px;
+  background: #f5f5f5;
+  right: 0;
+  top: 15px;
+  content: '';
+  position: absolute;
+  z-index: 0;
+}
+.mw-150{
+  min-width: 150px;
+}
+.post-job-btn.btn-secondary{
+  background: #CCCCCC;
+  color: #000;
+  border-color: #ccc;
+}
+.dashboard-gig .post-job-btn{
+  padding: 14px 30px;
+      font-weight: 600;
+}

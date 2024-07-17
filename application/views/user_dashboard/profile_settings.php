@@ -4,27 +4,6 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
 } else {
     $banner_img=base_url("assets/images/resource/mslider1.jpg");
 } ?>
-<section class="overlape">
-    <div class="block no-padding">
-        <div data-velocity="-.1" style="background: url('<?= $banner_img; ?>') repeat scroll 50% 422.28px transparent;" class="parallax scrolly-invisible no-parallax"></div>
-        <div class="container fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="inner-header" style="padding-top: 90px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<section class="dashboardhak">
-    <div class="container-fluid">
-        <div class="row align-items-center">
-            <div class="col-md-12 col-12">
-                <h2 class="breadcrumb-title">Profile Settings</h2>
-            </div>
-        </div>
-    </div>
-</section>
 
 <?php
 if($data_request=='user') {
@@ -34,12 +13,24 @@ if($data_request=='user') {
     $container='container';
 }
 ?>
-<div class="col-md-12 col-sm-12 display-table-cell v-align profileTabcontent">
-    <div class="user-dashboard Admin_Profile form-design <?php echo $container;  ?> ">
+<div class="col-lg-9 display-table-cell v-align profileTabcontent my-4">
+     <div class="user-dashboard Admin_Profile form-design <?php echo $container;  ?> ">
+        <h3 class="text-center h3 font-weight-bold text-dark my-3">Create your profile</h3>
+        <p class="text-center text-dark">You may modify your profile information at any moment in your profile section</p>
         <form class="form" action="<?php echo base_url('user/Dashboard/update_profile')?>" method="post" id="registrationForm" enctype="multipart/form-data">
         <input type="hidden" name="from_data_request" value="<?=$data_request;?>">
             <div class="row row-sm">
                 <div class="col-xl-12 col-lg-12 col-md-12">
+                    <div class="px-4 py-3">
+                        <div class="profiletab position-relative d-flex">
+                            <div class="tabBox d-flex w-auto">
+                                <a href="<?= base_url()?>profile" class="tabnav active">My Profile</a>
+                                <?php if($_SESSION['afrebay']['userType'] == '2') { ?>
+                                <a href="<?= base_url()?>business_details" class="tabnav">Business Details</a>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
                     <div class="cardak profile-mobile p-0">
                         <span class="text-success-msg f-20" style="text-align: center;">
                         <?php if($this->session->flashdata('message')) {
@@ -49,244 +40,103 @@ if($data_request=='user') {
                         </span>
                         <div class="row">
                             <div class="bootstrap snippet col-xl-6 col-lg-6 col-md-6">
-                                <div class="new-pro">
+                                <div class="new-pro uploadProfilephoto">
                                     <?php
                                     if(!empty($userinfo->profilePic)) {
                                         if(!file_exists('uploads/users/'.$userinfo->profilePic)) {
                                     ?>
-                                    <img class="img-circle img-responsive" src="<?php echo base_url('uploads/no_image.png')?>" style="width:60px; height: 60px; object-fit: cover;" />
+                                    <div class="profileImgBox profilenoImg">
+                                        <img src="<?php echo base_url('uploads/usernoimg.png')?>"/>
+                                        <h6>Upload profile picture</h6>
+                                        <p>must be less than 5 MB in size</p>
+                                    </div>
                                     <?php } else { ?>
-                                    <img class="img-circle img-responsive" src="<?php echo base_url('uploads/users/'.$userinfo->profilePic); ?>" style="width:60px; height: 60px; object-fit: cover;" />
+                                    <div class="profileImgBox">
+                                        <img src="<?php echo base_url('uploads/users/'.$userinfo->profilePic); ?>" />
+                                    </div>
                                     <?php } } else { ?>
-                                    <img class="img-circle img-responsive" src="<?php echo base_url('uploads/no_image.png')?>" style="width:60px; height: 60px; object-fit: cover;" />
+                                    <div class="profileImgBox profilenoImg">
+                                        <img src="<?php echo base_url('uploads/usernoimg.png')?>"  />
+                                        <h6>Upload profile picture</h6>
+                                        <p>must be less than 5 MB in size</p>
+                                    </div>
                                     <?php } ?>
                                     <input type="hidden" name="old_image" value="<?=$userinfo->profilePic ?>">
                                     <input type="hidden" name="id" value="<?=$userinfo->userId  ?>">
                                     <div class="profile-ak">
-                                        <?php if(!empty($userinfo->profilePic)) { ?>
-                                        <h6>Upload a different photo</h6>
-                                        <?php } else { ?>
-                                            <h6>Upload a photo</h6>
-                                        <?php } ?>
-                                        <input type="file" name="profilePic" class="text-center center-block file-upload" />
+                                        <label>
+                                            <?php if(!empty($userinfo->profilePic)) { ?>
+                                            <h6><i class="fa-solid fa-cloud-arrow-up"></i> Upload </h6>
+                                            <?php } else { ?>
+                                                <h6><i class="fa-solid fa-cloud-arrow-up"></i> Upload</h6>
+                                            <?php } ?>
+                                            <input type="file" name="profilePic" class="text-center center-block file-upload d-none" />
+                                        </label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="bootstrap snippet col-xl-6 col-lg-6 col-md-6">
-                                <div class="new-pro">
+                            <div class="col-lg-6 profile-dsd">
+                                <div class="mb-4 float-left w-100">
+                                    <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value="<?php echo $userinfo->firstname;?>"  onkeypress="only_alphabets(event)" />
+                                    <div id="vld_firstname" style="color:red; margin-top: 10px;">Please enter First Name.</div>
+                                </div>
+                                <div class="mb-4 float-left w-100">
+                                    <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value="<?php echo $userinfo->lastname;?>"  onkeypress="only_alphabets(event)" />
+                                    <div id="vld_lastname" style="color:red; margin-top: 10px;">Please enter Last Name.</div>
+                                </div>
+                                <div class="mb-0 float-left w-100">
+                                    <input type="text" class="form-control" name="zip" id="zip" placeholder="Zip Code" value="<?php echo @$userinfo->zip;?>" onkeypress="only_number(event)" maxlength="6" />
+                                    <div id="vld_zip" style="color:red; margin-top: 10px;">Please enter Zip Code.</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mb-4">
+                                <div class="new-pro uploadProfilephoto workupload">
                                     <?php
                                     if(!empty($userinfo->backgroundPic)) {
                                         if(!file_exists('uploads/users/background/'.$userinfo->backgroundPic)) {
                                     ?>
-                                    <img class="img-circle img-responsive" src="<?php echo base_url('uploads/no_image.png')?>" style="width:60px; height: 60px; object-fit: cover;" />
+                                    <div class="profileImgBox profilenoImg py-4">
+                                        <img src="<?php echo base_url('uploads/addPhoto.png')?>"/>
+                                        <h6>Upload work samples</h6>
+                                        <p>Images must be less than 5 MB in size</p>
+                                        <p>Videos must be less than 25 MB in size</p>
+                                    </div>
                                     <?php } else { ?>
-                                    <img class="img-circle img-responsive" src="<?php echo base_url('uploads/users/background/'.$userinfo->backgroundPic); ?>" style="width:60px; height: 60px; object-fit: cover;" />
+                                    <div class="profileImgBox">
+                                        <img src="<?php echo base_url('uploads/users/background/'.$userinfo->backgroundPic); ?>"/>
+                                    </div>
                                     <?php } } else { ?>
-                                    <img class="img-circle img-responsive" src="<?php echo base_url('uploads/no_image.png')?>" style="width:60px; height: 60px; object-fit: cover;" />
+                                    <div class="profileImgBox profilenoImg  py-4">
+                                        <img src="<?php echo base_url('uploads/addPhoto.png')?>"/>
+                                        <h6>Upload work samples</h6>
+                                        <p>Images must be less than 5 MB in size</p>
+                                        <p>Videos must be less than 25 MB in size</p>
+                                    </div>
                                     <?php } ?>
                                     <input type="hidden" name="old_bimage" value="<?=$userinfo->backgroundPic ?>">
                                     <input type="hidden" name="id" value="<?=$userinfo->userId  ?>">
                                     <div class="profile-ak">
-                                        <?php if(!empty($userinfo->backgroundPic)) { ?>
-                                        <h6>Upload a different background photo</h6>
-                                        <?php } else { ?>
-                                            <h6>Upload a background photo</h6>
-                                        <?php } ?>
-                                        <input type="file" name="backgroundPic" class="text-center center-block file-upload" />
+                                        <label>
+                                            <?php if(!empty($userinfo->backgroundPic)) { ?>
+                                            <h6><i class="fa-solid fa-cloud-arrow-up"></i> Upload </h6>
+                                            <?php } else { ?>
+                                                <h6><i class="fa-solid fa-cloud-arrow-up"></i> Upload </h6>
+                                            <?php } ?>
+                                            <input type="file" name="backgroundPic" class="d-none" />
+                                        </label>
                                     </div>
+
                                 </div>
                             </div>
-                        </div>
-                        <div class="profile-dsd">
-                            <div class="tab-content">
-                                <div class="tab-pane active" style="padding: 0px;">
-                                    <hr />
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <?php if(@$userinfo->userType == '2') { ?>
-                                            <div class="col-lg-6 firstname">
-                                                <label for="firstname">
-                                                    <h4>First Name <span style="color:red;">*</span></h4>
-                                                </label>
-                                                <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value="<?php echo $userinfo->firstname;?>"  onkeypress="only_alphabets(event)" />
-                                                <div id="vld_firstname" style="color:red; margin-top: 10px;">Please enter First Name.</div>
-                                            </div>
-                                            <div class="col-lg-6 lastname">
-                                                <label for="lastname">
-                                                    <h4>Last Name <span style="color:red;">*</span></h4>
-                                                </label>
-                                                <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value="<?php echo $userinfo->lastname;?>"  onkeypress="only_alphabets(event)" />
-                                                <div id="vld_lastname" style="color:red; margin-top: 10px;">Please enter Last Name.</div>
-                                            </div>
-                                            <?php } else { ?>
-                                            <div class="col-lg-12 companyname">
-                                                <label for="companyname">
-                                                    <h4>Business name</h4>
-                                                </label>
-                                                <input type="text" class="form-control" name="companyname" id="companyname" placeholder="Business name" value="<?php echo $userinfo->companyname;?>" />
-                                                <div id="vld_companyname" style="color:red; margin-top: 10px;">Please enter Business name.</div>
-                                            </div>
-                                            <?php } ?>
-                                            <div class="col-lg-6 email">
-                                                <label for="email">
-                                                    <h4>Email Address <span style="color:red;">*</span></h4>
-                                                </label>
-                                                <input type="text" class="form-control" name="email" id="email" placeholder="xyz@example.com" value="<?php echo $userinfo->email;?>" />
-                                            </div>
-                                            <div class="col-lg-6 mobile">
-                                                <label for="mobile">
-                                                    <h4>Phone Number </h4>
-                                                </label>
-                                                <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Phone Number" value="<?php echo $userinfo->mobile;?>" onkeypress="only_number(event)" maxlength="10" />
-                                            </div>
-                                            <?php  if(@$userinfo->userType == '1') { ?>
-                                            <div class="col-lg-6 category">
-                                                <label for="category">
-                                                    <h4>Business Category<span style="color:red;">*</span></h4>
-                                                </label>
-                                                <select class="form-control business_category" multiple="multiple" name="business_category[]" id="business_category" style="width: 100%;">
-                                                <?php
-                                                    $business_category = $this->Crud_model->GetData('category',"","status = 'Active'");
-                                                    foreach($business_category as $category) {?>
-                                                        <option value="<?php echo $category->category_name; ?>"
-                                                        <?php if(!empty($userinfo->serviceType)){
-                                                            $serviceType = explode(", ", $userinfo->serviceType);
-                                                            for($i=0; $i<count($serviceType); $i++) {
-                                                                if($serviceType[$i] == $category->category_name){
-                                                                    echo "selected";
-                                                                }
-                                                            }
-                                                        } ?>><?php echo $category->category_name;?></option>
-                                                    <?php } ?>
-                                                </select>
-                                                <div id="vld_gender" style="color:red; margin-top: 10px;">Please Select Business Category.</div>
-                                            </div>
-                                            <div class="col-lg-6 work_sample">
-                                                <label for="work_sample">
-                                                    <h4>Upload work samples<span style="font-weight: 500; font-size: 13px !important;">(Please upload images or videos only)</span></h4>
-                                                </label>
-                                                <input type="file" class="form-control" name="work_sample[]" id="work_sample" multiple/>
-                                                <div>
-                                                <?php
-                                                $getworksampple = $this->db->query("SELECT * FROM users_work_sample WHERE user_id = '".$userinfo->userId."'")->result_array();
-                                                if(!empty($getworksampple)) {
-                                                $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
-                                                $videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv'];
-                                                foreach($getworksampple as $worksample) {
-                                                $extension = pathinfo($worksample['work_sample'], PATHINFO_EXTENSION);
-                                                if (in_array(strtolower($extension), $imageExtensions)) { ?>
-                                                <img src="<?= base_url('uploads/users/work_sample/'.$worksample['work_sample']) ?>" alt="<?= $worksample['work_sample']?>" style="width: 100px;">
-                                                <?php } elseif (in_array(strtolower($extension), $videoExtensions)) { ?>
-                                                <video width="100" height="67" controls>
-                                                    <source src="<?= base_url('uploads/users/work_sample/'.$worksample['work_sample'])?>" type="video/<?= $extension?>">
-                                                    Your browser does not support the video tag or the file format of this video.
-                                                </video>
-                                                <?php } } }?>
-                                                </div>
-                                            </div>
-                                            <?php  } ?>
-                                            <div class="col-lg-6 location">
-                                                <label for="location">
-                                                    <h4>Legal Address <span style="color:red;">*</span></h4>
-                                                </label>
-                                                <input type="text" class="form-control" name="address" id="location" placeholder="Legal Address" value="<?= $userinfo->address ?>" style="height: 49px !important;" autocomplete="off" />
-                                                <div id="vld_location" style="color:red; margin-top: 10px;">Please enter Legal Address.</div>
-                                                <input type="hidden" name="latitude" id="search_lat" value="<?= $userinfo->latitude ?>">
-                                                <input type="hidden" name="longitude" id="search_lon" value="<?= $userinfo->longitude ?> ">
-                                            </div>
-                                            <div class="col-lg-6 zip">
-                                                <label for="zip">
-                                                    <h4>Zip Code</h4>
-                                                </label>
-                                                <input type="text" class="form-control" name="zip" id="zip" placeholder="Zip Code" value="<?php echo @$userinfo->zip;?>" onkeypress="only_number(event)" maxlength="6" />
-                                            </div>
-                                            <?php  if(@$userinfo->userType == '2') { ?>
-                                            <div class="col-lg-6 gender">
-                                                <label for="gender">
-                                                    <h4>Gender<span style="color:red;">*</span></h4>
-                                                </label>
-                                                <select name="gender" id="gender" class="form-control"  style="height: 32px;">
-                                                    <option value="">Gender</option>
-                                                    <option value="Male" <?php if(@$userinfo->gender=='Male'){ echo "selected";}?>>Male</option>
-                                                    <option value="Female" <?php if(@$userinfo->gender=='Female'){ echo "selected";}?>>Female</option>
-                                                </select>
-                                                <div id="vld_gender" style="color:red; margin-top: 10px;">Please Select Gender.</div>
-                                            </div>
-                                            <?php } ?>
-                                            <?php if(@$userinfo->userType == '1') { ?>
-                                            <div class="col-lg-6 key-skill">
-                                                <span class="pf-title1">Specializations</span>
-                                                <div class="pf-field">
-                                                    <select class="form-control key_skills" multiple="multiple" name="key_skills[]" id="key_skills" style="width: 100%;">
-                                                    <?php
-                                                    $key_skills = $this->Crud_model->GetData('specialist',"","status = 'Active'");
-                                                    foreach($key_skills as $val) {?>
-                                                        <option value="<?php echo $val->specialist_name; ?>"
-                                                        <?php if(!empty($userinfo->skills)){
-                                                            $skills = explode(", ", $userinfo->skills);
-                                                            for($i=0; $i<count($skills); $i++) {
-                                                                if($skills[$i] == $val->specialist_name){
-                                                                    echo "selected";
-                                                                }
-                                                            }
-                                                        } ?>><?php echo $val->specialist_name;?></option>
-                                                    <?php } ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 work_hours">
-                                                <label for="work_hours">
-                                                    <h4>Rate per hour</h4>
-                                                </label>
-                                                <input type="text" class="form-control" name="hourly_rate" id="hourly_rate" placeholder="Rate per hour" value="<?php echo $userinfo->hourly_rate;?>" />
-                                                <div id="vld_companyname" style="color:red; margin-top: 10px;">Please enter Rate per hour.</div>
-                                            </div>
-                                            <div class="col-lg-6 reference_link">
-                                                <label for="reference_link">
-                                                    <h4>Reference links</h4>
-                                                </label>
-                                                <input type="text" class="form-control" name="reference_link" id="reference_link" placeholder="Reference links" value="<?php echo $userinfo->reference_link;?>" />
-                                            </div>
-                                            <div class="col-lg-6 taxid">
-                                                <label for="taxid">
-                                                    <h4>TAX ID</h4>
-                                                </label>
-                                                <input type="text" class="form-control" name="taxid" id="taxid" placeholder="TAX ID" value="<?php echo $userinfo->taxid;?>" />
-                                                <div id="vld_teamsize" style="color:red; margin-top: 10px;">Please enter TAX ID.</div>
-                                            </div>
-                                            <div class="col-lg-6 foundedyear">
-                                                <label for="foundedyear">
-                                                    <h4>Founded Year</h4>
-                                                </label>
-                                                <input type="text" class="form-control" name="foundedyear" id="foundedyear" placeholder="Founded Year" value="<?php echo $userinfo->foundedyear;?>" />
-                                                <div id="vld_teamsize" style="color:red; margin-top: 10px;">Please enter Founded Year.</div>
-                                            </div>
-                                            <div class="col-lg-6 Team Size">
-                                                <label for="Team Size">
-                                                    <h4>Team Size</h4>
-                                                </label>
-                                                <input type="text" class="form-control" name="teamsize" id="teamsize" placeholder="Team Size" value="<?php echo $userinfo->teamsize;?>" />
-                                                <div id="vld_teamsize" style="color:red; margin-top: 10px;">Please enter Team Size.</div>
-                                            </div>
-                                            <?php } ?>
-                                            <div class="col-lg-12 short_bio">
-                                                <label for="short_bio">
-                                                    <h4>Short Bio <span style="color:red;">*</span></h4>
-                                                </label>
-                                                <textarea class="form-control" name="short_bio" id="short_bio" placeholder="Short Bio" maxlength="1000"><?= @$userinfo->short_bio ?></textarea>
-                                                <div id="the-count">
-                                                    <span id="current">0</span>
-                                                    <span id="maximum">/ 1000</span>
-                                                </div>
-                                                <div id="vld_shrtBio" style="color:red; margin-top: 10px;">Please enter short bio.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-xs-12 aksek">
-                                            <button class="post-job-btn pull-right" type="submit">Save Changes</button>
-                                            <input type="hidden" name="utype" id="utype" value="<?= @$userinfo->userType?>">
-                                        </div>
+                            <div class="col-lg-12 profile-dsd">
+                                <textarea class="form-control" name="short_bio" id="short_bio" placeholder="Short Bio" maxlength="1000" placeholder="About me"><?= @$userinfo->short_bio ?></textarea>
+                                <div id="vld_shrtBio" style="color:red; margin-top: 10px;">Please enter short bio.</div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <div class="">
+                                        <button class="post-job-btn float-right mw-150" type="submit">Next</button>
+                                        <input type="hidden" name="utype" id="utype" value="<?= @$userinfo->userType?>">
                                     </div>
                                 </div>
                             </div>
@@ -311,6 +161,7 @@ if($data_request=='user') {
 #vld_location {display: none;}
 #vld_companyname {display: none;}
 #vld_teamsize {display: none;}
+#vld_zip {display: none;}
 .container:before,
 .container:after { display: none !important; }
 @media (min-width: 1250px) {
@@ -330,7 +181,7 @@ if($data_request=='user') {
 .select2-container .select2-search--inline {width: 100% !important;}
 .select2-search__field {width: 100% !important;}
 </style>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
 <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
@@ -422,27 +273,34 @@ $("form").submit( function(e) {
             e.preventDefault();
         }
     } else {
-        /*if($('#companyname').val() == ''){
-            $('#companyname').focus().attr('placeholder', 'This field is required');
-            $('#vld_companyname').show();
-            $('#companyname').focus().css('border', '1px solid red');
-            setTimeout(function(){$("#vld_companyname").hide();},5000)
-            e.preventDefault();
-        }*/
-        if($('#location').val() == ''){
-            $('#location').focus().attr('placeholder', 'This field is required');
-            $('#vld_location').show();
-            $('#location').focus().css('border', '1px solid red');
-            setTimeout(function(){$("#vld_location").hide();},5000)
+        if($('#firstname').val() == ''){
+            $('#firstname').focus().attr('placeholder', 'This field is required');
+            $('#vld_firstname').show();
+            $('#firstname').focus().css('border', '1px solid red');
+            setTimeout(function(){$("#vld_firstname").hide();},5000)
             e.preventDefault();
         }
-        /*if($('#teamsize').val() == ''){
-            $('#teamsize').focus().attr('placeholder', 'This field is required');
-            $('#vld_teamsize').show();
-            $('#teamsize').focus().css('border', '1px solid red');
-            setTimeout(function(){$("#vld_teamsize").hide();},5000)
+        if($('#lastname').val() == ''){
+            $('#lastname').focus().attr('placeholder', 'This field is required');
+            $('#vld_lastname').show();
+            $('#lastname').focus().css('border', '1px solid red');
+            setTimeout(function(){$("#vld_lastname").hide();},5000)
             e.preventDefault();
-        }*/
+        }
+        // if($('#location').val() == ''){
+        //     $('#location').focus().attr('placeholder', 'This field is required');
+        //     $('#vld_location').show();
+        //     $('#location').focus().css('border', '1px solid red');
+        //     setTimeout(function(){$("#vld_location").hide();},5000)
+        //     e.preventDefault();
+        // }
+        if($('#zip').val() == ''){
+            $('#zip').focus().attr('placeholder', 'This field is required');
+            $('#vld_zip').show();
+            $('#zip').focus().css('border', '1px solid red');
+            setTimeout(function(){$("#vld_zip").hide();},5000)
+            e.preventDefault();
+        }
         if($('#short_bio').val() == ''){
             $('#short_bio').focus().attr('placeholder', 'This field is required');
             $('#vld_shrtBio').show();

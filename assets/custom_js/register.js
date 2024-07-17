@@ -131,6 +131,16 @@ function btn_register() {
 				$('#register-messages p').text(returndata.data);
 				$('#register-messages').show();
 				$("#signUp_form")[0].reset();
+                // location.href = base_url+'profile';
+			// } else if(returndata.result == 'success_email') {
+			// 	$('#signUp_form').hide();
+			// 	$('.select-user').hide();
+			// 	$('#register-messages p').text(returndata.data);
+			// 	$('#register-messages').show();
+			// 	$("#signUp_form")[0].reset();
+            //     setTimeout(function(){
+            //         location.href = base_url+'email_verification';
+            //     },3000);
 			} else {
 				$('#err-messages p').text(returndata.data);
 				$('#err-messages').show();

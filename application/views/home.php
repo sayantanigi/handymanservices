@@ -198,19 +198,19 @@ function get_time_ago($time) {
                                                         <p style="margin: 0; font-size: 13px; color: #b1b1b1;">Posted - <?php echo get_time_ago(strtotime($row->created_date)) ?></p>
                                                     </div>
                                                 </div>
+                                                <?php if(@$_SESSION['afrebay']['userId'] === @$row->user_id) { ?>
                                                 <div>
                                                     <div class="btn-group dropleft dropPost">
-                                                      <a class="dotsdrop"  href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa-regular fa-ellipsis-vertical"></i>
-                                                      </a>
-
-                                                      <div class="dropdown-menu  dropdown-menu-lg-right">
-                                                        <a class="dropdown-item" href="#">Edit Post</a>
-                                                        <a class="dropdown-item" href="#">Delete Post</a>
-                                                      </div>
+                                                        <a class="dotsdrop"  href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                                                            <i class="fa-regular fa-ellipsis-vertical"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu  dropdown-menu-lg-right">
+                                                            <a class="dropdown-item" href="<?= base_url()?>update-postjob/<?= base64_encode($row->id)?>">Edit Post</a>
+                                                            <a class="dropdown-item" href="javascript:void(0)" onclick="jobDelete(<?= $row->id ?>)">Delete Post</a>
+                                                        </div>
                                                     </div>
-
                                                 </div>
+                                                <?php } ?>
                                             </div>
                                             <p class="CommentData" style="margin-top: 15px;margin-bottom:8px;font-size: 14px;color: #000;line-height: 25px;"><?= ucfirst(strip_tags($row->post_title)) ?></p>
                                             <p class="CommentData" style="margin-top: 8px;margin-bottom: 8px;font-size: 14px;color: #000;line-height: 18px;"><?= ucfirst(strip_tags($row->description)) ?></p>
@@ -221,12 +221,12 @@ function get_time_ago($time) {
                                                 $total_image = count($getImage);
                                                 //echo "<pre>"; print_r($getImage);
                                                 for ($i = 0; $i < min($total_image, $max_display); $i++) { ?>
-                                                    <div class="box-image<?php if($total_image > 4) {echo $max_display;} else {echo $total_image;} ?>">
-                                                        <img src="<?php base_url()?>uploads/postjob/<?= $getImage[$i]['job_image']?>" class="postImageData">
-                                                        <?php if ($i===$max_display - 1 && $total_image > $max_display) {?>
-                                                            <div class="extra-images">+<?php echo $total_image - $max_display?></div>
-                                                        <?php } ?>
-                                                    </div>
+                                                <div class="box-image<?php if($total_image > 4) {echo $max_display;} else {echo $total_image;} ?>">
+                                                    <img src="<?php base_url()?>uploads/postjob/<?= $getImage[$i]['job_image']?>" class="postImageData">
+                                                    <?php if ($i===$max_display - 1 && $total_image > $max_display) {?>
+                                                    <div class="extra-images">+<?php echo $total_image - $max_display?></div>
+                                                    <?php } ?>
+                                                </div>
                                                 <?php } ?>
                                             </div>
                                             <input type="hidden" name="postjobID" id="postjobID" value="<?= $row->id ?>">
@@ -234,8 +234,18 @@ function get_time_ago($time) {
 
                                             <div class="Rply_Comment_Block" style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
                                                 <div class="Active_Icon_Block" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; width: 50%; ">
-                                                    <a href="#" class="Icon_1" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
-                                                        <span><i class="fa-regular fa-heart"></i></span>
+                                                    <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
+                                                    $chechis_like = $this->db->query("SELECT * FROM postjob_like WHERE postjob_id = '" . $row->id . "' AND user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND is_liked = 1")->num_rows();
+                                                    if ($chechis_like > 0) { ?>
+                                                    <a href="javascript:void(0)" class="Icon_1" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;" onclick="dislikepostjob(<?= $row->id ?>)">
+                                                    <span><i class="fa fa-heart" aria-hidden="true"></i></span>
+                                                    <?php } else { ?>
+                                                    <a href="javascript:void(0)" class="Icon_1" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;" onclick="likepostjob(<?= $row->id ?>)">
+                                                    <span><i class="fa-regular fa-heart"></i></span>
+                                                    <?php } } else  { ?>
+                                                    <a href="javascript:void(0)" class="Icon_1" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;" onclick="forguestAlert()">
+                                                    <span><i class="fa-regular fa-heart"></i></span>
+                                                    <?php } ?>
                                                         <?php $getLikeCount = $this->db->query("SELECT COUNT(id) as count FROM postjob_like WHERE postjob_id = '" . $row->id . "' AND is_liked = 1")->row(); ?>
                                                         <p style="margin: 0; margin-left: 5px; font-size: 14px; font-weight: 500; "><?= $getLikeCount->count ?> </p>
                                                     </a>
@@ -251,120 +261,103 @@ function get_time_ago($time) {
                                                     </a>
                                                 </div>
                                                 <ul style="margin: 0; display: flex; align-items: center; justify-content: flex-end; flex-direction: row; width: 250px; float: right;">
-                                                    <!-- <li style="margin: 0 20px 0 0 !important; font-weight: 600; font-size: 15px; color: #000 !important;">
-                                                        <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
-                                                            $chechis_like = $this->db->query("SELECT * FROM postjob_like WHERE postjob_id = '" . $row->id . "' AND user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND is_liked = 1")->num_rows();
-                                                            if ($chechis_like > 0) { ?>
-                                                                <a style="color: #000 !important;" href="javascript:void(0)" onclick="dislikepostjob(<?= $row->id ?>)"><i style="color: #000;" class="fa fa-heart" aria-hidden="true"></i> Liked</a>
-                                                            <?php } else { ?>
-                                                                <a style="color: #000 !important;" href="javascript:void(0)" onclick="likepostjob(<?= $row->id ?>)"><i style="color: #000;" class="fa fa-heart-o" aria-hidden="true"></i> Like</a>
-                                                            <?php } ?>
-                                                        <?php } else { ?>
-                                                            <a style="color: #000 !important;" href="<?= base_url() ?>login">
-                                                                <i style="color: #000;" class="fa fa-heart-o" aria-hidden="true"></i> Like
-                                                            </a>
-                                                        <?php } ?>
-                                                    </li> -->
                                                     <li class="mb-0">
-                                                        <a href="" class="shareBtn"> <i class="fa-regular fa-share-nodes" aria-hidden="true"></i> Share</a>
+                                                        <a href="javascript:void(0)" class="shareBtn"> <i class="fa-regular fa-share-nodes" aria-hidden="true"></i> Share</a>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </div>
                                         <!-- Comment Btn -->
                                         <!-- Comment Data -->
-                                            <?php
-                                            $getpostComment = $this->db->query("SELECT * FROM postjob_comment WHERE postjob_id = '" . @$row->id . "'")->result_array();
-                                            if (!empty($getpostComment)) {
-                                                $i = 1;
-                                                foreach ($getpostComment as $each) {
-                                                    $rplycount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment_like  WHERE postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
-                                            ?>
-                                                    <div class="Comment_Block replyComment" style="display: flex; flex-direction: column; ">
-                                                        <div class="Comment_Block_Container" style="flex-direction: row; align-items: flex-start; justify-content: flex-start; display: flex; width: 100%;">
-                                                            <div class="Comment_Img" style="min-width: 50px;">
-                                                                <?php
-                                                                $userData = $this->db->query("SELECT * FROM users WHERE userId = '" . $each['user_id'] . "'")->row();
-                                                                if (!empty($userData->profilePic) && file_exists('uploads/users/' . $userData->profilePic)) { ?>
-                                                                    <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/users/<?= $userData->profilePic ?>" alt="User Profile">
-                                                                <?php } else { ?>
-                                                                    <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="User Profile">
-                                                                <?php } ?>
-                                                            </div>
-                                                            <div class="User_Comment_Data" style="width: 92%; display: flex; flex-direction: column;">
-                                                                <div class="replyPost">
-                                                                    <p style="margin: 0; font-weight: 600; color: #000 !important;">
-                                                                        <?php
-                                                                        if (!empty($userData->companyname)) {
-                                                                            echo $userData->companyname;
-                                                                        } else {
-                                                                            echo $userData->firstname . " " . $userData->lastname;
-                                                                        }
-                                                                        ?> .
-                                                                        <span style=" color: #6a6a6a; font-weight: 400;"><?php echo get_time_ago(strtotime($each['created_at'])) ?></span>
+                                        <?php
+                                        $getpostComment = $this->db->query("SELECT * FROM postjob_comment WHERE postjob_id = '" . @$row->id . "'")->result_array();
+                                        if (!empty($getpostComment)) {
+                                            $i = 1;
+                                            foreach ($getpostComment as $each) {
+                                                $rplycount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment_like  WHERE postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
+                                        ?>
+                                        <div class="Comment_Block replyComment" style="display: flex; flex-direction: column; ">
+                                            <div class="Comment_Block_Container" style="flex-direction: row; align-items: flex-start; justify-content: flex-start; display: flex; width: 100%;">
+                                                <div class="Comment_Img" style="min-width: 50px;">
+                                                    <?php
+                                                    $userData = $this->db->query("SELECT * FROM users WHERE userId = '" . $each['user_id'] . "'")->row();
+                                                    if (!empty($userData->profilePic) && file_exists('uploads/users/' . $userData->profilePic)) { ?>
+                                                        <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/users/<?= $userData->profilePic ?>" alt="User Profile">
+                                                    <?php } else { ?>
+                                                        <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="User Profile">
+                                                    <?php } ?>
+                                                </div>
+                                                <div class="User_Comment_Data" style="width: 92%; display: flex; flex-direction: column;">
+                                                    <div class="replyPost">
+                                                        <p style="margin: 0; font-weight: 600; color: #000 !important;">
+                                                            <?php
+                                                            if (!empty($userData->companyname)) {
+                                                                echo $userData->companyname;
+                                                            } else {
+                                                                echo $userData->firstname . " " . $userData->lastname;
+                                                            }
+                                                            ?> .
+                                                            <span style=" color: #6a6a6a; font-weight: 400;"><?php echo get_time_ago(strtotime($each['created_at'])) ?></span>
 
-                                                                    </p>
-                                                                    <p style="margin-bottom: 0; "><?= $each['comment']; ?></p>
-                                                                </div>
-                                                                <ul style="margin: 0; display: flex; align-items: center; justify-content: flex-start; margin-top: 10px;">
-                                                                    <li style="margin: 0 25px 0 0 !important; font-size: 14px; color: #000 !important; font-weight: 600;">
-                                                                        <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
-                                                                            $checkrplycount = $this->db->query("SELECT * FROM postjob_comment_like WHERE user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
-                                                                            if ($checkrplycount > 0) { ?>
-                                                                                <a style="color: #000 !important;" href="javascript:void(0)" onclick="dislikeuserrply(<?= $row->id ?>, <?= $each['id'] ?>)"><i class="fa-regular fa-heart"></i></a>
-                                                                            <?php } else { ?>
-                                                                                <a style="color: #000 !important;" href="javascript:void(0)" onclick="likeuserrply(<?= $row->id ?>, <?= $each['id'] ?>)"><i class="fa-regular fa-heart"></i></a>
-                                                                            <?php }
-                                                                        } else { ?>
-                                                                            <a style="color: #000 !important;" href="<?= base_url() ?>login"><i class="fa-regular fa-heart"></i></a>
-                                                                        <?php } ?>
-                                                                    </li>
-                                                                    <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
-                                                                        <li style="margin: 0 !important; font-size: 13px; color: #000 !important; font-weight: 600;">
-                                                                            <a style="color: #000 !important;" href="javascript:void(0)" onclick="replylink(<?= $row->id; ?>, <?= $each['id']; ?>)"><i class="fa-sharp fa-regular fa-reply-all"></i></a>
-                                                                        </li>
-                                                                    <?php } else { ?>
-                                                                        <li style="margin: 0 !important; font-size: 13px; color: #000 !important; font-weight: 600;">
-                                                                            <a style="color: #000 !important;" href="<?= base_url() ?>login"><i class="fa-sharp fa-regular fa-reply-all"></i></a>
-                                                                        </li>
-                                                                    <?php } ?>
-                                                                </ul>
-                                                                <!-- <div style="height: 148px; overflow-y: scroll;"> -->
-                                                                <?php
-                                                                $commentRply = $this->db->query("SELECT * FROM postjob_comment_rply WHERE comment_id = '" . $each['id'] . "'")->result_array();
-                                                                if (!empty($commentRply)) {
-                                                                    foreach ($commentRply as $rply) {
-                                                                        $userDataRply = $this->db->query("SELECT * FROM users WHERE userId = '" . $rply['user_id'] . "'")->row(); ?>
-                                                                        <div class="replyPost mt-2" style="margin-left: 30px;">
-                                                                            <p style="font-weight: 600;color: #000 !important;">
-                                                                                <?php
-                                                                                if (!empty($userDataRply->companyname)) {
-                                                                                    echo $userDataRply->companyname;
-                                                                                } else {
-                                                                                    echo $userDataRply->firstname . " " . $userDataRply->lastname;
-                                                                                }
-                                                                                ?> .
-                                                                                <span style="font-size: 13px; color: #6a6a6a; font-weight: 400;"><?php echo get_time_ago(strtotime($rply['created_at'])) ?></span>
-                                                                            </p>
-                                                                            <p><?= $rply['comment']; ?></p>
-                                                                        </div>
-                                                                <?php }
-                                                                } ?>
-                                                                <!-- </div> -->
-                                                                <div class="replyBox mt-3" id="replyBox_<?= $each['id']; ?>">
-                                                                    <textarea required="" name="users_rply_<?= $each['id']; ?>" id="users_rply_<?= $each['id']; ?>" placeholder="Reply"></textarea>
-                                                                    <a href="javascript:void(0)" class="replySubmit" onclick="postUserComment(<?= $row->id; ?>, <?= $each['id']; ?>)">
-                                                                        Reply
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        </p>
+                                                        <p style="margin-bottom: 0; "><?= $each['comment']; ?></p>
                                                     </div>
-                                                <?php $i++;
-                                                }
-                                            } ?>
+                                                    <ul style="margin: 0; display: flex; align-items: center; justify-content: flex-start; margin-top: 10px;">
+                                                        <li style="margin: 0 25px 0 0 !important; font-size: 14px; color: #000 !important; font-weight: 600;">
+                                                            <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
+                                                                $checkrplycount = $this->db->query("SELECT * FROM postjob_comment_like WHERE user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
+                                                                if ($checkrplycount > 0) { ?>
+                                                                    <a style="color: #000 !important;" href="javascript:void(0)" onclick="dislikeuserrply(<?= $row->id ?>, <?= $each['id'] ?>)"><i class="fa-regular fa-heart"></i></a>
+                                                                <?php } else { ?>
+                                                                    <a style="color: #000 !important;" href="javascript:void(0)" onclick="likeuserrply(<?= $row->id ?>, <?= $each['id'] ?>)"><i class="fa-regular fa-heart"></i></a>
+                                                                <?php }
+                                                            } else { ?>
+                                                                <a style="color: #000 !important;" href="<?= base_url() ?>login"><i class="fa-regular fa-heart"></i></a>
+                                                            <?php } ?>
+                                                        </li>
+                                                        <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
+                                                            <li style="margin: 0 !important; font-size: 13px; color: #000 !important; font-weight: 600;">
+                                                                <a style="color: #000 !important;" href="javascript:void(0)" onclick="replylink(<?= $row->id; ?>, <?= $each['id']; ?>)"><i class="fa-sharp fa-regular fa-reply-all"></i></a>
+                                                            </li>
+                                                        <?php } else { ?>
+                                                            <li style="margin: 0 !important; font-size: 13px; color: #000 !important; font-weight: 600;">
+                                                                <a style="color: #000 !important;" href="<?= base_url() ?>login"><i class="fa-sharp fa-regular fa-reply-all"></i></a>
+                                                            </li>
+                                                        <?php } ?>
+                                                    </ul>
+                                                    <!-- <div style="height: 148px; overflow-y: scroll;"> -->
+                                                    <?php
+                                                    $commentRply = $this->db->query("SELECT * FROM postjob_comment_rply WHERE comment_id = '" . $each['id'] . "'")->result_array();
+                                                    if (!empty($commentRply)) {
+                                                        foreach ($commentRply as $rply) {
+                                                            $userDataRply = $this->db->query("SELECT * FROM users WHERE userId = '" . $rply['user_id'] . "'")->row(); ?>
+                                                            <div class="replyPost mt-2" style="margin-left: 30px;">
+                                                                <p style="font-weight: 600;color: #000 !important;">
+                                                                    <?php
+                                                                    if (!empty($userDataRply->companyname)) {
+                                                                        echo $userDataRply->companyname;
+                                                                    } else {
+                                                                        echo $userDataRply->firstname . " " . $userDataRply->lastname;
+                                                                    }
+                                                                    ?> .
+                                                                    <span style="font-size: 13px; color: #6a6a6a; font-weight: 400;"><?php echo get_time_ago(strtotime($rply['created_at'])) ?></span>
+                                                                </p>
+                                                                <p><?= $rply['comment']; ?></p>
+                                                            </div>
+                                                    <?php }
+                                                    } ?>
+                                                    <!-- </div> -->
+                                                    <div class="replyBox mt-3" id="replyBox_<?= $each['id']; ?>">
+                                                        <textarea required="" name="users_rply_<?= $each['id']; ?>" id="users_rply_<?= $each['id']; ?>" placeholder="Reply"></textarea>
+                                                        <a href="javascript:void(0)" class="replySubmit" onclick="postUserComment(<?= $row->id; ?>, <?= $each['id']; ?>)">
+                                                            Reply
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php $i++; } } ?>
                                         <div class="boxdownpost">
-
                                             <div class="d-flex">
                                                 <div class="commnetUser">
                                                     <img src="https://techg.igiapp.com/handymanservices/uploads/users/440_Image1.jpg">
@@ -398,26 +391,74 @@ function get_time_ago($time) {
                 </div>
                 <div class="col-lg-3 mb-3 order-lg-1">
                     <div class="add-sidebar sticky-top">
-                        <?php if(is_numeric($_SESSION['afrebay']['userId'])) { ?>
+                        <?php
+                        if(is_numeric($_SESSION['afrebay']['userId'])) {
+                        $userData = $this->db->query("SELECT * FROM users WHERE userId = '".@$_SESSION['afrebay']['userId']."'")->row();
+                        if (!empty($userData->profilePic) && file_exists('uploads/users/'.$userData->profilePic)) {
+                            $userProfileImage = base_url('uploads/users/'.$userData->profilePic);
+                        } else {
+                            $userProfileImage = base_url('uploads/no_pimage.png');
+                        }
+
+                        if(!empty($userData->backgroundPic) && file_exists('uploads/users/background/'.$userData->backgroundPic)) {
+                            $userBackgroundImage = base_url('uploads/users/background/'.$userData->backgroundPic);
+                        } else {
+                            $userBackgroundImage = base_url('uploads/no_pimage.png');
+                        }
+                        ?>
                         <div class="ProfileBlock mb-3">
                             <div class="profilecover">
-                                <img src="<?= base_url('assets/images/cover.png') ?>">
+                                <img src="<?= $userBackgroundImage ?>">
                             </div>
-                            <div class="profileImg"><img src="https://techg.igiapp.com/handymanservices/uploads/users/2875_dafc3addfd37737b93fa9ecce064f73d.jpg"></div>
-                            <h2>Toni Müller</h2>
-                            <p class="text-center memberinfo">Member since 2024 . Professional</p>
+                            <div class="profileImg"><img src="<?= $userProfileImage;?>"></div>
+                            <h2>
+                                <?php
+                                if(!empty($userData->firstname)) {
+                                    echo $userData->firstname.' '.$userData->lastname;
+                                } else {
+                                    echo $userData->companyname;
+                                }
+                                ?>
+                            </h2>
+                            <p class="text-center memberinfo"><?= 'Member Since '.date('M Y', strtotime($userData->created))?> . <?php if($userData->userType === '1'){ echo "Professional"; } else { echo "Customer"; }?></p>
 
                             <div class="profileInfo d-flex justify-content-between text-center">
                                 <div>
-                                    <h3>20</h3>
+                                    <h3>
+                                        <?php
+                                        $countPost = $this->db->query("SELECT COUNT(id) as totalPost FROM postjob WHERE user_id = '".$userData->userId."'")->row();
+                                        echo $countPost->totalPost;
+                                        ?>
+                                    </h3>
                                     <h4>Posts</h4>
                                 </div>
                                 <div>
-                                    <h3>43</h3>
+                                    <h3>
+                                        <?php
+                                            $getPostID = $this->db->query("SELECT GROUP_CONCAT(id) as post_id FROM postjob WHERE user_id = '".@$userData->userId."'")->row();
+                                            if(!empty($getPostID->post_id)) {
+                                                $commentPost = $this->db->query("SELECT COUNT(id) as total_comment FROM postjob_comment WHERE postjob_id IN (".@$getPostID->post_id.")")->row();
+                                                $commentPostrply = $this->db->query("SELECT COUNT(id) as total_commentrply FROM postjob_comment_rply WHERE postjob_id IN (".@$getPostID->post_id.")")->row();
+                                            } else {
+                                                $commentPost = 0;
+                                                $commentPostrply = 0;
+                                            }
+                                            echo $total_comment = ($commentPost->total_comment + $commentPostrply->total_commentrply);
+                                        ?>
+                                    </h3>
                                     <h4>Comments</h4>
                                 </div>
                                 <div>
-                                    <h3>25</h3>
+                                    <h3>
+                                        <?php
+                                        if(!empty($getPostID->post_id)) {
+                                            $getPostLike = $this->db->query("SELECT COUNT(id) as total_like FROM postjob_like WHERE postjob_id IN (".$getPostID->post_id.")")->row();
+                                            echo $getPostLike->total_like;
+                                        } else {
+                                            echo "0";
+                                        }
+                                        ?>
+                                    </h3>
                                     <h4>Likss</h4>
                                 </div>
                             </div>
@@ -731,12 +772,12 @@ function postComment(postjobID) {
         })
     }
 }
-    //show/hide reply box
+//show/hide reply box
 function replylink(postId, commentid) {
     $('#replyBox_' + commentid).toggleClass('showreplyBox');
     //$('#replyBox_' + commentid).removeClass('hidereplyBox');
 }
-    //for user comment's reply
+//for user comment's reply
 function postUserComment(postId, commentid) {
     if ($('#users_rply_' + commentid).val() == "") {
         $("#users_rply_" + commentid).css('border-color', 'red');
@@ -770,7 +811,7 @@ function postUserComment(postId, commentid) {
         })
     }
 }
-    // for liking Comment
+// for liking Comment
 function likepostjob(postjobID) {
     var user_id = $('#userID').val();
     var postjob_id = postjobID;
@@ -787,7 +828,7 @@ function likepostjob(postjobID) {
         }
     })
 }
-    // for liking user each Comment
+// for liking user each Comment
 function likeuserrply(postId, commentid) {
     var user_id = $('#userID').val();
     var postjob_id = postId;
@@ -806,7 +847,7 @@ function likeuserrply(postId, commentid) {
         }
     })
 }
-    // for disliking Comment
+// for disliking Comment
 function dislikepostjob(postjobID) {
     var user_id = $('#userID').val();
     var postjob_id = postjobID;
@@ -824,7 +865,7 @@ function dislikepostjob(postjobID) {
         }
     })
 }
-    // for disliking Comment
+// for disliking Comment
 function dislikeuserrply(postId, commentid) {
     var user_id = $('#userID').val();
     var postjob_id = postId;
@@ -843,6 +884,63 @@ function dislikeuserrply(postId, commentid) {
             location.reload();
         }
     })
+}
+function jobDelete(id) {
+    var p_id = id;
+    $.confirm({
+        title: 'Confirm!',
+        content: confirmTextDelete,
+        buttons: {
+            confirm: function() {
+                $.ajax({
+                    url: "<?= base_url() ?>user/dashboard/delete_job",
+                    method: "POST",
+                    data: {
+                        id: p_id
+                    },
+                    beforeSend: function() {
+                        $("#loader").show();
+                    },
+                    success: function(data) {
+                        if (data == '1') {
+                            setTimeout(function() {
+                                $("#loader").hide();
+                                window.scroll({
+                                    top: 0,
+                                    behavior: "smooth"
+                                });
+                                $('#product-messages').show();
+                            }, 7000);
+                            setTimeout(function() {
+                                $('#product-messages').hide();
+                            }, 9000);
+                            setTimeout(function() {
+                                location.reload(true);
+                            }, 10000);
+                        } else {
+                            $('#err-messages').show();
+                            setTimeout(function() {
+                                window.scroll({
+                                    top: 0,
+                                    behavior: "smooth"
+                                })
+                            }, 7000);
+                            setTimeout(function() {
+                                $('#err-messages').hide();
+                            }, 9000);
+                            setTimeout(function() {
+                                location.reload(true);
+                            }, 10000);
+                        }
+                    }
+
+                })
+            },
+            cancel: function() {
+                location.reload();
+            },
+        }
+    });
 }
 </script>
 <script>

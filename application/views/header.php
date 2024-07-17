@@ -103,7 +103,11 @@ $(function () {
         <div class="responsive-header" style="background: #ffffff;">
             <div class="responsive-menubar" style="display: flex; align-items: center; justify-content: space-between;">
                 <div class="res-logo">
+                    <?php if(!empty($_SESSION['afrebay']['userId'])) { ?>
+                    <a href="<?=base_url(); ?>homepage" title=""><img src="<?=base_url(); ?>uploads/logo/<?= $get_setting->flogo?>" alt="" /></a>
+                    <?php } else { ?>
                     <a href="<?=base_url(); ?>" title=""><img src="<?=base_url(); ?>uploads/logo/<?= $get_setting->flogo?>" alt="" /></a>
+                    <?php } ?>
                 </div>
                 <div class="menu-resaction">
                     <div class="res-openmenu" style="color: #000;"><i class="fa-sharp fa-light fa-bars"></i></div>
@@ -177,11 +181,19 @@ $(function () {
                 <div class="container-fluid Header_Menu_Nav">
                     <div class="d-flex align-items-center">
                         <div class="logo mr-5">
-                            <a href="<?=base_url(); ?>" title="">
-                                <img class="hidesticky" src="<?=base_url(); ?>uploads/logo/<?= $get_setting->logo?>" alt="" />
-                                <img class="showsticky" src="<?=base_url(); ?>uploads/logo/<?= $get_setting->logo?>" alt="" />
-                                <input type="hidden" class="hidden-logo" value="<?=base_url(); ?>uploads/logo/<?= $get_setting->logo?>">
-                            </a>
+                        <?php if(!empty($_SESSION['afrebay']['userId'])) { ?>
+                        <a href="<?=base_url(); ?>homepage" title="">
+                            <img class="hidesticky" src="<?=base_url(); ?>uploads/logo/<?= $get_setting->logo?>" alt="" />
+                            <img class="showsticky" src="<?=base_url(); ?>uploads/logo/<?= $get_setting->logo?>" alt="" />
+                            <input type="hidden" class="hidden-logo" value="<?=base_url(); ?>uploads/logo/<?= $get_setting->logo?>">
+                        </a>
+                        <?php } else { ?>
+                        <a href="<?=base_url(); ?>" title="">
+                            <img class="hidesticky" src="<?=base_url(); ?>uploads/logo/<?= $get_setting->logo?>" alt="" />
+                            <img class="showsticky" src="<?=base_url(); ?>uploads/logo/<?= $get_setting->logo?>" alt="" />
+                            <input type="hidden" class="hidden-logo" value="<?=base_url(); ?>uploads/logo/<?= $get_setting->logo?>">
+                        </a>
+                        <?php } ?>
                         </div>
                         <div class="d-flex align-items-center">
                             <?php if(!empty($_SESSION['afrebay']['userId'])) { ?>

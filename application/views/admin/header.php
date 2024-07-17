@@ -24,6 +24,7 @@ if(empty($_SESSION['afrebay_admin']['id'])) {
     <style>
         .user-img img{background: #f67a49 !important;}
         .sidebar-logo{background: #f67a49 !important;}
+        .sidebar-logo {padding: 7px 20px 7px !important;}
     </style>
 </head>
 <body>
