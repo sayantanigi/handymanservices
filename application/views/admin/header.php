@@ -22,8 +22,8 @@ if(empty($_SESSION['afrebay_admin']['id'])) {
     <link rel="stylesheet" href="<?= base_url();?>dist/admin_assets/select2/select2.css">
     <!-- end server side table -->
     <style>
-        .user-img img{background: #f67a49 !important;}
-        .sidebar-logo{background: #f67a49 !important;}
+        .user-img img{background: #2892ff !important;}
+        .sidebar-logo{background: #2892ff !important;}
         .sidebar-logo {padding: 7px 20px 7px !important;}
     </style>
 </head>

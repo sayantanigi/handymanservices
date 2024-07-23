@@ -13,7 +13,7 @@
 			                        <div class="profiletab position-relative d-flex">
 			                            <div class="tabBox d-flex w-auto">
                                             <a href="<?= base_url()?>profile" class="tabnav">My Profile</a>
-                                            <?php if($_SESSION['afrebay']['userType'] == '2') { ?>
+                                            <?php if($_SESSION['afrebay']['userType'] == '1') { ?>
                                             <a href="<?= base_url()?>business_details" class="tabnav active">Business Details</a>
                                             <?php } ?>
 			                            </div>
@@ -21,11 +21,11 @@
 			                    </div>
 			                    <div class="cardak profile-mobile pt-3">
 			                    	<div class="row">
-			                    		<div class="col-lg-6 profile-dsd">
+			                    		<div class="col-lg-12 profile-dsd">
                                             <input type="text" class="form-control" name="companyname" id="companyname" placeholder="Business name" value="<?php echo $userinfo->companyname;?>" />
                                             <div id="vld_companyname" style="color:red; margin-top: 10px;">Please enter Business name.</div>
 			                            </div>
-			                            <div class="col-lg-6 profile-dsd">
+			                            <div class="col-lg-12 mb-2 profile-dsd">
                                             <select class="form-control business_category" multiple="multiple" name="business_category[]" id="business_category" style="width: 100%;">
                                             <?php
                                                 $business_category = $this->Crud_model->GetData('category',"","status = 'Active'");
@@ -53,12 +53,47 @@
                                             <input type="hidden" name="longitude" id="search_lon" value="<?= $userinfo->longitude ?> ">
 			                            </div>
 			                            <div class="col-lg-6 profile-dsd">
-                                        <input type="text" class="form-control" name="hourly_rate" id="hourly_rate" placeholder="Rate per hour" value="<?php echo $userinfo->hourly_rate;?>" />
-                                        <div id="vld_companyname" style="color:red; margin-top: 10px;">Please enter Rate per hour.</div>
+                                            <input type="text" class="form-control" name="hourly_rate" id="hourly_rate" placeholder="Rate per hour" value="<?php echo $userinfo->hourly_rate;?>" />
+                                            <div id="vld_companyname" style="color:red; margin-top: 10px;">Please enter Rate per hour.</div>
 			                            </div>
 			                            <div class="col-lg-6 profile-dsd">
                                             <input type="text" class="form-control" name="reference_link" id="reference_link" placeholder="Reference links" value="<?php echo $userinfo->reference_link;?>" />
 			                            </div>
+                                        <div class="col-lg-12 mb-4">
+                                            <div class="new-pro uploadProfilephoto workupload">
+                                                <?php
+                                                $getWorkSample = $this->db->query("SELECT * FROM users_work_sample WHERE user_id = '".$userinfo->userId."'")->result_array();
+                                                if(!empty($getWorkSample)) { ?>
+                                                <div class="profileImgBox">
+                                                <?php foreach ($getWorkSample as $sample) {
+                                                    $extension = strtolower(pathinfo($sample['work_sample'], PATHINFO_EXTENSION));
+                                                    if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) { ?>
+                                                    <img src="<?= base_url('uploads/users/work_sample/'.$sample['work_sample']); ?>" alt="Image" style="width: 165px;height: 110px;">
+                                                    <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
+                                                    <video width="165" height="110" controls>
+                                                    <source src="<?= base_url('uploads/users/work_sample/'.$sample['work_sample']); ?>" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                    </video>
+                                                    <?php } else { ?>
+                                                    <p>Unsupported file type</p>
+                                                    <?php } } ?>
+                                                </div>
+                                                <?php } else { ?>
+                                                <div class="profileImgBox profilenoImg  py-4">
+                                                    <img src="<?php echo base_url('uploads/addPhoto.png')?>"/>
+                                                    <h6>Upload work samples</h6>
+                                                    <p>Images must be less than 5 MB in size</p>
+                                                    <p>Videos must be less than 25 MB in size</p>
+                                                </div>
+                                                <?php } ?>
+                                                <div class="profile-ak">
+                                                    <label>
+                                                        <h6><i class="fa-solid fa-cloud-arrow-up"></i> Upload </h6>
+                                                        <input type="file" name="work_sample[]" multiple class="d-none" />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
 			                        </div>
 			                        <div class="text-center px-3">
 			                        	<button class="post-job-btn float-right mw-150" type="submit">Finish</button>

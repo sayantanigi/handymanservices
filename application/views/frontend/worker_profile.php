@@ -25,7 +25,7 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
                                         <?php if(!empty($user_detail->profilePic)&& file_exists('uploads/users/'.@$user_detail->profilePic)){?>
                                         <img src="<?= base_url('uploads/users/'.@$user_detail->profilePic)?>" alt="" />
                                         <?php } else{?>
-                                        <img src="<?= base_url('uploads/users/user.png')?>" alt="" />
+                                        <img src="<?= base_url('uploads/no_pimage.png')?>" alt="" />
                                         <?php } ?>
                                     </div>
                                 </div>
@@ -42,33 +42,33 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
                                     $checkMuteUser = $this->db->query("SELECT * FROM mute_user WHERE to_user_id = '".$user_detail->userId."' AND from_user_id = '".$_SESSION['afrebay']['userId']."'")->row();
                                     //print_r($checkMuteUser);
                                     if(@$checkMuteUser->status == "1") { ?>
-                                    <a href="javascript:void(0)" style="background: #fa8558; padding: 6px; border-radius: 5px; color: #fff; font-size: 10px; display: inline-block;" onclick="unmuteUser(<?= $user_detail->userId ?>)"><i class="las la-volume-up"></i> Unmute</a>
+                                    <a href="javascript:void(0)" style="background: #2892ff; padding: 6px; border-radius: 5px; color: #fff; font-size: 13px; display: inline-block;" onclick="unmuteUser(<?= $user_detail->userId ?>)"><i class="las la-volume-up"></i> Unmute</a>
                                     <?php } else { ?>
-                                    <a href="javascript:void(0)" style="background: #fa8558; padding: 6px; border-radius: 5px; color: #fff; font-size: 10px; display: inline-block;" onclick="muteUser(<?= $user_detail->userId ?>)"><i class="las la-volume-off"></i> Mute</a>
+                                    <a href="javascript:void(0)" style="background: #2892ff; padding: 6px; border-radius: 5px; color: #fff; font-size: 13px; display: inline-block;" onclick="muteUser(<?= $user_detail->userId ?>)"><i class="las la-volume-off"></i> Mute</a>
                                     <?php } } else { ?>
-                                    <a href="<?php echo base_url()?>login" style="background: #fa8558; padding: 6px; border-radius: 5px; color: #fff; font-size: 10px; display: inline-block;"><i class="las la-volume-off"></i> Mute</a>
+                                    <a href="<?php echo base_url()?>login" style="background: #2892ff; padding: 6px; border-radius: 5px; color: #fff; font-size: 10px; display: inline-block;"><i class="las la-volume-off"></i> Mute</a>
                                     <?php } ?>
                                     <?php if(!empty(@$_SESSION['afrebay']['userId'])) {
                                     $checkreportUser = $this->db->query("SELECT * FROM report_user WHERE to_user_id = '".$user_detail->userId."' AND from_user_id = '".$_SESSION['afrebay']['userId']."'")->row();
                                     //print_r($checkreportUser);
                                     if(!empty($checkreportUser)) { ?>
-                                    <a href="javascript:void(0)" style="background: #fa8558; padding: 6px; border-radius: 5px; color: #fff; font-size: 10px; display: inline-block;"><i class="la la-flag"></i> Reported</a>
+                                    <a href="javascript:void(0)" style="background: #2892ff; padding: 6px; border-radius: 5px; color: #fff; font-size: 13px; display: inline-block;"><i class="la la-flag"></i> Reported</a>
                                     <?php } else { ?>
-                                    <a href="javascript:void(0)" style="background: #fa8558; padding: 6px; border-radius: 5px; color: #fff; font-size: 10px; display: inline-block;" onclick="report(<?= $user_detail->userId ?>)"><i class="la la-flag"></i> Report</a>
+                                    <a href="javascript:void(0)" style="background: #2892ff; padding: 6px; border-radius: 5px; color: #fff; font-size: 13px; display: inline-block;" onclick="report(<?= $user_detail->userId ?>)"><i class="la la-flag"></i> Report</a>
                                     <?php } } else { ?>
-                                    <a href="<?php echo base_url()?>login" style="background: #fa8558; padding: 6px; border-radius: 5px; color: #fff; font-size: 10px; display: inline-block;"><i class="la la-flag"></i> Report</a>
+                                    <a href="<?php echo base_url()?>login" style="background: #fa8558; padding: 6px; border-radius: 5px; color: #fff; font-size: 13px; display: inline-block;"><i class="la la-flag"></i> Report</a>
                                     <?php } ?>
 
-                                    <a href="javascript:void(0)" style="background: #fa8558; padding: 6px; border-radius: 5px; color: #fff; font-size: 10px; display: inline-block;" id="shareBtn"><i class="la la-share"></i> Forward </a>
+                                    <a href="javascript:void(0)" style="background: #2892ff; padding: 6px; border-radius: 5px; color: #fff; font-size: 13px; display: inline-block;" id="shareBtn"><i class="la la-share"></i> Forward </a>
                                 </div>
                                 <div id="shareMenu" class="hidden">
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa fa-facebook"></a>
-                                    <a href="https://twitter.com/intent/tweet?text=<?php echo $post_data->post_title; ?>&url=<?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa fa-twitter"></a>
-                                    <a href="mailto:?subject=<?php echo $name; ?>&body=<?= 'I found this interesting: '.base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa fa-google"></a>
-                                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa fa-linkedin"></a>
-                                    <a href="https://www.instagram.com/?url=<?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa fa-instagram"></a>
-                                    <a href="https://api.whatsapp.com/send?text=<?php echo $post_data->post_title; ?> <?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa fa-whatsapp"></a>
-                                    <a href="https://telegram.me/share/url?url=<?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>&text=<?php echo $post_data->post_title; ?>" target="_blank" class="fa fa-telegram"></a>
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa-brands fa-facebook"></a>
+                                    <a href="https://twitter.com/intent/tweet?text=<?php echo $post_data->post_title; ?>&url=<?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa-brands fa-twitter"></a>
+                                    <a href="mailto:?subject=<?php echo $name; ?>&body=<?= 'I found this interesting: '.base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa-brands fa-google"></a>
+                                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa-brands fa-linkedin"></a>
+                                    <a href="https://www.instagram.com/?url=<?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa-brands fa-instagram"></a>
+                                    <a href="https://api.whatsapp.com/send?text=<?php echo $post_data->post_title; ?> <?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa-brands fa-whatsapp"></a>
+                                    <a href="https://telegram.me/share/url?url=<?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>&text=<?php echo $post_data->post_title; ?>" target="_blank" class="fa-brands fa-telegram"></a>
                                 </div>
                                 <?php } ?>
                             </div>
@@ -91,40 +91,37 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
                                     </p>
 
                                     <div class="edu-history-sec" id="education">
-                                        <h2>Education</h2>
-                                        <?php if(!empty($user_education)){ foreach($user_education as $edu){?>
+                                        <h2>Business Details</h2>
                                         <div class="edu-history">
                                             <i class="la la-graduation-cap"></i>
                                             <div class="edu-hisinfo">
-                                                <h3>
-                                                    <?= ucfirst($edu->education)?>
-                                                    <?php if(!empty($edu->department)) { ?>
-                                                    in <?= $edu->department?> depertment
-                                                    <?php } ?>
-                                                </h3>
-                                                <i><?= $edu->passing_of_year?></i>
-                                                <span><?= $edu->college_name?></span>
-                                                <p><?= $edu->description?></p>
+                                                <h6 class="mb-1 font-weight-bold text-dark text-uppercase">Company Name: <?= ucfirst($user_detail->companyname); ?></h6>
+                                                <p><span class="font-weight-bold">Address:</span> <?= ucfirst($user_detail->address); ?></p>
+                                                <p><span class="font-weight-bold">Servide Type: </span> <?= ucfirst($user_detail->serviceType); ?></p>
+                                                <p><span class="font-weight-bold">Contact No. :</span> <?= ucfirst($user_detail->mobile); ?></p>
+                                                <p><span class="font-weight-bold">Hourly Rate:</span> <?= ucfirst($user_detail->hourly_rate); ?></p>
+                                                <p style="word-break: break-all;"><span class="font-weight-bold">Referrence Link:</span> <a href="<?= ucfirst($user_detail->reference_link); ?>" target="_blank" class="bg-primary text-white py-2 px-4 rounded">View</a></p>
                                             </div>
                                         </div>
-                                        <?php } }?>
                                     </div>
                                     <div class="edu-history-sec" id="experience">
-                                        <h2>Work Experience</h2>
-                                        <?php if(!empty($user_work)){ foreach($user_work as $row){?>
-                                        <div class="edu-history style2">
-                                            <i></i>
-                                            <div class="edu-hisinfo">
-                                                <h3><?= ucfirst($row->designation)?><span><?= $row->company_name ?></span></h3>
-                                                <?php if($row->to_date != '0000-00-00') { ?>
-                                                <i><?= date('d-m-Y',strtotime($row->from_date)).' to '.date('d-m-Y',strtotime($row->to_date))?></i>
-                                                <?php } else { ?>
-                                                <i>Currently working since <?= date('d-m-Y',strtotime($row->from_date))?></i>
-                                                <?php } ?>
-                                                <p><?= $row->description?></p>
-                                            </div>
+                                        <h2>Work Sample</h2>
+                                        <?php if(!empty($user_work)) { ?>
+                                        <div class="profileImgBox">
+                                            <?php foreach ($user_work as $sample) {
+                                            $extension = strtolower(pathinfo($sample->work_sample, PATHINFO_EXTENSION));
+                                            if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) { ?>
+                                            <img src="<?= base_url('uploads/users/work_sample/'.$sample->work_sample); ?>" alt="Image" style="width: 165px;height: 110px;">
+                                            <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
+                                            <video width="165" height="110" controls>
+                                            <source src="<?= base_url('uploads/users/work_sample/'.$sample->work_sample); ?>" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                            </video>
+                                            <?php } else { ?>
+                                            <p>Unsupported file type</p>
+                                            <?php } } ?>
                                         </div>
-                                        <?php } }?>
+                                        <?php }?>
                                     </div>
                                     <?php if(!empty($user_detail->skills)) { ?>
                                     <div class="progress-sec" id="skills">
@@ -139,7 +136,7 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
                             </div>
                             <div class="col-lg-4 column">
                                 <div class="job-overview">
-                                    <h3>Candidate Overview</h3>
+                                    <h3 class="text-uppercase">Candidate Overview</h3>
                                     <ul>
                                         <li>
                                             <i class="la la-mars-double"></i>
@@ -214,10 +211,13 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
     </div>
 </div>
 <style>
-#status-options {width: 210px; border-radius: 6px; z-index: 99; line-height: initial; background: #fff; transition: 0.3s all ease; position: absolute; bottom: 15px; left: 15px; border: 1px solid #eee; padding: 5px; text-align: center; }
+#status-options {border-radius: 6px; z-index: 99; line-height: initial;  transition: 0.3s all ease; position: absolute; bottom: 15px; left: 15px; border: 1px solid #eee; padding:0px; text-align: center; }
 .job-thumb .active {opacity: 1; visibility: visible; margin: 75px 0 0 0;}
 .hidden {display: none;}
 #shareMenu {border: 1px solid #ccc; padding: 10px; position: absolute; background-color: white; bottom: -25px; left: 145px; z-index: 111;}
+#shareMenu a{
+    padding: 0 5px;
+}
 </style>
 <script>
 $(document).ready(function() {

@@ -25,7 +25,7 @@ if($data_request=='user') {
                         <div class="profiletab position-relative d-flex">
                             <div class="tabBox d-flex w-auto">
                                 <a href="<?= base_url()?>profile" class="tabnav active">My Profile</a>
-                                <?php if($_SESSION['afrebay']['userType'] == '2') { ?>
+                                <?php if($_SESSION['afrebay']['userType'] == '1') { ?>
                                 <a href="<?= base_url()?>business_details" class="tabnav">Business Details</a>
                                 <?php } ?>
                             </div>
@@ -97,7 +97,7 @@ if($data_request=='user') {
                                     ?>
                                     <div class="profileImgBox profilenoImg py-4">
                                         <img src="<?php echo base_url('uploads/addPhoto.png')?>"/>
-                                        <h6>Upload work samples</h6>
+                                        <h6>Upload backgroud image</h6>
                                         <p>Images must be less than 5 MB in size</p>
                                         <p>Videos must be less than 25 MB in size</p>
                                     </div>
@@ -108,7 +108,7 @@ if($data_request=='user') {
                                     <?php } } else { ?>
                                     <div class="profileImgBox profilenoImg  py-4">
                                         <img src="<?php echo base_url('uploads/addPhoto.png')?>"/>
-                                        <h6>Upload work samples</h6>
+                                        <h6>Upload backgroud image</h6>
                                         <p>Images must be less than 5 MB in size</p>
                                         <p>Videos must be less than 25 MB in size</p>
                                     </div>

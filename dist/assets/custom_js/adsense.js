@@ -2,15 +2,23 @@ function create_adsense() {
 	var admin_url=$('#admin_url').val();
 	var title=$('#title').val();
 	var link=$('#link').val();
+    var image = $('#image').val();
+    var uimage = $('#image')[0].files[0];
 	if(title=="") {
 		$("#title_err").fadeIn().html("Please Enter Title").css("color","red");
 		setTimeout(function(){$("#title_err").fadeOut("&nbsp;");},2000)
 		$("#title").focus();
 		return false;
 	}
+    if(image == "") {
+    	$("#img_err").fadeIn().html("Please select an image").css("color","red");
+    	setTimeout(function(){$("#img_err").fadeOut("&nbsp;");},2000)
+    	$("#image").focus();
+    	return false;
+    }
+
 	var form_data= new FormData();
-	var image =$('#image')[0].files[0];
-	form_data.append('image',image);
+	form_data.append('image',uimage);
 	form_data.append('title',title);
 	form_data.append('link',link);
 	$.ajax({
@@ -60,12 +68,12 @@ function update_adsense() {
 	var link=$('#edit_link').val();
 	var old_image=$("#old_image").val();
 	var id=$("#id").val();
-	if(title=="") {
-		$("#edit_title_err").fadeIn().html("Please Enter Title").css("color","red");
-		setTimeout(function(){$("#edit_title_err").fadeOut("&nbsp;");},2000)
-		$("#edit_title").focus();
-		return false;
-	}
+	// if(title=="") {
+	// 	$("#edit_title_err").fadeIn().html("Please Enter Title").css("color","red");
+	// 	setTimeout(function(){$("#edit_title_err").fadeOut("&nbsp;");},2000)
+	// 	$("#edit_title").focus();
+	// 	return false;
+	// }
 	var form_data= new FormData();
 	var image=$('#edit_image')[0].files[0];
 	form_data.append('image',image);

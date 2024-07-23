@@ -51,7 +51,11 @@ class Adsense extends MY_Controller {
 			} else {
 				$img ='<img class="rounded service-img mr-1" src="'.base_url('uploads/no_image.png').'">';
 			}
-			$link = '<a href="'.$row->link.'" data-lightbox="roadtrip" target="_blank">Adsense Link </a>';
+            if(!empty($link)) {
+                $link = '<a href="'.$row->link.'" data-lightbox="roadtrip" target="_blank">Adsense Link </a>';
+            } else {
+                $link = '<a href="javascript:void(0)">Adsense Link </a>';
+            }
 			$no++;
 			$nestedData = array();
 			$nestedData[] = $no;

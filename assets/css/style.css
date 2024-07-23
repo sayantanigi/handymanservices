@@ -19510,3 +19510,74 @@ body.loaded .content {
   padding: 14px 30px;
       font-weight: 600;
 }
+.emailicon img{
+  width: 200px;
+}
+.otp-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+.otp-container .otp-input {
+  width: 52px;
+  height: 55px;
+  font-size: 18px;
+  text-align: center;
+  border: 0;
+  border-radius: 10px;
+  background-color: #F5F5F5;
+  padding: 0;
+}
+.text-primary{
+  color: #2892FF !important;
+}
+.profileTabcontent .select2-container--default .select2-selection--multiple .select2-selection__choice{
+  background-color: #2892ff;
+  border: 0;
+  border-radius: 19px;
+  cursor: default;
+  float: left;
+  margin-right: 5px;
+  margin-top: 0;
+  font-size: 12px;
+  padding: 5px 8px;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+.profileTabcontent .select2-container--default .select2-selection--multiple .select2-selection__rendered{
+  padding: 0;
+}
+.profileTabcontent .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+  font-size: 14px;
+    margin-right: 5px;
+    color: #fff;
+}
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons{
+  margin: 0 !important;
+      width: 100%;
+    text-align: center;
+}
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button{
+  float: none;
+  border-radius: 30px;
+}
+.jconfirm .jconfirm-box{
+  padding: 20px !important;
+  border-radius: 15px !important;
+}
+.jconfirm .jconfirm-box div.jconfirm-content-pane .jconfirm-content{
+  font-size: 15px;
+    line-height: 1.4;
+}
+.jconfirm .jconfirm-box .jconfirm-buttons button.btn-blue{
+  background: #2892ff !important;
+}
+.profileImgBox video{
+  background: #000;
+  object-fit: cover;
+    border-radius: 8px;
+}
+.profileImgBox img{
+  border-radius: 8px;
+}

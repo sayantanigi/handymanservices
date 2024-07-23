@@ -102,12 +102,12 @@
                                 <input class="form-control" type="text" name="title" id="title">
                             </div>
                             <div class="form-group">
-                                <label>AdSense Link <span style="color:red;">*</span> <span id="link_err"></span></label>
+                                <label>AdSense Link <span id="link_err"></span></label>
                                 <textarea class="form-control" type="text" name="link" id="link"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>AdSense Image</label>
-                                <input class="form-control" type="file" name="image" id="image">
+                                <label>AdSense Image <span style="color:red;">*</span> <span id="img_err"></span></label>
+                                <input class="form-control" type="file" name="image" id="image" required>
                             </div>
                             <div class="mt-4">
                                 <button class="btn btn-primary" type="button" onclick="return create_adsense();">Add AdSense</button>
@@ -138,7 +138,7 @@
                                 <input class="form-control" type="text" name="title" id="edit_title">
                             </div>
                             <div class="form-group">
-                                <label>AdSense Link <span style="color:red;">*</span> <span id="edit_link_err"></span></label>
+                                <label>AdSense Link<span id="edit_link_err"></span></label>
                                 <textarea class="form-control" type="text" name="link" id="edit_link"></textarea>
                             </div>
                             <div class="form-group">

@@ -184,23 +184,29 @@ class Welcome extends CI_Controller {
 		$this->load->view('footer');
 	}
 	public function edit_post_job() {
-		$key_skills = $this->input->post('key_skills');
-		for ($i=0; $i < count($key_skills); $i++) {
-			$get_specialist = $this->db->query("SELECT * FROM specialist WHERE specialist_name = '".$key_skills[$i]."'")->result();
-			if(empty($get_specialist)) {
-				$insrt = array(
-					'specialist_name'=>ucfirst($key_skills[$i]),
-					'created_date'=>date('Y-m-d H:i:s'),
-				);
-				$this->db->insert('specialist',$insrt);
-			}
-		}
+        if(!empty($this->input->post('key_skills'))){
+            $key_skills = $this->input->post('key_skills');
+            for ($i=0; $i < count($key_skills); $i++) {
+                $get_specialist = $this->db->query("SELECT * FROM specialist WHERE specialist_name = '".$key_skills[$i]."'")->result();
+                if(empty($get_specialist)) {
+                    $insrt = array(
+                        'specialist_name'=>ucfirst($key_skills[$i]),
+                        'created_date'=>date('Y-m-d H:i:s'),
+                    );
+                    $this->db->insert('specialist',$insrt);
+                }
+            }
+            $skills = implode(", ",$this->input->post('key_skills',TRUE));
+        } else {
+            $skills = NULL;
+        }
+
 		$id = $_POST['id'];
 		$data=array(
-			'required_key_skills'=>implode(", ",$this->input->post('key_skills',TRUE)),
+			'required_key_skills'=>$skills,
 			'category_id'=>$this->input->post('category_id',TRUE),
 			'subcategory_id'=>$this->input->post('subcategory_id',TRUE),
-			'post_title'=>$this->input->post('post_title',TRUE),
+			'post_title'=>nl2br($this->input->post('post_title',TRUE)),
 			'description'=>$this->input->post('description',TRUE),
 			'duration'=>$this->input->post('duration',TRUE),
 			'pay_type'=>$this->input->post('pay_type',TRUE),
@@ -217,7 +223,8 @@ class Welcome extends CI_Controller {
 		);
 		$this->Crud_model->SaveData('postjob', $data, "id='" . $id . "'");
 		$this->session->set_flashdata('message', 'Post Job Updated Successfully !');
-		redirect(base_url('myjob'));
+		//redirect(base_url('myjob'));
+        redirect(base_url('homepage'));
 	}
 	public function get_subcategory() {
 		$id =$_POST['id'];
@@ -229,6 +236,7 @@ class Welcome extends CI_Controller {
 		echo $html;
 	}
 	public function save_postjob() {
+        //echo "<pre>"; print_r($_POST); die();
         //$user_timezone = $_POST['timezone'];
         //date_default_timezone_set($user_timezone);
 		$string = $this->input->post('post_title');
@@ -280,7 +288,7 @@ class Welcome extends CI_Controller {
 			'required_key_skills'=> $keySkills,
 			'category_id'=>$this->input->post('category_id',TRUE),
 			'subcategory_id'=>$this->input->post('subcategory_id',TRUE),
-			'post_title'=>$this->input->post('post_title',TRUE),
+			'post_title'=>nl2br($this->input->post('post_title',TRUE)),
 			'description'=>$this->input->post('description',TRUE),
 			'duration'=>$this->input->post('duration',TRUE),
 			'pay_type'=>$this->input->post('pay_type',TRUE),
@@ -298,7 +306,7 @@ class Welcome extends CI_Controller {
 		$this->Crud_model->SaveData('postjob',$data);
 		$insert_jid = $this->db->insert_id();
 		if(!empty($insert_jid)) {
-			//echo "<pre>"; print_r($_FILES['postjobPic']['name']);
+			//echo "<pre>"; print_r($_FILES);
 			if (!empty($_FILES['postjobPic']['name'])) {
 				$cpt = count($_FILES['postjobPic']['name']);
 				for($i=0; $i<$cpt; $i++) {
@@ -334,7 +342,8 @@ class Welcome extends CI_Controller {
 			'lastmod'=> date('c', time()),
 		);
 		$this->Crud_model->SaveData('sitemap',$sitemap_date);
-		redirect(base_url("workdetail/".base64_encode($insert_jid)));
+		//redirect(base_url("workdetail/".base64_encode($insert_jid)));
+        redirect(base_url("homepage"));
 	}
 	function post_jobinfo($id) {
 		$post_id=base64_decode($id);

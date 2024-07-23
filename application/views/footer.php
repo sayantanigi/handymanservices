@@ -10,7 +10,7 @@ $actual_link = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $actual_link1 = explode('/', $actual_link);
 $url = end($actual_link1);
 ?>
-<footer class="<?php if($url == "" || $url == "signup" || $url == "login" ) { echo "d-none"; }?>">
+<footer class="<?php if($url == "" || $url == "signup" || $url == "login"  || $url == "homepage") { echo "d-none"; }?>">
     <div class="blocknwe">
         <div class="container">
             <div class="row">
@@ -271,10 +271,43 @@ function loginAlert() {
 	});
 }
 function forguestAlert() {
+    // $.alert({
+	//     title: '',
+	//     content: "Kindly register or login to participate in this activity.",
+	// });
     $.alert({
-	    title: '',
-	    content: "Kindly register or login to participate in this activity.",
-	});
+        title: '',
+        content: 'Kindly register or login to participate in this activity.',
+        animation: 'scale',
+        closeAnimation: 'scale',
+        buttons: {
+            okay: { // Customize the OK button
+                text: 'Sign In', // Text for the OK button
+                btnClass: 'btn-blue', // Custom class for styling the OK button
+                action: function () {
+                    // Action to perform when OK button is clicked
+                    // Example: redirecting to login or registration page
+                    window.location.href = '<?= base_url()?>login';
+                }
+            },
+            cancel: { // Customize the Cancel button
+                text: 'Sign Up', // Text for the Cancel button
+                btnClass: 'btn-blue', // Custom class for styling the Cancel button
+                action: function () {
+                    // Action to perform when Cancel button is clicked
+                    // Example: do nothing or close the alert
+                    window.location.href = '<?= base_url()?>';
+                }
+            },
+            somethingElse: {
+                text: 'Close',
+                btnClass: 'btn-blue',
+                keys: ['enter', 'shift'],
+                action: function(){
+                }
+            }
+        }
+    });
 }
 </script>
 </body>

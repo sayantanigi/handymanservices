@@ -2419,7 +2419,15 @@
 		height: 250px !important;
 	}
 }
-
+@media(max-width:480px){
+	.otp-container .otp-input{
+		width: 35px;
+		height: 40px;
+	}
+	.emailicon img{
+		width: 150px;
+	}
+}
 @media screen and (max-width: 425px) and (min-width: 375px) {
 	.emply-resume-list {
 		box-shadow: none !important;

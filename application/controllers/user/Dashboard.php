@@ -199,7 +199,12 @@ class Dashboard extends CI_Controller {
 		}
 		else{
             $this->session->set_flashdata('message', 'Profile Updated Successfull !');
-            redirect(base_url('profile'));
+            if($_SESSION['afrebay']['userType'] == '2') {
+                redirect(base_url('homepage'));
+            } else {
+                redirect(base_url('business_details'));
+            }
+
 		}
 	}
 
@@ -232,6 +237,34 @@ class Dashboard extends CI_Controller {
 		} else {
 			$business_category = '';
 		}
+
+        if (!empty($_FILES['work_sample']['size'])) {
+        	$count = count($_FILES['work_sample']['name']);
+        	for ($i=0; $i < $count; $i++) {
+	            $src = $_FILES['work_sample']['tmp_name'][$i];
+	            $filEnc = time();
+	            $avatar = rand(0000, 9999) . "_" . $_FILES['work_sample']['name'][$i];
+	            $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+	            $dest = getcwd() . '/uploads/users/work_sample/' . $avatar1;
+	            if (move_uploaded_file($src, $dest)) {
+	                $file1  = $avatar1;
+	            }
+				if(!empty($file1)) {
+					$file  = $file1;
+				} else if(!empty($_POST['old_work_sample'])) {
+					$file  = $_POST['old_work_sample'];
+				} else {
+					$file  = "";
+				}
+	            $details_data = array(
+                    'user_id'=> $_SESSION['afrebay']['userId'],
+                    'work_sample'=> $file,
+                    'created_at'=> date('Y-m-d H:m:s')
+                );
+                $this->Crud_model->SaveData('users_work_sample',$details_data);
+	        }
+        }
+        
         $data = array(
 			'companyname' => $_POST['companyname'],
 			'mobile' => $_POST['mobile'],

@@ -246,6 +246,7 @@ $(function () {
                         </div>
                     </div>
                     <div class="btn-extars">
+                        <?php if(is_numeric($_SESSION['afrebay']['userId'])) { ?>
                         <ul class="account-btns">
                             <?php if(!empty($_SESSION['afrebay']['userId'])) {
                                 if(!empty($_SESSION['afrebay']['firstname'])) {
@@ -256,7 +257,15 @@ $(function () {
                                 ?>
                                 <li class="menu-item-has-children User_Dashboard_Menu">
                                     <a class="Profile_dashboard_btn" href="javascript:void(0)" title="">
-                                        <img src="https://techg.igiapp.com/handymanservices/uploads/users/2875_dafc3addfd37737b93fa9ecce064f73d.jpg" class="headprofileimg">
+                                        <?php
+                                        $getUserimg = $this->db->query("SELECT * FROM users WHERE userId = '".$_SESSION['afrebay']['userId']."'")->row();
+                                        if(!empty($getUserimg->profilePic) && file_exists('uploads/users/'.$getUserimg->profilePic)) {
+                                            $img = base_url('uploads/users/'.$getUserimg->profilePic);
+                                        } else {
+                                            $img = base_url('uploads/no_pimage.png');
+                                        }
+                                        ?>
+                                        <img src="<?= $img; ?>" class="headprofileimg">
                                         <?= ucwords($fullname);?>
                                     </a>
                                     <ul>
@@ -285,7 +294,7 @@ $(function () {
                                 <li class="">
                                     <a href="<?=base_url(); ?>login"><i class="la la-external-link-square"></i> Sign In</a>
                                 </li>
-                            <?php } ?>
+                            <?php } } ?>
                             <!-- <li><a href="#" class="text-primary">
                                 <span class="switchuser"></span> Switch</a>
                             </li> -->

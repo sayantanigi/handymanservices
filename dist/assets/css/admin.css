@@ -683,7 +683,7 @@ table.table td h2 span {
 
 .badge-primary {
 
-	background-color: #f67a49 !important;
+	background-color: #2892ff !important;
 
 }
 
@@ -849,9 +849,9 @@ button.bg-danger:hover {
 
 .btn-primary {
 
-	background-color: #f67a49;
+	background-color: #2892ff;
 
-	border: 1px solid #f67a49;
+	border: 1px solid #2892ff;
 
 }
 
@@ -865,9 +865,9 @@ button.bg-danger:hover {
 
 .open>.dropdown-toggle.btn-primary {
 
-	background-color: #f67a49;
+	background-color: #2892ff;
 
-	border: 1px solid #f67a49;
+	border: 1px solid #2892ff;
 
 }
 
@@ -901,9 +901,9 @@ button.bg-danger:hover {
 
 .show>.btn-primary.dropdown-toggle {
 
-	background-color: #f67a49;
+	background-color: #000;
 
-	border-color: #f67a49;
+	border-color: #000;
 
 	color: #fff;
 
@@ -1201,9 +1201,9 @@ button.bg-danger:hover {
 
 .open>.dropdown-toggle.btn-danger {
 
-	background-color: #f67a49;
+	background-color: #2892ff;
 
-	border: 1px solid #f67a49;
+	border: 1px solid #2892ff;
 
 }
 
@@ -1225,9 +1225,9 @@ button.bg-danger:hover {
 
 .open>.dropdown-toggle.btn-danger:hover {
 
-	background-color: #f67a49;
+	background-color: #2892ff;
 
-	border: 1px solid #f67a49;
+	border: 1px solid #2892ff;
 
 }
 
@@ -1237,9 +1237,9 @@ button.bg-danger:hover {
 
 .show>.btn-danger.dropdown-toggle {
 
-	background-color: #f67a49;
+	background-color: #2892ff;
 
-	border-color: #f67a49;
+	border-color: #2892ff;
 
 	color: #fff;
 
@@ -1593,9 +1593,9 @@ button.bg-danger:hover {
 
 .pagination>.active>span:hover {
 
-	background-color: #f67a49;
+	background-color: #000;
 
-	border-color: #f67a49;
+	border-color: #000;
 
 }
 
@@ -1603,13 +1603,13 @@ button.bg-danger:hover {
 
 .pagination>li>span {
 
-	color: #f67a49;
+	color: #000;
 
 }
 
 .page-link:hover {
 
-	color: #f67a49;
+	color: #2892ff;
 
 }
 
@@ -1621,9 +1621,9 @@ button.bg-danger:hover {
 
 .page-item.active .page-link {
 
-	background-color: #f67a49;
+	background-color: #2892ff;
 
-	border-color: #f67a49;
+	border-color: #2892ff;
 
 }
 
@@ -1644,7 +1644,7 @@ button.bg-danger:hover {
 .dropdown-item.active,
 .dropdown-item:active {
 
-	background-color: #f67a49;
+	background-color: #2892ff;
 
 }
 
@@ -2668,7 +2668,7 @@ button.bg-danger:hover {
     -o-object-fit: cover;
     object-fit: contain;
     border: 1px solid #eee;
-    background: #f7f7f7;
+    background: #2892ff !important;
 
 }
 
@@ -2715,7 +2715,7 @@ button.bg-danger:hover {
 
 .user-menu .dropdown-menu .dropdown-item:hover {
 
-	color: #f67a49;
+	color: #000;
 
 }
 
@@ -2723,7 +2723,7 @@ button.bg-danger:hover {
 
 .header .dropdown-menu>li>a:hover {
 
-	background-color: #f67a49;
+	background-color: #2892ff;
 
 	color: #fff;
 
@@ -2967,7 +2967,7 @@ html.menu-opened body {
 
 .sidebar-menu>ul>li.active>a:hover {
 
-	background-color: #f67a49;
+	background-color: #000;
 
 	color: #fff;
 
@@ -2975,7 +2975,7 @@ html.menu-opened body {
 
 .sidebar-menu li.active a {
 
-	background-color: #f67a49;
+	background-color: #2892ff;
 
 	color: #fff;
 
@@ -3873,7 +3873,7 @@ html.menu-opened body {
 	width: 80px;
 
 	background-color: #f67a49;
-	box-shadow: 0px 4px 10px #f67a49ab;
+	box-shadow: 0px 4px 10px #2892ff;
 
 }
 
@@ -4058,7 +4058,7 @@ font-size: 55px;
 
 	left: 280px;
 
-	background-color: #f67a49;
+	background-color: #2892ff;
 
 }
 
@@ -4237,7 +4237,7 @@ font-size: 55px;
 
 	align-items: center;
 
-	color: #f67a49;
+	color: #2892ff;
 
 	border-radius: 10px;
 
@@ -4246,7 +4246,7 @@ font-size: 55px;
 .filter-btn:hover,
 .filter-btn:focus {
 
-	background-color: #f67a49;
+	background-color: #2892ff;
 
 	color: #fff;
 
@@ -4664,7 +4664,7 @@ small.help-block {
 
 	height: 50vh;
 
-	background-color: #f67a49;
+	background-color: #2892ff;
 
 	border-radius: 0 0 2.5rem 2.5rem;
 
@@ -4726,7 +4726,7 @@ small.help-block {
 
 .login-header h3 span {
 
-	color: #f67a49;
+	color: #2892ff;
 
 }
 
@@ -6112,7 +6112,7 @@ table.dataTable thead .sorting_asc {
 	background: linear-gradient(180deg, rgba(249, 80, 30, 1) 0%, rgba(252, 119, 33, 1) 100%) !important;
 }
 
-.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default {background: #f67a49; color: #fff !important;}
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default {background: #2892ff; color: #fff !important;}
 
 @media only screen and (max-width: 425px) {
   #table_wrapper .col-sm-12 {

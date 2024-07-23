@@ -321,8 +321,9 @@ class Home extends MY_Controller {
 	public function worker_detail($user_id) {
 		$cond = "users.userType='1' and users.userId='" . base64_decode($user_id) . "'";
 		$data['user_detail'] = $this->Users_model->users_detail($cond);
-		$data['user_education'] = $this->Crud_model->GetData('user_education', '', "user_id='" . base64_decode($user_id) . "'", '', '(id)desc');
-		$data['user_work'] = $this->Crud_model->GetData('user_workexperience', '', "user_id='" . base64_decode($user_id) . "'", '', '(id)desc');
+		//$data['user_education'] = $this->Crud_model->GetData('user_education', '', "user_id='" . base64_decode($user_id) . "'", '', '(id)desc');
+		//$data['user_work'] = $this->Crud_model->GetData('user_workexperience', '', "user_id='" . base64_decode($user_id) . "'", '', '(id)desc');
+        $data['user_work'] = $this->Crud_model->GetData('users_work_sample', '', "user_id='" . base64_decode($user_id) . "'", '', '');
 		$data['get_banner'] = $this->Crud_model->get_single('banner', "page_name='Service Provider Details'");
 		$data['title'] = 'Service Provider Details';
 		$this->load->view('header', $data);
