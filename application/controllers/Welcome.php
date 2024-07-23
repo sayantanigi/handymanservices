@@ -301,8 +301,10 @@ class Welcome extends CI_Controller {
 			'state'=>$this->input->post('state-dropdown',TRUE),
 			'city'=>$this->input->post('city-dropdown',TRUE),
 			'appli_deadeline'=>$this->input->post('appli_deadeline',TRUE),
+            'visibility'=>$this->input->post('visibility',TRUE),
 			'created_date'=>date('Y-m-d H:i:s', time()),
 		);
+        //echo "<pre>"; print_r($data); die();
 		$this->Crud_model->SaveData('postjob',$data);
 		$insert_jid = $this->db->insert_id();
 		if(!empty($insert_jid)) {

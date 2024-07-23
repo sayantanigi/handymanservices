@@ -25,6 +25,9 @@
                                             <input type="text" class="form-control" name="companyname" id="companyname" placeholder="Business name" value="<?php echo $userinfo->companyname;?>" />
                                             <div id="vld_companyname" style="color:red; margin-top: 10px;">Please enter Business name.</div>
 			                            </div>
+                                        <div class="col-lg-12 profile-dsd">
+                                            <input type="email" class="form-control" name="email" id="email" placeholder="Business Email" value="<?php echo $userinfo->email;?>" required/>
+			                            </div>
 			                            <div class="col-lg-12 mb-2 profile-dsd">
                                             <select class="form-control business_category" multiple="multiple" name="business_category[]" id="business_category" style="width: 100%;">
                                             <?php
@@ -76,7 +79,9 @@
                                                     </video>
                                                     <?php } else { ?>
                                                     <p>Unsupported file type</p>
-                                                    <?php } } ?>
+                                                    <?php } ?>
+                                                    <input type="hidden" name="old_work_sample" value="<?= $sample['work_sample'] ?>">
+                                                <?php } ?>
                                                 </div>
                                                 <?php } else { ?>
                                                 <div class="profileImgBox profilenoImg  py-4">

@@ -104,14 +104,14 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="edu-history-sec" id="experience">
+                                    <div class="edu-history-sec" id="experience" style="padding: 19px !important;">
                                         <h2>Work Sample</h2>
                                         <?php if(!empty($user_work)) { ?>
                                         <div class="profileImgBox">
                                             <?php foreach ($user_work as $sample) {
                                             $extension = strtolower(pathinfo($sample->work_sample, PATHINFO_EXTENSION));
                                             if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) { ?>
-                                            <img src="<?= base_url('uploads/users/work_sample/'.$sample->work_sample); ?>" alt="Image" style="width: 165px;height: 110px;">
+                                            <img src="<?= base_url('uploads/users/work_sample/'.$sample->work_sample); ?>" alt="Image" style="width: 182px;height: auto;">
                                             <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
                                             <video width="165" height="110" controls>
                                             <source src="<?= base_url('uploads/users/work_sample/'.$sample->work_sample); ?>" type="video/mp4">

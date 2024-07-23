@@ -161,6 +161,9 @@ if(!empty($_SESSION['afrebay']['userId'])){
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
+<link href="https://rawgit.com/mervick/emojionearea/master/dist/emojionearea.css" rel="stylesheet" />
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> -->
+<script src="https://rawgit.com/mervick/emojionearea/master/dist/emojionearea.js"></script>
 <script type="text/javascript">
 var confirmTextDelete = 'Are you sure you want to delete this record?';
 var confirmationText = 'Are you sure you want to change this status?';

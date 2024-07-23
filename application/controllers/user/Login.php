@@ -141,8 +141,8 @@ class Login extends CI_Controller {
 							if(empty($check_sub)) {
 								redirect('subscription');
 							} else {
-								$profile_check = $this->db->query("SELECT `firstname`, `lastname`, `email`, `gender`, `address`, `zip`, `short_bio` FROM `users` WHERE userId = '".@$_SESSION['afrebay']['userId']."'")->result_array();
-								if(empty($profile_check[0]['firstname']) || empty($profile_check[0]['lastname']) || empty($profile_check[0]['email']) || empty($profile_check[0]['gender']) || empty($profile_check[0]['address']) || empty($profile_check[0]['zip']) || empty($profile_check[0]['short_bio'])) {
+								$profile_check = $this->db->query("SELECT `companyname`, `firstname`, `lastname`, `mobile`, `email`, `serviceType`, hourly_rate, `address`, `zip`, `short_bio` FROM `users` WHERE userId = '".@$_SESSION['afrebay']['userId']."'")->result_array();
+								if(empty($profile_check[0]['companyname']) || empty($profile_check[0]['firstname']) || empty($profile_check[0]['lastname']) || empty($profile_check[0]['mobile']) || empty($profile_check[0]['email']) || empty($profile_check[0]['serviceType']) || empty($profile_check[0]['hourly_rate']) || empty($profile_check[0]['address']) || empty($profile_check[0]['zip']) || empty($profile_check[0]['short_bio'])) {
 									redirect('profile');
 								} else {
 									redirect('homepage');
@@ -165,8 +165,8 @@ class Login extends CI_Controller {
 						}
 					} else {
 						if($_SESSION['afrebay']['userType'] == '1') {
-							$profile_check = $this->db->query("SELECT `firstname`, `lastname`, `email`, `gender`, `address`, `zip`, `short_bio` FROM `users` WHERE userId = '".@$_SESSION['afrebay']['userId']."'")->result_array();
-							if(empty($profile_check[0]['firstname']) || empty($profile_check[0]['lastname']) || empty($profile_check[0]['email']) || empty($profile_check[0]['gender']) || empty($profile_check[0]['address']) || empty($profile_check[0]['zip']) || empty($profile_check[0]['short_bio'])) {
+							$profile_check = $this->db->query("SELECT `companyname`, `firstname`, `lastname`, `mobile`, `email`, `serviceType`, hourly_rate, `address`, `zip`, `short_bio` FROM `users` WHERE userId = '".@$_SESSION['afrebay']['userId']."'")->result_array();
+								if(empty($profile_check[0]['companyname']) || empty($profile_check[0]['firstname']) || empty($profile_check[0]['lastname']) || empty($profile_check[0]['mobile']) || empty($profile_check[0]['email']) || empty($profile_check[0]['serviceType']) || empty($profile_check[0]['hourly_rate']) || empty($profile_check[0]['address']) || empty($profile_check[0]['zip']) || empty($profile_check[0]['short_bio'])) {
 								redirect('profile');
 							} else {
 								redirect('homepage');

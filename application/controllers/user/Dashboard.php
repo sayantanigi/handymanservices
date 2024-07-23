@@ -264,10 +264,11 @@ class Dashboard extends CI_Controller {
                 $this->Crud_model->SaveData('users_work_sample',$details_data);
 	        }
         }
-        
+
         $data = array(
 			'companyname' => $_POST['companyname'],
 			'mobile' => $_POST['mobile'],
+            'email' => $_POST['email'],
             'serviceType' => $business_category,
 			'address' => $_POST['address'],
             'latitude' => $_POST['latitude'],

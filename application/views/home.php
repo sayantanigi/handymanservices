@@ -146,15 +146,15 @@ function get_time_ago($time) {
                                 </div>
                                 <div class="flex-fill w-100">
                                     <div class="postType">
-                                        <form method="post" action="<?php echo base_url('Welcome/save_postjob')?>" enctype="multipart/form-data" style="padding: 0 !important;" >
-                                            <textarea name="post_title" id="post_title" class="typePost" placeholder="Post your task" required></textarea>
+                                        <form method="post" action="<?php echo base_url('Welcome/save_postjob')?>" enctype="multipart/form-data" style="padding: 0 !important;" id="generalForm">
+                                            <textarea name="post_title" id="post_title" class="typePost emoji_act" placeholder="Post your task"></textarea>
                                             <button class="submitpost" type="submit">Post</button>
                                             <input type="hidden" name="user_id" value="<?php echo @$_SESSION['afrebay']['userId']?>">
                                         </form>
                                     </div>
                                     <div class="uploadOptionPost">
                                         <!-- <div data-toggle="modal" data-target="#postModal" onclick="postData()"> -->
-                                        <div data-toggle="modal" <?php if(!empty($_SESSION['afrebay']['userType'])){ echo 'data-target="#postModal"';} else { echo 'onclick="postData()"';} ?> >
+                                        <div data-toggle="modal" <?php if(!empty($_SESSION['afrebay']['userType'])) { echo 'data-target="#postModal" onclick="postData()"';} else { echo '';} ?> >
                                             <label id="postBoximgup"><img src="<?php base_url(); ?>assets/images/photo-icon.png"> Image</label>
                                             <label id="postBoxvidup"><img src="<?php base_url(); ?>assets/images/video-icon.png"> Video</label>
                                         </div>
@@ -250,8 +250,6 @@ function get_time_ago($time) {
                                                     <source src="<?= base_url('uploads/postjob/'.$getImage[$i]['job_image']); ?>" type="video/mp4">
                                                     Your browser does not support the video tag.
                                                     </video>
-                                                    <?php } else { ?>
-                                                    <p>Unsupported file type</p>
                                                     <?php } ?>
                                                 </div>
                                                 <?php } ?>
@@ -486,7 +484,7 @@ function get_time_ago($time) {
                                         }
                                         ?>
                                     </h3>
-                                    <h4>Likss</h4>
+                                    <h4>Likes</h4>
                                 </div>
                             </div>
                             <a href="#" class="profileBtn">My Profile</a>
@@ -548,9 +546,22 @@ function get_time_ago($time) {
                 </div>
                 <div class="col-lg-3 order-lg-3">
                     <div class="add-sidebar sticky-top">
-                        <a href="#" class="mb-3 d-block"><img src="<?= base_url('assets/images/add-01.png') ?>" class="rounded"></a>
-                        <a href="#" class="mb-3 d-block"><img src="<?= base_url('assets/images/add-02.png') ?>" class="rounded"></a>
-                        <a href="#" class="mb-3 d-block"><img src="<?= base_url('assets/images/add-03.png') ?>" class="rounded"></a>
+                        <?php
+                        $getAdSense = $this->db->query("SELECT * FROM adsense WHERE status = 'Active'")->result_array();
+                        if(!empty($getAdSense)) {
+                            foreach ($getAdSense as $key => $adsense) {
+                            if(!empty($adsense['link'])) {
+                                $link = $adsense['link'];
+                            } else {
+                                $link = '#';
+                            }
+                            if(!empty($adsense['image']) && file_exists('uploads/adsense/'.$adsense['image'])) {
+                                $image = base_url('uploads/adsense/'.$adsense['image']);
+                            } else {
+                                $image = base_url('uploads/no_bimage.png');
+                            } ?>
+                        <a href="<?= $link; ?>" class="mb-3 d-block"><img src="<?= $image; ?>" class="rounded" style="width: 100%; "></a>
+                        <?php } } ?>
                     </div>
                 </div>
             </div>
@@ -580,14 +591,14 @@ function get_time_ago($time) {
                         </div>
                         <div class="d-flex selectPost align-items-center">
                             <div><i class="fa-solid fa-earth-americas"></i></div>
-                            <select>
-                                <option>Public</option>
-                                <option>Private</option>
+                            <select name="visibility" id="visibility">
+                                <option value="1">Public</option>
+                                <option value="2">Private</option>
                             </select>
                         </div>
                     </div>
                     <div>
-                        <textarea class="postModalComment post_title" name="post_title" placeholder="Enter your post details ..."></textarea>
+                        <textarea class="postModalComment post_title emoji_act" name="post_title" placeholder="Enter your post details ..."></textarea>
                     </div>
                     <div class="upload-container mb-2" id="imageUpload">
                         <a href="#" class="closemediaupload"><i class="fa-sharp fa-light fa-xmark"></i></a>
@@ -616,7 +627,7 @@ function get_time_ago($time) {
                         <div class="d-flex uploadinpost align-items-center">
                             <a href="#" id="iconimgupload"><img src="<?php base_url(); ?>assets/images/iconimageupload.png"></a>
                             <a href="#" id="iconvideoupload"><img src="<?php base_url(); ?>assets/images/iconvideoupload.png"></a>
-                            <a href="#" id="iconemojiupload" class="position-relative">
+                            <!-- <a href="#" id="iconemojiupload" class="position-relative emoji_act">
                                 <img src="<?php base_url(); ?>assets/images/iconemoji.png">
                                 <div class="emojiBlock">
                                     <label><input type="radio" name="emoji"><img src="<?php base_url(); ?>assets/images/emoji1.gif"></label>
@@ -626,7 +637,7 @@ function get_time_ago($time) {
                                     <label><input type="radio" name="emoji"><img src="<?php base_url(); ?>assets/images/emoji5.gif"></label>
                                     <label><input type="radio" name="emoji"><img src="<?php base_url(); ?>assets/images/emoji6.gif"></label>
                                 </div>
-                            </a>
+                            </a> -->
                         </div>
                     </div>
                     <div>
@@ -856,6 +867,20 @@ function get_time_ago($time) {
             left: 0 !important
         }
     }
+    .postType .typePost {min-height: 65px !important;}
+    .emojionearea .emojionearea-button {right: 30px !important; top: 40px !important;}
+    .emojionearea, .emojionearea.form-control {border: none !important; box-shadow: none !important;}
+    .emojionearea .emojionearea-editor:empty:before {text-align: start !important;}
+    .emojionearea .emojionearea-picker .emojionearea-search {display: none !important;}
+    .emojionearea .emojionearea-button.active + .emojionearea-picker-position-bottom {
+        margin-top: 37px !important;
+    }
+    .emojionearea .emojionearea-picker.emojionearea-picker-position-bottom {
+        margin-top: 10px !important;
+        right: 10px !important;
+        top: 47px !important;
+    }
+    .emojionearea .emojionearea-editor {min-height: 3em !important; max-height: 0em !important;}
 </style>
 <script>
 $(document).ready(function () {
@@ -895,8 +920,23 @@ $(document).ready(function () {
             }
         });
     });
+    $(".emoji_act").emojioneArea({
+        emojiPlaceholder: ":smile_cat:",
+        searchPlaceholder: "Search",
+        buttonTitle: "Use your TAB key to insert emoji faster",
+        searchPosition: "bottom",
+        pickerPosition: "bottom"
+    });
 })
-
+$("#generalForm").submit(function() {
+    var post_title = $('#post_title').val();
+    if(post_title == '') {
+        $(".emojionearea-editor").attr("placeholder","Please Enter Post Title");
+        $("emojionearea-editor").prop("required",true);
+        $(".emojionearea-editor").focus();
+        return false;
+    }
+});
 function getState(val) {
     var base_url = $("#base_url").val();
     var id = val;
@@ -1168,8 +1208,9 @@ function jobDelete(id) {
 }
 
 function postData() {
-    if($('#post_title').val() != '') {
-        $('.post_title').val($('#post_title').val());
+    //console.log($('.emojionearea-editor'));
+    if($('.emojionearea-editor').text() != '') {
+        $('.emojionearea-editor').text($('.emojionearea-editor').text());
     }
 }
 

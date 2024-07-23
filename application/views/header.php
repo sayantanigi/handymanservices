@@ -236,7 +236,7 @@ $(function () {
                                     <?php
                                     if(!empty($_SESSION['afrebay']['userId'])) {
                                         if(is_numeric($_SESSION['afrebay']['userId'])) { ?>
-                                        <a href="<?= base_url('postwork')?>" title=""><i class="fa-solid fa-comment-dots"></i></a>
+                                        <a href="<?= base_url('chat')?>" title=""><i class="fa-solid fa-comment-dots"></i></a>
                                     <?php } else { ?>
                                         <a href="javasctipt:void(0)" title="" onclick="forguestAlert()"><i class="fa-solid fa-comment-dots"></i></a>
                                     <?php } } ?>

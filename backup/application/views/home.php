@@ -413,7 +413,7 @@ function get_time_ago($time) {
                                 </div>
                                 <div>
                                     <h3>25</h3>
-                                    <h4>Likss</h4>
+                                    <h4>Likes</h4>
                                 </div>
                             </div>
                             <a href="#" class="profileBtn">My Profile</a>
