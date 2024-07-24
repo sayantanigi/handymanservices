@@ -253,13 +253,14 @@
     }
 }
 .ui-widget.ui-widget-content, .ui-tabs .ui-tabs-nav {border: none !important; margin: 0 !important; padding: 0 !important; background: none !important;}
-.ui-tabs .ui-tabs-nav li {width: 46% !important; background: linear-gradient(180deg, rgba(249, 80, 30, 1) 0%, rgba(252, 119, 33, 1) 100%) !important; border: none !important; margin: 0 0 0 10px !important; border-radius: 10px !important;}
-.ui-tabs .ui-tabs-nav li.ui-tabs-active{width: 46% !important; background: linear-gradient(180deg, rgb(255 187 167) 0%, rgb(219 98 19) 100%) !important; border: none !important; color: #fff !important; border-radius: 10px !important;}
-.ui-tabs .ui-tabs-nav .ui-tabs-anchor{color: #fff !important; width: 100% !important; text-align: center !important;}
+.ui-tabs .ui-tabs-nav li {width: 46% !important; background: #fff !important; border: none !important; margin: 0 0 0 10px !important; border-radius: 10px !important;}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active{width: 46% !important; background: #000 !important; border: none !important; color: #fff !important; border-radius: 10px !important;}
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor{color: #000; width: 100% !important; text-align: center !important;}
 #frame #sidepanel #contacts ul li.contact{ height: 65px !important; border-radius: 10px !important;}
 .ui-tabs .ui-tabs-panel {padding: 10px !important;}
 .Chat_User #frame #sidepanel #contacts ul li.contact:hover {background: #00000060 !important;}
 .Chat_User #frame #sidepanel #search input{border-radius: 10px !important;}
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited{color: #fff !important;}
 </style>
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script src="https://use.typekit.net/hoy3lrg.js"></script>

@@ -17633,19 +17633,19 @@ footer .social {
 }
 .Chat_User #frame #sidepanel {
   border-radius: 15px 0 0 15px;
-  background: #1061b4;
+  background: #2892ff;
 }
 .Chat_User #frame #sidepanel #search {
   border: 0 !important;
 }
 .Chat_User #frame #sidepanel #search input {
-  background: #893310 !important;
+  background: #000 !important;
   font-size: 13px;
 }
 .Chat_User #frame .content {
   border-radius: 0 15px 15px 0;
   box-shadow: 5px 0 10px #e3e3e3;
-  border: 2px solid #f27854c9;
+  border: 2px solid #2892ff;
   border-left: 0;
   display: flex;
   justify-content: center;
@@ -18614,12 +18614,12 @@ section.topak
 }
 .commentBtn{
   min-width: 130px;
-  background: linear-gradient(180deg, rgba(249, 80, 30, 1) 0%, rgba(252, 119, 33, 1) 100%); 
-  border: 0; 
+  background: linear-gradient(180deg, rgba(249, 80, 30, 1) 0%, rgba(252, 119, 33, 1) 100%);
+  border: 0;
   display: block;
-  border-radius: 100px; 
-  height: 45px; 
-  cursor: pointer; 
+  border-radius: 100px;
+  height: 45px;
+  cursor: pointer;
   padding: 0 15px;
   line-height: 45px;
   text-align: center;
@@ -19151,18 +19151,18 @@ section.topak
     overflow: hidden;
 }
 
-.box-image4 .postImageData, .box-image2 .postImageData{ 
+.box-image4 .postImageData, .box-image2 .postImageData{
   width: 100%;
   aspect-ratio: 5 / 3;
   border-radius: 10px;
 }
 
- .box-image3 .postImageData{ 
+ .box-image3 .postImageData{
   width: 100%;
   aspect-ratio: 5 / 3;
   border-radius: 10px;
 }
-.box-image1 .postImageData{ 
+.box-image1 .postImageData{
   width: 100%;
   aspect-ratio: 5 / 3;
   border-radius: 10px;
@@ -19255,7 +19255,7 @@ section.topak
   border-radius: 10px;
   background-color: #ffffff;
   text-align: center;
-  
+
   position: relative;
   display: none;
 }
@@ -19352,7 +19352,7 @@ section.topak
   height: auto;
   margin: 0;
   line-height: 1;
-  
+
 }
 .emojiBlock img{
   height: 42px;
@@ -19398,13 +19398,13 @@ body.loaded .content {
   width: 0px;
 }
 .posttabcontent::-webkit-scrollbar-track {
-  background: #ccc; 
+  background: #ccc;
 }
 .posttabcontent::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #888;
 }
 .posttabcontent::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }
 .uploadProfilephoto {
   width: 100%;
