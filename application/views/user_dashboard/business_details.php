@@ -77,8 +77,6 @@
                                                     <source src="<?= base_url('uploads/users/work_sample/'.$sample['work_sample']); ?>" type="video/mp4">
                                                     Your browser does not support the video tag.
                                                     </video>
-                                                    <?php } else { ?>
-                                                    <p>Unsupported file type</p>
                                                     <?php } ?>
                                                     <input type="hidden" name="old_work_sample" value="<?= $sample['work_sample'] ?>">
                                                 <?php } ?>

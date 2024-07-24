@@ -158,12 +158,12 @@ function get_time_ago($time) {
                                             <label id="postBoximgup"><img src="<?php base_url(); ?>assets/images/photo-icon.png"> Image</label>
                                             <label id="postBoxvidup"><img src="<?php base_url(); ?>assets/images/video-icon.png"> Video</label>
                                         </div>
-                                        <div class="slectposttype">
+                                        <!-- <div class="slectposttype">
                                             <i class="fa-solid fa-earth-americas"></i>
                                             <select>
                                                 <option>Public</option>
                                             </select>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -194,6 +194,9 @@ function get_time_ago($time) {
                             }*/
                                     $get_user = $this->db->query("SELECT * FROM users WHERE userId = '$row->user_id'")->row(); ?>
                                     <div class="DataContainer postblockElement" >
+                                        <div id="loader_<?= $row->id?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
+                                            <img src="<?= base_url('uploads/loader.gif'); ?>" style="padding: 122px;">
+                                        </div>
                                         <div class="boxuppost">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="InfoBlock" style="display: flex; flex-direction: row; height: 70px; align-items: center; justify-content: flex-start;">
@@ -222,7 +225,7 @@ function get_time_ago($time) {
                                                             <i class="fa-regular fa-ellipsis-vertical"></i>
                                                         </a>
                                                         <div class="dropdown-menu  dropdown-menu-lg-right">
-                                                            <a class="dropdown-item" href="<?= base_url()?>update-postjob/<?= base64_encode($row->id)?>">Edit Post</a>
+                                                            <!-- <a class="dropdown-item" href="<?= base_url()?>update-postjob/<?= base64_encode($row->id)?>">Edit Post</a> -->
                                                             <a class="dropdown-item" href="javascript:void(0)" onclick="jobDelete(<?= $row->id ?>)">Delete Post</a>
                                                         </div>
                                                     </div>
@@ -493,54 +496,40 @@ function get_time_ago($time) {
                         <div class="activityBox mb-3">
                             <div class="d-flex justify-content-between mb-3">
                                 <h6 class="font-weight-bold">Activity</h6>
-                                <div><a href="#" class="seeall">See All</a></div>
+                                <!-- <div><a href="#" class="seeall">See All</a></div> -->
                             </div>
+                            <?php
+                            $getPostData = $this->db->query("SELECT GROUP_CONCAT(id) as id FROM postjob WHERE user_id = '".$_SESSION['afrebay']['userId']."'")->row();
+                            if(!empty($getPostData->id)) {
+                            $checkPostLike = $this->db->query("SELECT * FROM postjob_like WHERE postjob_id IN (".$getPostData->id.") AND is_liked = '1' ORDER BY id DESC")->result_array();
+                            foreach ($checkPostLike as $postLike) {
+                                $getUserDetails = $this->db->query("SELECT * FROM users WHERE userId = '".$postLike['user_id']."'")->row();
+                                if(!empty($getUserDetails->profilePic) && file_exists('uploads/users/'.$getUserDetails->profilePic)) {
+                                    $profilePic = base_url().'uploads/users/'.$getUserDetails->profilePic;
+                                } else {
+                                    $profilePic = base_url().'uploads/no_pimage.png';
+                                }
+                                if(!empty($getUserDetails->companyname)) {
+                                    $fullname = $getUserDetails->companyname;
+                                } else {
+                                    $fullname = $getUserDetails->firstname.' '.$getUserDetails->lastname;
+                                }
+                                if(!empty($getUserDetails->userType) == '1') {
+                                    $link = base_url('customer_detail/'.base64_encode($getUserDetails->userId));
+                                } else {
+                                    $link = base_url('');
+                                }
+                            ?>
                             <div class="d-flex mb-2 activitylist align-items-center">
                                 <div class="activityUser">
-                                    <a href="#"><img src="https://techg.igiapp.com/handymanservices/uploads/users/440_Image1.jpg"></a>
+                                    <a href="javascript:void(0)"><img src="<?= $profilePic; ?>"></a>
                                 </div>
                                 <div>
-                                    <h4><a href="#"><span class="font-weight-bold">Christopher</span>  liked your post.</a></h4>
-                                    <p>10 minutes ago</p>
+                                    <h4><a href="<?= $link; ?>" target="_blank"><span class="font-weight-bold"><?= $fullname; ?></span>  liked your post.</a></h4>
+                                    <p><?php echo get_time_ago(strtotime($postLike['created_at'])) ?></p>
                                 </div>
                             </div>
-                            <div class="d-flex mb-2 activitylist align-items-center">
-                                <div class="activityUser">
-                                    <a href="#"><img src="https://techg.igiapp.com/handymanservices/uploads/users/2875_dafc3addfd37737b93fa9ecce064f73d.jpg"></a>
-                                </div>
-                                <div>
-                                    <h4><a href="#"><span class="font-weight-bold">Christopher</span>  liked your post.</a></h4>
-                                    <p>10 minutes ago</p>
-                                </div>
-                            </div>
-                            <div class="d-flex mb-2 activitylist align-items-center">
-                                <div class="activityUser">
-                                    <a href="#"><img src="https://techg.igiapp.com/handymanservices/uploads/users/2875_dafc3addfd37737b93fa9ecce064f73d.jpg"></a>
-                                </div>
-                                <div>
-                                    <h4><a href="#"><span class="font-weight-bold">Christopher</span>  liked your post.</a></h4>
-                                    <p>10 minutes ago</p>
-                                </div>
-                            </div>
-                            <div class="d-flex mb-2 activitylist align-items-center">
-                                <div class="activityUser">
-                                    <a href="#"><img src="https://techg.igiapp.com/handymanservices/uploads/users/440_Image1.jpg"></a>
-                                </div>
-                                <div>
-                                    <h4><a href="#"><span class="font-weight-bold">Christopher</span>  liked your post.</a></h4>
-                                    <p>10 minutes ago</p>
-                                </div>
-                            </div>
-                            <div class="d-flex mb-2 activitylist align-items-center">
-                                <div class="activityUser">
-                                    <a href="#"><img src="https://techg.igiapp.com/handymanservices/uploads/users/2875_dafc3addfd37737b93fa9ecce064f73d.jpg"></a>
-                                </div>
-                                <div>
-                                    <h4><a href="#"><span class="font-weight-bold">Christopher</span>  liked your post.</a></h4>
-                                    <p>10 minutes ago</p>
-                                </div>
-                            </div>
-
+                            <?php } } ?>
                         </div>
                     </div>
                 </div>
@@ -581,7 +570,7 @@ function get_time_ago($time) {
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" action="<?php echo base_url('Welcome/save_postjob')?>" enctype="multipart/form-data" style="padding: 0 !important;" >
+                <form method="post" action="<?php echo base_url('Welcome/save_postjob')?>" enctype="multipart/form-data" style="padding: 0 !important;" id="generalForm1">
                     <div class="postmodalHead d-flex justify-content-between mb-2 align-items-center">
                         <div class="postmodalUser d-flex align-items-center">
                             <div class="modaluserimg">
@@ -678,209 +667,7 @@ function get_time_ago($time) {
     </div>
 </div>
 <style>
-    #city,
-    #state,
-    .chosen_country {
-        color: #888;
-        height: 60px;
-        border-radius: 50px;
-        padding: 17px !important
-    }
-
-    #city,
-    #state {
-        display: block
-    }
-
-    .jconfirm-content-pane {
-        text-align: center;
-        font-size: 18px
-    }
-
-    .jconfirm-buttons {
-        margin-right: 140px;
-        display: inline-block
-    }
-
-    #country-list {
-        float: left;
-        list-style: none;
-        margin-top: 60px;
-        padding: 0;
-        width: 98%;
-        position: absolute;
-        z-index: 1
-    }
-
-    #country-list li {
-        padding: 10px 30px;
-        background: #fff;
-        margin: 0 !important;
-        border-radius: 10px;
-        border-bottom: 1px solid #eee
-    }
-
-    #country-list li:hover {
-        background: #ece3d2;
-        cursor: pointer
-    }
-
-    ::-webkit-scrollbar {
-        width: 10px;
-        background-color: transparent
-    }
-
-    ::-webkit-scrollbar-track {
-        background: 0 0
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 5px
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555
-    }
-
-    .pf-map iframe {
-        height: 525px !important
-    }
-
-    #map {
-        position: relative !important;
-        height: 500px !important;
-        max-width: 100% !important
-    }
-
-    .hidereplyBox {
-        display: none !important
-    }
-
-    .showreplyBox {
-        display: block !important
-    }
-
-    @media screen and (max-width:425px) {
-
-        .ADD_Sense,
-        .Comment_Mobile textarea,
-        .Rply_Comment_Block ul,
-        .TopBar a,
-        .TopBar ul,
-        .hidereplyBox a,
-        .hidereplyBox textarea {
-            width: 100% !important
-        }
-
-        .TopBar ul li,
-        .job-field input {
-            padding: 0 20px !important
-        }
-
-        .job-field .la-search {
-            font-size: 25px !important;
-            top: 20px !important
-        }
-
-        .Mobile_Btn_Container_1 {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 !important
-        }
-
-        .Comment_Data,
-        .PostContainer .DataContainer .Comment_Block {
-            padding: 10px !important
-        }
-
-        .Mobile_Btn_Container_1 .btn-primary {
-            margin-bottom: 20px !important
-        }
-
-        .TopBar {
-            flex-direction: column !important;
-            height: 110px !important
-        }
-
-        .TopBar ul {
-            justify-content: space-evenly
-        }
-
-        .TopBar a span {
-            width: 100px !important
-        }
-
-        .PostContainer .DataContainer {
-            padding: 15px !important
-        }
-
-        .PostContainer .DataContainer .InfoBlock {
-            height: 50px !important
-        }
-
-        .PostContainer .DataContainer .InfoBlock img {
-            height: 50px !important;
-            width: 50px !important
-        }
-
-        .PostContainer .DataContainer .InfoBlock .TextData h3 {
-            font-size: 16px !important
-        }
-
-        .PostContainer .DataContainer .InfoBlock .TextData p {
-            line-height: 20px !important
-        }
-
-        .PostContainer .DataContainer .CommentData {
-            font-size: 14px !important;
-            line-height: 20px !important
-        }
-
-        .Comment_Mobile,
-        .Rply_Comment_Block,
-        .hidereplyBox {
-            flex-direction: column !important
-        }
-
-        .Rply_Comment_Block .Active_Icon_Block {
-            justify-content: flex-start !important;
-            width: 100% !important
-        }
-
-        .Rply_Comment_Block ul {
-            margin-top: 10px !important;
-            justify-content: flex-start !important
-        }
-
-        .Comment_Data {
-            margin-left: 0 !important
-        }
-
-        .ADD_Sense {
-            height: 120px !important;
-            top: calc(100vh - 130px) !important;
-            padding-left: 0 !important;
-            align-items: center !important;
-            justify-content: center !important;
-            left: 0 !important
-        }
-    }
-    .postType .typePost {min-height: 65px !important;}
-    .emojionearea .emojionearea-button {right: 30px !important; top: 40px !important;}
-    .emojionearea, .emojionearea.form-control {border: none !important; box-shadow: none !important;}
-    .emojionearea .emojionearea-editor:empty:before {text-align: start !important;}
-    .emojionearea .emojionearea-picker .emojionearea-search {display: none !important;}
-    .emojionearea .emojionearea-button.active + .emojionearea-picker-position-bottom {
-        margin-top: 37px !important;
-    }
-    .emojionearea .emojionearea-picker.emojionearea-picker-position-bottom {
-        margin-top: 10px !important;
-        right: 10px !important;
-        top: 47px !important;
-    }
-    .emojionearea .emojionearea-editor {min-height: 3em !important; max-height: 0em !important;}
+    #city,#state,.chosen_country{color:#888;height:60px;border-radius:50px;padding:17px!important}#city,#state{display:block}.jconfirm-content-pane{text-align:center;font-size:18px}.jconfirm-buttons{margin-right:140px;display:inline-block}#country-list{float:left;list-style:none;margin-top:60px;padding:0;width:98%;position:absolute;z-index:1}#country-list li{padding:10px 30px;background:#fff;margin:0!important;border-radius:10px;border-bottom:1px solid #eee}#country-list li:hover{background:#ece3d2;cursor:pointer}::-webkit-scrollbar{width:10px;background-color:transparent}::-webkit-scrollbar-track{background:0 0}::-webkit-scrollbar-thumb{background:#888;border-radius:5px}::-webkit-scrollbar-thumb:hover{background:#555}.pf-map iframe{height:525px!important}#map{position:relative!important;height:500px!important;max-width:100%!important}.emojionearea .emojionearea-picker .emojionearea-search,.hidereplyBox{display:none!important}.showreplyBox{display:block!important}@media screen and (max-width:425px){.ADD_Sense,.Comment_Mobile textarea,.Rply_Comment_Block ul,.TopBar a,.TopBar ul,.hidereplyBox a,.hidereplyBox textarea{width:100%!important}.TopBar ul li,.job-field input{padding:0 20px!important}.job-field .la-search{font-size:25px!important;top:20px!important}.Mobile_Btn_Container_1{display:flex;align-items:center;justify-content:center;padding:0!important}.Comment_Data,.PostContainer .DataContainer .Comment_Block{padding:10px!important}.Mobile_Btn_Container_1 .btn-primary{margin-bottom:20px!important}.TopBar{flex-direction:column!important;height:110px!important}.TopBar ul{justify-content:space-evenly}.TopBar a span{width:100px!important}.PostContainer .DataContainer{padding:15px!important}.PostContainer .DataContainer .InfoBlock{height:50px!important}.PostContainer .DataContainer .InfoBlock img{height:50px!important;width:50px!important}.PostContainer .DataContainer .InfoBlock .TextData h3{font-size:16px!important}.PostContainer .DataContainer .InfoBlock .TextData p{line-height:20px!important}.PostContainer .DataContainer .CommentData{font-size:14px!important;line-height:20px!important}.Comment_Mobile,.Rply_Comment_Block,.hidereplyBox{flex-direction:column!important}.Rply_Comment_Block .Active_Icon_Block{justify-content:flex-start!important;width:100%!important}.Rply_Comment_Block ul{margin-top:10px!important;justify-content:flex-start!important}.Comment_Data{margin-left:0!important}.ADD_Sense{height:120px!important;top:calc(100vh - 130px)!important;padding-left:0!important;align-items:center!important;justify-content:center!important;left:0!important}}.postType .typePost{min-height:65px!important}.emojionearea .emojionearea-button{right:30px!important;top:40px!important}.emojionearea,.emojionearea.form-control{border:none!important;box-shadow:none!important}.emojionearea .emojionearea-editor:empty:before{text-align:start!important}.emojionearea .emojionearea-button.active+.emojionearea-picker-position-bottom{margin-top:37px!important}.emojionearea .emojionearea-picker.emojionearea-picker-position-bottom{margin-top:10px!important;right:10px!important;top:47px!important}.emojionearea .emojionearea-editor{min-height:3em!important;max-height:0!important}
 </style>
 <script>
 $(document).ready(function () {
@@ -930,6 +717,15 @@ $(document).ready(function () {
 })
 $("#generalForm").submit(function() {
     var post_title = $('#post_title').val();
+    if(post_title == '') {
+        $(".emojionearea-editor").attr("placeholder","Please Enter Post Title");
+        $("emojionearea-editor").prop("required",true);
+        $(".emojionearea-editor").focus();
+        return false;
+    }
+});
+$("#generalForm1").submit(function() {
+    var post_title = $('.emojionearea-editor').text();
     if(post_title == '') {
         $(".emojionearea-editor").attr("placeholder","Please Enter Post Title");
         $("emojionearea-editor").prop("required",true);
@@ -1163,38 +959,14 @@ function jobDelete(id) {
                         id: p_id
                     },
                     beforeSend: function () {
-                        $("#loader").show();
+                        $("#loader_"+id).removeClass('d-none');
                     },
                     success: function (data) {
+                        console.log(data);
                         if (data == '1') {
-                            setTimeout(function () {
-                                $("#loader").hide();
-                                window.scroll({
-                                    top: 0,
-                                    behavior: "smooth"
-                                });
-                                $('#product-messages').show();
-                            }, 7000);
-                            setTimeout(function () {
-                                $('#product-messages').hide();
-                            }, 9000);
-                            setTimeout(function () {
-                                location.reload(true);
-                            }, 10000);
+                            location.reload(true);
                         } else {
-                            $('#err-messages').show();
-                            setTimeout(function () {
-                                window.scroll({
-                                    top: 0,
-                                    behavior: "smooth"
-                                })
-                            }, 7000);
-                            setTimeout(function () {
-                                $('#err-messages').hide();
-                            }, 9000);
-                            setTimeout(function () {
-                                location.reload(true);
-                            }, 10000);
+                            location.reload(true);
                         }
                     }
 

@@ -141,28 +141,39 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                                     <div class="CustomBlockDesign">
                                                         <?php
                                                         $getJobImage = $this->db->query("SELECT * FROM postjob_image WHERE job_id = '".$key->id."'")->row();
-                                                        $jobimage = base_url("uploads/postjob/".$getJobImage->job_image);
+                                                        if(!empty($getJobImage->job_image) && file_exists('uploads/postjob/'.$getJobImage->job_image)) {
+                                                            $jobimage = base_url("uploads/postjob/".$getJobImage->job_image);
+                                                        } else {
+                                                            $jobimage = base_url("uploads/no_bimage.png");
+                                                        }
                                                         ?>
                                                         <img src="<?= $jobimage; ?>" />
                                                         <div class="CustomContainer">
                                                             <div class="job-title-sec">
-                                                                <h3 style="text-transform: uppercase;"><a href="<?php echo base_url() ?>workdetail/<?php echo base64_encode($key->id) ?>" title=""><?= $key->post_title; ?></a></h3>
+                                                                <h3 style="text-transform: uppercase;">
+                                                                    <a href="<?php echo base_url() ?>workdetail/<?php echo base64_encode($key->id) ?>" title="">
+                                                                        <?php
+                                                                        $string = strip_tags($key->post_title);
+                                                                        if (strlen($string) > 200) {
+
+                                                                            // truncate string
+                                                                            $stringCut = substr($string, 0, 100);
+                                                                            $endPoint = strrpos($stringCut, ' ');
+
+                                                                            //if the string doesn't contain any space then it will cut without word basis.
+                                                                            $string = $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
+                                                                            $string .= '... <a href="'.base_url().'workdetail/'.base64_encode($key->id).'">Read More</a>';
+                                                                        }
+                                                                        echo $string;
+                                                                        ?>
+                                                                    </a>
+                                                                </h3>
                                                                 <span><?php echo $key->required_key_skills; ?></span>
                                                                 <!-- <div class="job-lctn"><i class="la la-map-marker"></i><?= ucwords($key->location); ?></div> -->
                                                             </div>
                                                             <div class="job-style-bx">
                                                                 <span class="fav-job"><i class="la la-heart-o"></i></span>
-                                                                <i>
-                                                                    <?php
-                                                                    echo date('d-m-Y', strtotime($key->created_date));
-                                                                    // $insertdate=date('Y-m-d',strtotime($key->created_date));
-                                                                    // $date1 = new DateTime($insertdate);
-                                                                    // $current_date=date('Y-m-d');
-                                                                    // $date2 = new DateTime($current_date);
-                                                                    // $interval = $date1->diff($date2);
-                                                                    // echo $interval->y . " years, " . $interval->m." months, ".$interval->d." days ";
-                                                                    ?>
-                                                                </i>
+                                                                <i><?php echo date('d-m-Y', strtotime($key->created_date)); ?></i>
                                                             </div>
                                                         </div>
                                                     </div>

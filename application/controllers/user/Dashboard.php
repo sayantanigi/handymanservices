@@ -1159,7 +1159,8 @@ class Dashboard extends CI_Controller {
         $likeData = array(
             'user_id' => $_POST['user_id'],
             'postjob_id' => $_POST['postjob_id'],
-            'is_liked' => 1
+            'is_liked' => 1,
+            'created_at'=>date('Y-m-d H:i:s', time()),
         );
         $isExistLikedSql = "SELECT * FROM postjob_like WHERE user_id = '".$_POST['user_id']."' AND postjob_id = '".$_POST['postjob_id']."'";
         $isExist = $this->db->query($isExistLikedSql)->num_rows();
@@ -1186,7 +1187,8 @@ class Dashboard extends CI_Controller {
             'user_id' => $_POST['user_id'],
             'postjob_id' => $_POST['postjob_id'],
 			'comment_id' => $_POST['comment_id'],
-            'is_liked' => 1
+            'is_liked' => 1,
+            'created_at'=>date('Y-m-d H:i:s', time()),
         );
         $isExistLikedSql = "SELECT * FROM postjob_comment_like WHERE user_id = '".$_POST['user_id']."' AND postjob_id = '".$_POST['postjob_id']."' AND comment_id = '".$_POST['comment_id']."'";
         $isExist = $this->db->query($isExistLikedSql)->num_rows();

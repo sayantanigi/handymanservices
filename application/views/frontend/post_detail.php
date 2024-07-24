@@ -62,7 +62,7 @@ function get_time_ago($time) {
         flex-direction: row;
         align-items: flex-start;
         justify-content: flex-start;
-        margin: 20px 0;
+        margin: 30px 0;
     }
 
     .Comment_Block .Comment_Img {
@@ -272,14 +272,23 @@ function get_time_ago($time) {
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-6 col-sm-12 Mobile_Like" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
                                                     <div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
-                                                        <span><i style="font-size: 16px;" class="fa-regular fa-heart" aria-hidden="true"></i></span>
-                                                        <?php $getLikeCount = $this->db->query("SELECT COUNT(id) as count FROM postjob_like WHERE postjob_id = '" . $post_data->id . "' AND is_liked = 1")->row(); ?>
-                                                        <p style="margin: 0; margin-left: 10px; font-size: 14px; font-weight: 500;"><?= $getLikeCount->count ?> </p>
+                                                        <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
+                                                        $chechis_like = $this->db->query("SELECT * FROM postjob_like WHERE postjob_id = '" . $post_data->id . "' AND user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND is_liked = 1")->num_rows();
+                                                        if ($chechis_like > 0) { ?>
+                                                        <span><i style="font-size: 16px; cursor: pointer;" class="fa fa-heart" aria-hidden="true" onclick="dislikepostjob()"></i></span>
+                                                        <?php } else { ?>
+                                                        <span><i style="font-size: 16px; cursor: pointer;" class="fa-regular fa-heart" aria-hidden="true" onclick="likepostjob()"></i></span>
+                                                        <?php }
+                                                        } else { ?>
+                                                        <a style="color: #000 !important; cursor: pointer;" href="<?= base_url() ?>login"><i style="color: #000;" class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                                        <?php }
+                                                        $getLikeCount = $this->db->query("SELECT COUNT(id) as count FROM postjob_like WHERE postjob_id = '" . $post_data->id . "' AND is_liked = 1")->row(); ?>
+                                                        <p style="margin: 0; margin-left: 3px; font-size: 14px; font-weight: 500;"> <?= $getLikeCount->count ?> </p>
                                                     </div>
                                                     <div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; margin-left: 20px;">
                                                         <span><i style="font-size: 16px;" class="fa-regular fa-comment-dots" aria-hidden="true"></i></span>
                                                         <?php $getCommentCount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment WHERE postjob_id = '" . $post_data->id . "'")->row(); ?>
-                                                        <p style="margin: 0; margin-left: 10px; font-size: 14px; font-weight: 500; "><?= $getCommentCount->count; ?> </p>
+                                                        <p style="margin: 0; margin-left: 3px; font-size: 14px; font-weight: 500; "> <?= $getCommentCount->count; ?> </p>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-sm-12">
@@ -340,14 +349,23 @@ function get_time_ago($time) {
                                                                         echo $userData->firstname . " " . $userData->lastname;
                                                                     }
                                                                     ?> .
-                                                                    <span style="font-size: 13px; color: #6a6a6a; font-weight: 400;"><?php echo get_time_ago(strtotime($each['created_at'])) ?></span> 
-                                                                    
+                                                                    <span style="font-size: 13px; color: #6a6a6a; font-weight: 400;"><?php echo get_time_ago(strtotime($each['created_at'])) ?></span>
                                                                 </p>
                                                                 <p><?= $each['comment']; ?></p>
                                                             </div>
                                                             <ul>
-                                                                <li class="mb-0 mr-3"><span class="mb-0" style=" font-size: 15px; color: #000"><i class="fa-regular fa-heart" aria-hidden="true"></i> <?= $rplycount->count; ?> </span></li>
-
+                                                                <li class="mb-0 mr-3">
+                                                                    <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
+                                                                    $checkrplycount = $this->db->query("SELECT * FROM postjob_comment_like WHERE user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND postjob_id = '" . @$post_data->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
+                                                                    if ($checkrplycount > 0) { ?>
+                                                                    <span class="mb-0" style="font-size: 15px; color: #000"><i class="fa fa-heart" aria-hidden="true" onclick="dislikeuserrply(<?= $each['id'] ?>)" style="cursor: pointer;"></i> <?= $rplycount->count; ?> </span>
+                                                                    <?php } else { ?>
+                                                                    <span class="mb-0" style="font-size: 15px; color: #000"><i class="fa-regular fa-heart" aria-hidden="true" onclick="likeuserrply(<?= $each['id'] ?>)" style="cursor: pointer;"></i> <?= $rplycount->count; ?> </span>
+                                                                    <?php }
+                                                                    } else { ?>
+                                                                    <span class="mb-0" style="font-size: 15px; color: #000"><i class="fa-regular fa-heart" aria-hidden="true" href="<?= base_url() ?>login" style="cursor: pointer;"></i> <?= $rplycount->count; ?> </span>
+                                                                    <?php } ?>
+                                                                </li>
                                                                 <!-- <li style="margin: 0 25px 0 0 !important; font-size: 13px; color: #000 !important; font-weight: 600;">
                                                                     <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
                                                                         $checkrplycount = $this->db->query("SELECT * FROM postjob_comment_like WHERE user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND postjob_id = '" . @$post_data->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
@@ -437,19 +455,32 @@ function get_time_ago($time) {
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="col-12 JobImage Mobile_Padding">
                                 <div class="owl-carousel overflow-hidden">
-                                    <?php
-                                    $getImage = $this->db->query("SELECT * FROM postjob_image WHERE job_id = '" . $post_data->id . "'")->result_array();
-                                    if (!empty($getImage)) {
-                                        foreach ($getImage as $img) { ?>
-                                            <div class="owl-block position-relative overflow-hidden vh-100">
-                                                <img class="owl-img w-100 h-100 position-absolute object-fit-cover" src="<?php echo base_url() ?>uploads/postjob/<?php echo $img['job_image'] ?>" loading="lazy" alt="banner_img" />
-                                            </div>
-                                        <?php }
-                                    } else { ?>
+                                <?php
+                                $getImage = $this->db->query("SELECT * FROM postjob_image WHERE job_id = '" . $post_data->id . "'")->result_array();
+                                if (!empty($getImage)) {
+                                    foreach ($getImage as $img) { ?>
+                                    <div class="owl-block position-relative overflow-hidden vh-100">
+                                        <?php if(!empty($img['job_image']) && file_exists('uploads/postjob/'.$img['job_image'])) {
+                                        $extension = strtolower(pathinfo($img['job_image'], PATHINFO_EXTENSION));
+                                        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) { ?>
+                                        <img class="owl-img w-100 h-100 position-absolute object-fit-cover" src="<?php echo base_url() ?>uploads/postjob/<?php echo $img['job_image'] ?>" loading="lazy" alt="banner_img" >
+                                        <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
+                                        <video width="165" height="110" controls>
+                                        <source src="<?php echo base_url() ?>uploads/postjob/<?php echo $img['job_image'] ?>" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                        </video>
+                                        <?php } } else { ?>
                                         <div class="owl-block position-relative overflow-hidden vh-100">
-                                            <img class="owl-img w-100 h-100 position-absolute object-fit-cover" src="https://techg.igiapp.com/handymanservices/uploads/postjob/8204_how-to-start-a-handyman-business-in-the-uk.jpg" loading="lazy" alt="banner_img" />
+                                            <img class="owl-img w-100 h-100 position-absolute object-fit-cover" src="<?php echo base_url()?>uploads/no_bimage.png" loading="lazy" alt="banner_img" />
                                         </div>
                                     <?php } ?>
+                                    </div>
+                                <?php }
+                                } else { ?>
+                                <div class="owl-block position-relative overflow-hidden vh-100">
+                                    <img class="owl-img w-100 h-100 position-absolute object-fit-cover" src="<?php echo base_url()?>uploads/no_bimage.png" loading="lazy" alt="banner_img" />
+                                </div>
+                                <?php } ?>
                                 </div>
                             </div>
                             <div class="col-12 Mobile_Padding" style="margin-top: 30px;">
@@ -539,10 +570,10 @@ function get_time_ago($time) {
 }
 #shareMenu {
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 5px;
     position: absolute;
     background-color: white;
-    margin-top: 70px;
+    margin-top: 60px;
 }
 </style>
 <script>
