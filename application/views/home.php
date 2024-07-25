@@ -150,20 +150,16 @@ function get_time_ago($time) {
                                             <textarea name="post_title" id="post_title" class="typePost emoji_act" placeholder="Post your task"></textarea>
                                             <button class="submitpost" type="submit">Post</button>
                                             <input type="hidden" name="user_id" value="<?php echo @$_SESSION['afrebay']['userId']?>">
+                                            <input type="hidden" name="location" id="location" value="<?= @$loc ?>" placeholder="Set Location" />
+                                            <input type="hidden" id="search_lat" name="s_lat" value="<?= @$lat ?>">
+                                            <input type="hidden" id="search_lon" name="s_lon" value="<?= @$lon ?>">
                                         </form>
                                     </div>
                                     <div class="uploadOptionPost">
-                                        <!-- <div data-toggle="modal" data-target="#postModal" onclick="postData()"> -->
                                         <div data-toggle="modal" <?php if(!empty($_SESSION['afrebay']['userType'])) { echo 'data-target="#postModal" onclick="postData()"';} else { echo '';} ?> >
                                             <label id="postBoximgup"><img src="<?php base_url(); ?>assets/images/photo-icon.png"> Image</label>
                                             <label id="postBoxvidup"><img src="<?php base_url(); ?>assets/images/video-icon.png"> Video</label>
                                         </div>
-                                        <!-- <div class="slectposttype">
-                                            <i class="fa-solid fa-earth-americas"></i>
-                                            <select>
-                                                <option>Public</option>
-                                            </select>
-                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +173,7 @@ function get_time_ago($time) {
                                     <button class="nav-link" id="pills-global-tab" data-toggle="pill" data-target="#pills-global" type="button" role="tab" aria-controls="pills-global" aria-selected="false">Global</button>
                                 </li>
                             </ul>
-                            <div><a href="#" class="filterbtn">Filter <i class="fa-regular fa-sliders ml-1"></i></a></div>
+                            <div><a href="javascript:void(0)" class="filterbtn" data-toggle="modal" data-target="#filterModal">Filter <i class="fa-regular fa-sliders ml-1"></i></a></div>
                         </div>
                     </div>
                     <div class="tab-content posttabcontent" id="pills-tabContent">
@@ -188,10 +184,10 @@ function get_time_ago($time) {
                             if (!empty($get_post)) {
                                 foreach ($get_post as $row) {
                                     /*if (strlen($row->description) > 200) {
-                                $desc = substr($row->description, 0, 200) . '...';
-                            } else {
-                                $desc = $row->description;
-                            }*/
+                                        $desc = substr($row->description, 0, 200) . '...';
+                                    } else {
+                                        $desc = $row->description;
+                                    }*/
                                     $get_user = $this->db->query("SELECT * FROM users WHERE userId = '$row->user_id'")->row(); ?>
                                     <div class="DataContainer postblockElement" >
                                         <div id="loader_<?= $row->id?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
@@ -560,6 +556,62 @@ function get_time_ago($time) {
 <!-- Button trigger modal -->
 
 <!-- Modal -->
+<div class="modal fade postMOdal" id="filterModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title w-100 font-weight-bold text-dark text-center" id="staticBackdropLabel">Post Filters</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body filterContent">
+                <h5 class="mb-0 font-weight-bold h6 text-dark text-center">Use filters to find posts on your timeline.</h5>
+                <p style="font-size:14px;" class="text-center">This will no affect how others see your timeline.</p>
+                <form>
+                    <div class="row mb-3 align-items-center justify-content-center">
+                        <div class="col-lg-3 col-6">
+                            <label>Go to:</label>
+                        </div>
+                        <div class="col-lg-5 col-6">
+                            <select class="form-control">
+                                <option>Year</option>
+                                <option>Month</option>
+                                <option>Day</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3  align-items-center justify-content-center">
+                        <div class="col-lg-3 col-6">
+                            <label>Posted By:</label>
+                        </div>
+                        <div class="col-lg-5 col-6">
+                            <select class="form-control">
+                                <option>You</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3  align-items-center justify-content-center">
+                        <div class="col-lg-3 col-6">
+                            <label>Privacy:</label>
+                        </div>
+                        <div class="col-lg-5 col-6">
+                            <select class="form-control">
+                                <option>All Posts</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3 justify-content-center">
+                        <div class="col-lg-8 col-12">
+                            <button class="btn bg-primary w-100">Done</button></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade postMOdal" id="postModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -616,20 +668,12 @@ function get_time_ago($time) {
                         <div class="d-flex uploadinpost align-items-center">
                             <a href="#" id="iconimgupload"><img src="<?php base_url(); ?>assets/images/iconimageupload.png"></a>
                             <a href="#" id="iconvideoupload"><img src="<?php base_url(); ?>assets/images/iconvideoupload.png"></a>
-                            <!-- <a href="#" id="iconemojiupload" class="position-relative emoji_act">
-                                <img src="<?php base_url(); ?>assets/images/iconemoji.png">
-                                <div class="emojiBlock">
-                                    <label><input type="radio" name="emoji"><img src="<?php base_url(); ?>assets/images/emoji1.gif"></label>
-                                    <label><input type="radio" name="emoji"><img src="<?php base_url(); ?>assets/images/emoji2.gif"></label>
-                                    <label><input type="radio" name="emoji"><img src="<?php base_url(); ?>assets/images/emoji3.gif"></label>
-                                    <label><input type="radio" name="emoji"><img src="<?php base_url(); ?>assets/images/emoji4.gif"></label>
-                                    <label><input type="radio" name="emoji"><img src="<?php base_url(); ?>assets/images/emoji5.gif"></label>
-                                    <label><input type="radio" name="emoji"><img src="<?php base_url(); ?>assets/images/emoji6.gif"></label>
-                                </div>
-                            </a> -->
                         </div>
                     </div>
                     <div>
+                        <input type="hidden" name="location" id="location_guest" value="<?= @$loc ?>" placeholder="Set Location" />
+                        <input type="hidden"  name="s_lat" id="search_lat_guest" value="<?= @$lat ?>">
+                        <input type="hidden"  name="s_lon" id="search_lon_guest" value="<?= @$lon ?>">
                         <button class="w-100 postbtn" type="submit">Post</button>
                     </div>
                 </form>
@@ -667,7 +711,7 @@ function get_time_ago($time) {
     </div>
 </div>
 <style>
-    #city,#state,.chosen_country{color:#888;height:60px;border-radius:50px;padding:17px!important}#city,#state{display:block}.jconfirm-content-pane{text-align:center;font-size:18px}.jconfirm-buttons{margin-right:140px;display:inline-block}#country-list{float:left;list-style:none;margin-top:60px;padding:0;width:98%;position:absolute;z-index:1}#country-list li{padding:10px 30px;background:#fff;margin:0!important;border-radius:10px;border-bottom:1px solid #eee}#country-list li:hover{background:#ece3d2;cursor:pointer}::-webkit-scrollbar{width:10px;background-color:transparent}::-webkit-scrollbar-track{background:0 0}::-webkit-scrollbar-thumb{background:#888;border-radius:5px}::-webkit-scrollbar-thumb:hover{background:#555}.pf-map iframe{height:525px!important}#map{position:relative!important;height:500px!important;max-width:100%!important}.emojionearea .emojionearea-picker .emojionearea-search,.hidereplyBox{display:none!important}.showreplyBox{display:block!important}@media screen and (max-width:425px){.ADD_Sense,.Comment_Mobile textarea,.Rply_Comment_Block ul,.TopBar a,.TopBar ul,.hidereplyBox a,.hidereplyBox textarea{width:100%!important}.TopBar ul li,.job-field input{padding:0 20px!important}.job-field .la-search{font-size:25px!important;top:20px!important}.Mobile_Btn_Container_1{display:flex;align-items:center;justify-content:center;padding:0!important}.Comment_Data,.PostContainer .DataContainer .Comment_Block{padding:10px!important}.Mobile_Btn_Container_1 .btn-primary{margin-bottom:20px!important}.TopBar{flex-direction:column!important;height:110px!important}.TopBar ul{justify-content:space-evenly}.TopBar a span{width:100px!important}.PostContainer .DataContainer{padding:15px!important}.PostContainer .DataContainer .InfoBlock{height:50px!important}.PostContainer .DataContainer .InfoBlock img{height:50px!important;width:50px!important}.PostContainer .DataContainer .InfoBlock .TextData h3{font-size:16px!important}.PostContainer .DataContainer .InfoBlock .TextData p{line-height:20px!important}.PostContainer .DataContainer .CommentData{font-size:14px!important;line-height:20px!important}.Comment_Mobile,.Rply_Comment_Block,.hidereplyBox{flex-direction:column!important}.Rply_Comment_Block .Active_Icon_Block{justify-content:flex-start!important;width:100%!important}.Rply_Comment_Block ul{margin-top:10px!important;justify-content:flex-start!important}.Comment_Data{margin-left:0!important}.ADD_Sense{height:120px!important;top:calc(100vh - 130px)!important;padding-left:0!important;align-items:center!important;justify-content:center!important;left:0!important}}.postType .typePost{min-height:65px!important}.emojionearea .emojionearea-button{right:30px!important;top:40px!important}.emojionearea,.emojionearea.form-control{border:none!important;box-shadow:none!important}.emojionearea .emojionearea-editor:empty:before{text-align:start!important}.emojionearea .emojionearea-button.active+.emojionearea-picker-position-bottom{margin-top:37px!important}.emojionearea .emojionearea-picker.emojionearea-picker-position-bottom{margin-top:10px!important;right:10px!important;top:47px!important}.emojionearea .emojionearea-editor{min-height:3em!important;max-height:0!important}
+    #city,#state,.chosen_country{color:#888;height:60px;border-radius:50px;padding:17px!important}#city,#state{display:block}.jconfirm-content-pane{text-align:center;font-size:18px}.jconfirm-buttons{margin-right:140px;display:inline-block}#country-list{float:left;list-style:none;margin-top:60px;padding:0;width:98%;position:absolute;z-index:1}#country-list li{padding:10px 30px;background:#fff;margin:0!important;border-radius:10px;border-bottom:1px solid #eee}#country-list li:hover{background:#ece3d2;cursor:pointer}::-webkit-scrollbar{width:10px;background-color:transparent}::-webkit-scrollbar-track{background:0 0}::-webkit-scrollbar-thumb{background:#888;border-radius:5px}::-webkit-scrollbar-thumb:hover{background:#555}.pf-map iframe{height:525px!important}#map{position:relative!important;height:500px!important;max-width:100%!important}.hidereplyBox{display:none!important}.showreplyBox{display:block!important}@media screen and (max-width:425px){.ADD_Sense,.Comment_Mobile textarea,.Rply_Comment_Block ul,.TopBar a,.TopBar ul,.hidereplyBox a,.hidereplyBox textarea{width:100%!important}.TopBar ul li,.job-field input{padding:0 20px!important}.job-field .la-search{font-size:25px!important;top:20px!important}.Mobile_Btn_Container_1{display:flex;align-items:center;justify-content:center;padding:0!important}.Comment_Data,.PostContainer .DataContainer .Comment_Block{padding:10px!important}.Mobile_Btn_Container_1 .btn-primary{margin-bottom:20px!important}.TopBar{flex-direction:column!important;height:110px!important}.TopBar ul{justify-content:space-evenly}.TopBar a span{width:100px!important}.PostContainer .DataContainer{padding:15px!important}.PostContainer .DataContainer .InfoBlock{height:50px!important}.PostContainer .DataContainer .InfoBlock img{height:50px!important;width:50px!important}.PostContainer .DataContainer .InfoBlock .TextData h3{font-size:16px!important}.PostContainer .DataContainer .InfoBlock .TextData p{line-height:20px!important}.PostContainer .DataContainer .CommentData{font-size:14px!important;line-height:20px!important}.Comment_Mobile,.Rply_Comment_Block,.hidereplyBox{flex-direction:column!important}.Rply_Comment_Block .Active_Icon_Block{justify-content:flex-start!important;width:100%!important}.Rply_Comment_Block ul{margin-top:10px!important;justify-content:flex-start!important}.Comment_Data{margin-left:0!important}.ADD_Sense{height:120px!important;top:calc(100vh - 130px)!important;padding-left:0!important;align-items:center!important;justify-content:center!important;left:0!important}}.postType .typePost{min-height:65px!important}.emojionearea .emojionearea-button{right:30px!important;top:40px!important}.emojionearea,.emojionearea.form-control{border:none!important;box-shadow:none!important}.emojionearea .emojionearea-editor:empty:before{text-align:start!important}.emojionearea .emojionearea-button.active+.emojionearea-picker-position-bottom{margin-top:37px!important}.emojionearea .emojionearea-picker.emojionearea-picker-position-bottom{margin-top:10px!important;right:10px!important;top:47px!important}.emojionearea .emojionearea-editor{min-height:3em!important;max-height:0!important}.emojionearea .emojionearea-picker .emojionearea-search > input {padding: 0px 0px 0px 11px !important; border-radius: 8px !important;}
 </style>
 <script>
 $(document).ready(function () {

@@ -19581,3 +19581,15 @@ body.loaded .content {
 .profileImgBox img{
   border-radius: 8px;
 }
+.filterContent label{
+  font-weight: 600;
+  font-size: 14px;
+}
+.filterContent .form-control{
+  border-radius: 8px;
+    background: #f8f8f8;
+    font-size: 14px;
+}
+.filterContent .btn{
+  border-radius: 8px;
+}

@@ -223,20 +223,27 @@ $(function () {
                                     <?php
                                     if(!empty($_SESSION['afrebay']['userId'])) { ?>
                                     <li class="">
-                                        <a href="<?= base_url('homepage')?>" title="" class="<?php if($uri == 'homepage') { echo "active"; } else {echo "";}?>"><i class="fa-solid fa-envelope-open"></i><?php if($uri == 'homepage') { echo " Home"; } else {echo "";}?></a>
+                                        <a href="<?= base_url('homepage')?>" title="Home" class="<?php if($uri == 'homepage') { echo "active"; } else {echo "";}?>">
+                                        <i class="fa-solid fa-house"></i></i><?php if($uri == 'homepage') { echo " Home"; } else {echo "";}?>
+                                        </a>
                                     </li>
                                     <!-- <li class="">
-                                        <a href="<?= base_url('findwork')?>" title="" class="<?php if($uri == 'findwork') { echo "active"; } else {echo "";}?>"><i class="fa-solid fa-briefcase"></i><?php if($uri == 'findwork') { echo " Find Work"; } else {echo "";}?></a>
+                                        <a href="<?= base_url('findwork')?>" title="" class="<?php if($uri == 'findwork') { echo "active"; } else {echo "";}?>">
+                                            <i class="fa-solid fa-briefcase"></i><?php if($uri == 'findwork') { echo " Find Work"; } else {echo "";}?>
+                                        </a>
                                     </li>
                                     <li class="">
-                                        <a href="<?= base_url('professionals')?>" title="" class="<?php if($uri == 'professionals') { echo "active"; } else {echo "";}?>"><i class="fa-solid fa-user-group"></i><?php if($uri == 'professionals') { echo " Professionals"; } else {echo "";}?></a>
+                                        <a href="<?= base_url('professionals')?>" title="" class="<?php if($uri == 'professionals') { echo "active"; } else {echo "";}?>">
+                                            <i class="fa-solid fa-user-group"></i><?php if($uri == 'professionals') { echo " Professionals"; } else {echo "";}?>
+                                        </a>
                                     </li> -->
                                     <?php } ?>
                                     <li class="">
                                     <?php
                                     if(!empty($_SESSION['afrebay']['userId'])) {
                                         if(is_numeric($_SESSION['afrebay']['userId'])) { ?>
-                                        <a href="<?= base_url('chat')?>" title=""><i class="fa-solid fa-comment-dots"></i></a>
+                                        <a href="<?= base_url('chat')?>" title="Messages" class="<?php if($uri == 'chat') { echo "active"; } else {echo "";}?>">
+                                            <i class="fa-solid fa-comment-dots"></i><?php if($uri == 'chat') { echo " Messages"; } else {echo "";}?></a>
                                     <?php } else { ?>
                                         <a href="javasctipt:void(0)" title="" onclick="forguestAlert()"><i class="fa-solid fa-comment-dots"></i></a>
                                     <?php } } ?>

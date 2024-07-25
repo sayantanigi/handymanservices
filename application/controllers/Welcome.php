@@ -163,7 +163,6 @@ class Welcome extends CI_Controller {
 			'description' => $update_data->description,
 			'key_skills' => $update_data->required_key_skills,
 			'duration' => $update_data->duration,
-			'duration' => $update_data->duration,
 			'pay_type' => $update_data->pay_type,
 			'charges' => $update_data->charges,
 			'currency' => $update_data->currency,
@@ -213,8 +212,8 @@ class Welcome extends CI_Controller {
 			'charges'=>$this->input->post('charges',TRUE),
 			'currency'=>$this->input->post('currency',TRUE),
 			'location'=>$this->input->post('location',TRUE),
-			'latitude'=>$this->input->post('latitude',TRUE),
-			'longitude'=>$this->input->post('longitude',TRUE),
+			'latitude'=>$this->input->post('s_lat',TRUE),
+			'longitude'=>$this->input->post('s_lon',TRUE),
 			'country'=>$this->input->post('country-dropdown',TRUE),
 			'state'=>$this->input->post('state-dropdown',TRUE),
 			'city'=>$this->input->post('city-dropdown',TRUE),
@@ -282,6 +281,11 @@ class Welcome extends CI_Controller {
 		} else {
 			$keySkills = "";
 		}
+        if(!empty($this->input->post('visibility',TRUE))) {
+            $visibility = $this->input->post('visibility',TRUE);
+        } else {
+            $visibility = '1';
+        }
 
 		$data=array(
 			'user_id'=>$_SESSION['afrebay']['userId'],
@@ -294,14 +298,14 @@ class Welcome extends CI_Controller {
 			'pay_type'=>$this->input->post('pay_type',TRUE),
 			'charges'=>$this->input->post('charges',TRUE),
 			'currency'=>$this->input->post('currency',TRUE),
-			'location'=>@$this->input->post('location',TRUE),
-			'latitude'=>@$this->input->post('latitude',TRUE),
-			'longitude'=>@$this->input->post('longitude',TRUE),
+			'location'=>$this->input->post('location',TRUE),
+			'latitude'=>$this->input->post('s_lat',TRUE),
+			'longitude'=>$this->input->post('s_lon',TRUE),
 			'country'=>$this->input->post('country-dropdown',TRUE),
 			'state'=>$this->input->post('state-dropdown',TRUE),
 			'city'=>$this->input->post('city-dropdown',TRUE),
 			'appli_deadeline'=>$this->input->post('appli_deadeline',TRUE),
-            'visibility'=>$this->input->post('visibility',TRUE),
+            'visibility'=>$visibility,
 			'created_date'=>date('Y-m-d H:i:s', time()),
 		);
         //echo "<pre>"; print_r($data); die();
