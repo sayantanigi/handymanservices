@@ -152,7 +152,7 @@ function get_time_ago($time) {
                                             <input type="hidden" name="user_id" value="<?php echo @$_SESSION['afrebay']['userId']?>">
                                             <input type="hidden" name="location" id="location" value="<?= @$loc ?>" placeholder="Set Location" />
                                             <input type="hidden" id="search_lat" name="s_lat" value="<?= @$lat ?>">
-                                            <input type="hidden" id="search_lon" name="s_lon" value="<?= @$lon ?>">
+                                            <input type="hidden" id="search_lat" name="s_lon" value="<?= @$lon ?>">
                                         </form>
                                     </div>
                                     <div class="uploadOptionPost">
@@ -167,18 +167,23 @@ function get_time_ago($time) {
                         <div class="d-flex justify-content-between tabpost align-items-center mb-3">
                             <ul class="nav nav-pills" id="pills-tab" role="tablist">
                                 <li class="nav-item mb-0" role="presentation">
-                                    <button class="nav-link active" id="pills-global-tab" data-toggle="pill" data-target="#pills-global" type="button" role="tab" aria-controls="pills-global" aria-selected="false">Global</button>
+                                    <button class="nav-link active" id="pills-global-tab" data-toggle="pill" data-target="#pills-global" type="button" role="tab" aria-controls="pills-global" aria-selected="false" onclick="getFeedData('1')">Global</button>
                                 </li>
                                 <li class="nav-item mb-0" role="presentation">
-                                    <button class="nav-link" id="pills-local-tab" data-toggle="pill" data-target="#pills-local" type="button" role="tab" aria-controls="pills-local" aria-selected="true">Local</button>
+                                    <button class="nav-link" id="pills-local-tab" data-toggle="pill" data-target="#pills-local" type="button" role="tab" aria-controls="pills-local" aria-selected="true" onclick="getFeedData('2')">Local</button>
                                 </li>
                             </ul>
                             <div><a href="javascript:void(0)" class="filterbtn" data-toggle="modal" data-target="#filterModal">Filter <i class="fa-regular fa-sliders ml-1"></i></a></div>
                         </div>
                     </div>
                     <div class="tab-content posttabcontent" id="pills-tabContent">
-                      <div class="tab-pane fade show active" id="pills-local" role="tabpanel" aria-labelledby="pills-local-tab">
-                        <div class="PostContainer boxPost">
+                        <div class="tab-pane fade show active" id="pills-local" role="tabpanel" aria-labelledby="pills-local-tab">
+                            <div id="loader" style="position: absolute; width: 96%; z-index: 1; background: #00000054; border-radius: 20px;" class="d-none">
+                                <div style="border-radius: 20px; height: 765px; text-align: center; position: relative; top: 10pc;">
+                                    <img src="<?= base_url('assets/images/loader.gif'); ?>" style=" width: 200px; ">
+                                </div>
+                            </div>
+                            <div class="PostContainer boxPost">
                             <!-- Single Post -->
                             <?php
                             if (!empty($get_post)) {
@@ -191,7 +196,7 @@ function get_time_ago($time) {
                                     $get_user = $this->db->query("SELECT * FROM users WHERE userId = '$row->user_id'")->row(); ?>
                                     <div class="DataContainer postblockElement" >
                                         <div id="loader_<?= $row->id?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
-                                            <img src="<?= base_url('uploads/loader.gif'); ?>" style="padding: 122px;">
+                                            <img src="<?= base_url('assets/images/loader.gif'); ?>" style="padding: 122px;">
                                         </div>
                                         <div class="boxuppost">
                                             <div class="d-flex justify-content-between align-items-center">
@@ -278,17 +283,25 @@ function get_time_ago($time) {
                                                         <?php $getCommentCount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment WHERE postjob_id = '" . $row->id . "'")->row(); ?>
                                                         <p style="margin: 0; margin-left: 5px; font-size: 15px; font-weight: 500;"><?= $getCommentCount->count; ?> </p>
                                                     </a>
-                                                    <a href="#" class="Icon_2" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; margin-left: 20px;">
+                                                    <!-- <a href="#" class="Icon_2" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; margin-left: 20px;">
                                                         <span><i class="fa-regular fa-share-nodes"></i></span>
-
                                                         <p style="margin: 0; margin-left: 5px; font-size: 15px; font-weight: 500;">0</p>
-                                                    </a>
+                                                    </a> -->
                                                 </div>
                                                 <ul style="margin: 0; display: flex; align-items: center; justify-content: flex-end; flex-direction: row; width: 250px; float: right;">
-                                                    <li class="mb-0">
+                                                    <li class="mb-0" onclick="onclickShare(<?= $row->id?>)">
                                                         <a href="javascript:void(0)" class="shareBtn"> <i class="fa-regular fa-share-nodes" aria-hidden="true"></i> Share</a>
                                                     </li>
                                                 </ul>
+                                            </div>
+                                            <div id="shareMenu_<?= $row->id?>" class="hidden shareMenu">
+                                                <a href="https://www.facebook.com/sharer/sharer.php?u=<?= base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                                                <a href="https://twitter.com/intent/tweet?text=<?php echo $row->post_title; ?>&url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-brands fa-square-x-twitter"></i></a>
+                                                <a href="mailto:?subject=<?php echo $row->post_title; ?>&body=<?= 'I found this interesting: '.base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-solid fa-envelope"></i></a>
+                                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                                                <a href="https://www.instagram.com/?url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                                                <a href="https://api.whatsapp.com/send?text=<?php echo $row->post_title; ?> <?= base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                                                <a href="https://telegram.me/share/url?url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>&text=<?php echo $row->post_title; ?>" target="_blank"><i class="fa-brands fa-telegram"></i></a>
                                             </div>
                                         </div>
                                         <!-- Comment Btn -->
@@ -300,7 +313,7 @@ function get_time_ago($time) {
                                             foreach ($getpostComment as $each) {
                                                 $rplycount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment_like  WHERE postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
                                         ?>
-                                        <div class="Comment_Block replyComment" style="display: flex; flex-direction: column; ">
+                                        <div class="Comment_Block replyComment">
                                             <div class="Comment_Block_Container" style="flex-direction: row; align-items: flex-start; justify-content: flex-start; display: flex; width: 100%;">
                                                 <div class="Comment_Img" style="min-width: 50px;">
                                                     <?php
@@ -387,7 +400,7 @@ function get_time_ago($time) {
                                                     <img src="https://techg.igiapp.com/handymanservices/uploads/users/440_Image1.jpg">
                                                 </div>
                                                 <div class="Comment_Mobile position-relative flex-fill w-100">
-                                                    <textarea class="postComment mt-0 form-control f1" type="text" placeholder="Enter your comments" name="comment_<?= $row->id ?>" id="comment_<?= $row->id ?>"></textarea>
+                                                    <textarea class="postComment mt-0 form-control f1 emoji_act" type="text" placeholder="Enter your comments" name="comment_<?= $row->id ?>" id="comment_<?= $row->id ?>"></textarea>
                                                     <div>
                                                         <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
                                                             <a href="javascript:void(0)" class="postCommentbtn" onclick="postComment(<?= $row->id ?>)">
@@ -409,7 +422,7 @@ function get_time_ago($time) {
                             <?php } ?>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="pills-global" role="tabpanel" aria-labelledby="pills-global-tab">...</div>
+                    <!-- <div class="tab-pane fade" id="pills-global" role="tabpanel" aria-labelledby="pills-global-tab">...</div> -->
                     </div>
                 </div>
                 <div class="col-lg-3 mb-3 order-lg-1">
@@ -485,7 +498,13 @@ function get_time_ago($time) {
                                     <h4>Likes</h4>
                                 </div>
                             </div>
-                            <a href="#" class="profileBtn">My Profile</a>
+                            <?php
+                            $uid = $_SESSION['afrebay']['userType'];
+                            if(@$_SESSION['afrebay']['userType']=='1') { ?>
+                            <a href="<?php echo base_url("professionals_detail/".base64_encode($_SESSION['afrebay']['userId']))?>" title="" class="profileBtn">My Profile</a>
+                            <?php } else { ?>
+                            <a href="<?php echo base_url("customer_detail/".base64_encode($_SESSION['afrebay']['userId']))?>" title="" class="profileBtn">My Profile</a>
+                            <?php } ?>
                         </div>
                         <?php } ?>
                         <div class="activityBox mb-3">
@@ -509,10 +528,10 @@ function get_time_ago($time) {
                                 } else {
                                     $fullname = $getUserDetails->firstname.' '.$getUserDetails->lastname;
                                 }
-                                if(!empty($getUserDetails->userType) == '1') {
+                                if($getUserDetails->userType == '2') {
                                     $link = base_url('customer_detail/'.base64_encode($getUserDetails->userId));
                                 } else {
-                                    $link = base_url('');
+                                    $link = base_url('professionals_detail/'.base64_encode($getUserDetails->userId));
                                 }
                             ?>
                             <div class="d-flex mb-2 activitylist align-items-center">
@@ -573,10 +592,13 @@ function get_time_ago($time) {
                             <label>Go to:</label>
                         </div>
                         <div class="col-lg-5 col-6">
-                            <select class="form-control">
-                                <option>Year</option>
-                                <option>Month</option>
-                                <option>Day</option>
+                            <select class="form-control" id="year">
+                            <?php
+                            $startYear = 2000;
+                            echo $endYear = date('Y');
+                            for ($year = $endYear; $year >= $startYear; $year--) { ?>
+                                <option value="<?= $year; ?>"><?= $year; ?></option>
+                            <?php } ?>
                             </select>
                         </div>
                     </div>
@@ -585,8 +607,9 @@ function get_time_ago($time) {
                             <label>Posted By:</label>
                         </div>
                         <div class="col-lg-5 col-6">
-                            <select class="form-control">
-                                <option>You</option>
+                            <select class="form-control" id="postedBy">
+                                <option value="1">Anyone</option>
+                                <option value="2">You</option>
                             </select>
                         </div>
                     </div>
@@ -595,14 +618,15 @@ function get_time_ago($time) {
                             <label>Privacy:</label>
                         </div>
                         <div class="col-lg-5 col-6">
-                            <select class="form-control">
-                                <option>All Posts</option>
+                            <select class="form-control" id="privacy">
+                                <option value="1">Public</option>
+                                <option value="2">Private</option>
                             </select>
                         </div>
                     </div>
                     <div class="row mb-3 justify-content-center">
                         <div class="col-lg-8 col-12">
-                            <button class="btn bg-primary w-100">Done</button></div>
+                            <button class="btn bg-primary w-100" type="button" onclick="searchPost()">Done</button></div>
                         </div>
                     </div>
                 </form>
@@ -710,22 +734,26 @@ function get_time_ago($time) {
     </div>
 </div>
 <style>
-    #city,#state,.chosen_country{color:#888;height:60px;border-radius:50px;padding:17px!important}#city,#state{display:block}.jconfirm-content-pane{text-align:center;font-size:18px}.jconfirm-buttons{margin-right:140px;display:inline-block}#country-list{float:left;list-style:none;margin-top:60px;padding:0;width:98%;position:absolute;z-index:1}#country-list li{padding:10px 30px;background:#fff;margin:0!important;border-radius:10px;border-bottom:1px solid #eee}#country-list li:hover{background:#ece3d2;cursor:pointer}::-webkit-scrollbar{width:10px;background-color:transparent}::-webkit-scrollbar-track{background:0 0}::-webkit-scrollbar-thumb{background:#888;border-radius:5px}::-webkit-scrollbar-thumb:hover{background:#555}.pf-map iframe{height:525px!important}#map{position:relative!important;height:500px!important;max-width:100%!important}.hidereplyBox{display:none!important}.showreplyBox{display:block!important}@media screen and (max-width:425px){.ADD_Sense,.Comment_Mobile textarea,.Rply_Comment_Block ul,.TopBar a,.TopBar ul,.hidereplyBox a,.hidereplyBox textarea{width:100%!important}.TopBar ul li,.job-field input{padding:0 20px!important}.job-field .la-search{font-size:25px!important;top:20px!important}.Mobile_Btn_Container_1{display:flex;align-items:center;justify-content:center;padding:0!important}.Comment_Data,.PostContainer .DataContainer .Comment_Block{padding:10px!important}.Mobile_Btn_Container_1 .btn-primary{margin-bottom:20px!important}.TopBar{flex-direction:column!important;height:110px!important}.TopBar ul{justify-content:space-evenly}.TopBar a span{width:100px!important}.PostContainer .DataContainer{padding:15px!important}.PostContainer .DataContainer .InfoBlock{height:50px!important}.PostContainer .DataContainer .InfoBlock img{height:50px!important;width:50px!important}.PostContainer .DataContainer .InfoBlock .TextData h3{font-size:16px!important}.PostContainer .DataContainer .InfoBlock .TextData p{line-height:20px!important}.PostContainer .DataContainer .CommentData{font-size:14px!important;line-height:20px!important}.Comment_Mobile,.Rply_Comment_Block,.hidereplyBox{flex-direction:column!important}.Rply_Comment_Block .Active_Icon_Block{justify-content:flex-start!important;width:100%!important}.Rply_Comment_Block ul{margin-top:10px!important;justify-content:flex-start!important}.Comment_Data{margin-left:0!important}.ADD_Sense{height:120px!important;top:calc(100vh - 130px)!important;padding-left:0!important;align-items:center!important;justify-content:center!important;left:0!important}}.postType .typePost{min-height:65px!important}.emojionearea .emojionearea-button{right:30px!important;top:40px!important}.emojionearea,.emojionearea.form-control{border:none!important;box-shadow:none!important}.emojionearea .emojionearea-editor:empty:before{text-align:start!important}.emojionearea .emojionearea-button.active+.emojionearea-picker-position-bottom{margin-top:37px!important}.emojionearea .emojionearea-picker.emojionearea-picker-position-bottom{margin-top:10px!important;right:10px!important;top:47px!important}.emojionearea .emojionearea-editor{min-height:3em!important;max-height:0!important}.emojionearea .emojionearea-picker .emojionearea-search > input {padding: 0px 0px 0px 11px !important; border-radius: 8px !important;}.Comment_Mobile
-    /* .emojionearea{background: #f4f4f4;
-        font-size: 14px !important;
-        margin-bottom: 0 !important;
-        float: unset !important;
-        padding: 10px 105px 10px 20px !important;
-        border-radius: 45px !important;
-        min-height: 70px !important;
-        margin-top: 0px !important;
-        width: 100%;
-        border: 0 !important;
-        height: auto !important;
-    } */
+    #city,#state,.chosen_country{color:#888;height:60px;border-radius:50px;padding:17px!important}#city,#state{display:block}.jconfirm-content-pane{text-align:center;font-size:18px}.jconfirm-buttons{margin-right:140px;display:inline-block}#country-list{float:left;list-style:none;margin-top:60px;padding:0;width:98%;position:absolute;z-index:1}#country-list li{padding:10px 30px;background:#fff;margin:0!important;border-radius:10px;border-bottom:1px solid #eee}#country-list li:hover{background:#ece3d2;cursor:pointer}::-webkit-scrollbar{width:10px;background-color:transparent}::-webkit-scrollbar-track{background:0 0}::-webkit-scrollbar-thumb{background:#888;border-radius:5px}::-webkit-scrollbar-thumb:hover{background:#555}.pf-map iframe{height:525px!important}#map{position:relative!important;height:500px!important;max-width:100%!important}.hidereplyBox{display:none!important}.showreplyBox{display:block!important}@media screen and (max-width:425px){.ADD_Sense,.Comment_Mobile textarea,.Rply_Comment_Block ul,.TopBar a,.TopBar ul,.hidereplyBox a,.hidereplyBox textarea{width:100%!important}.TopBar ul li,.job-field input{padding:0 20px!important}.job-field .la-search{font-size:25px!important;top:20px!important}.Mobile_Btn_Container_1{display:flex;align-items:center;justify-content:center;padding:0!important}.Comment_Data,.PostContainer .DataContainer .Comment_Block{padding:10px!important}.Mobile_Btn_Container_1 .btn-primary{margin-bottom:20px!important}.TopBar{flex-direction:column!important;height:110px!important}.TopBar ul{justify-content:space-evenly}.TopBar a span{width:100px!important}.PostContainer .DataContainer{padding:15px!important}.PostContainer .DataContainer .InfoBlock{height:50px!important}.PostContainer .DataContainer .InfoBlock img{height:50px!important;width:50px!important}.PostContainer .DataContainer .InfoBlock .TextData h3{font-size:16px!important}.PostContainer .DataContainer .InfoBlock .TextData p{line-height:20px!important}.PostContainer .DataContainer .CommentData{font-size:14px!important;line-height:20px!important}.Comment_Mobile,.Rply_Comment_Block,.hidereplyBox{flex-direction:column!important}.Rply_Comment_Block .Active_Icon_Block{justify-content:flex-start!important;width:100%!important}.Rply_Comment_Block ul{margin-top:10px!important;justify-content:flex-start!important}.Comment_Data{margin-left:0!important}.ADD_Sense{height:120px!important;top:calc(100vh - 130px)!important;padding-left:0!important;align-items:center!important;justify-content:center!important;left:0!important}}.postType .typePost{min-height:65px!important}.emojionearea .emojionearea-button{right:30px!important;top:40px!important}.emojionearea,.emojionearea.form-control{border:none!important;box-shadow:none!important}.emojionearea .emojionearea-editor:empty:before{text-align:start!important}.emojionearea .emojionearea-button.active+.emojionearea-picker-position-bottom{margin-top:37px!important}.emojionearea .emojionearea-picker.emojionearea-picker-position-bottom{margin-top:10px!important;right:10px!important;top:47px!important}.emojionearea .emojionearea-editor{min-height:3em!important;max-height:0!important}.emojionearea .emojionearea-picker .emojionearea-search > input {padding: 0px 0px 0px 11px !important; border-radius: 8px !important;}
+    .Comment_Mobile .emojionearea-editor{background: #f4f4f4; font-size: 14px !important; margin-bottom: 0 !important; float: unset !important; padding: 10px 105px 10px 20px !important; border-radius: 45px !important; min-height: 70px !important; margin-top: 0px !important; width: 100%; border: 0 !important; height: auto !important; background-color: #f4f4f4 !important;}
+    .Comment_Mobile .emojionearea-button {top: 45px !important;}
+    .hidden {
+        display: none;
+    }
+    .shareMenu {
+        border: 1px solid #ccc;
+        padding: 5px;
+        background-color: white;
+        float: right;
+    }
 </style>
 <script>
 $(document).ready(function () {
+    // const shareBtn = $('#shareBtn');
+    // const shareMenu = $('#shareMenu');
+    // shareBtn.click(function() {
+    //     shareMenu.toggle();
+    // });
     var base_url = $("#base_url").val();
     var id = 'United States';
     $.ajax({
@@ -1041,6 +1069,57 @@ function postData() {
     }
 }
 
+function getFeedData(id) {
+    var latitude = $('#search_lat').val();
+    var longitude = $('#search_lon').val()
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/get_feed_data",
+        method: "POST",
+        data: {id: id, latitude: latitude, longitude: longitude},
+        beforeSend: function () {
+            $("#loader").removeClass('d-none');
+        },
+        success: function (data) {
+            //console.log(data);
+            $("#loader").addClass('d-none');
+            // if (data == '1') {
+            //     location.reload(true);
+            // } else {
+            //     location.reload(true);
+            // }
+            $('.PostContainer').html(data);
+        }
+    });
+}
+
+function searchPost() {
+    var year = $('#year').val();
+    var postedBy = $('#postedBy').val();
+    var privacy = $('#privacy').val();
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/search_post",
+        method: "POST",
+        data: {year: year, postedBy: postedBy, privacy: privacy},
+        beforeSend: function () {
+            $("#loader").removeClass('d-none');
+        },
+        success: function (data) {
+            //console.log(data);
+            $('#filterModal').css('display', 'none');
+            $('#filterModal').removeClass('show');
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            setTimeout(() => {
+                $("#loader").addClass('d-none');
+            }, 3000);
+            $('.PostContainer').html(data);
+        }
+    })
+}
+
+function onclickShare(id) {
+    $('#shareMenu_'+id).toggle();
+}
 $('.closemediaupload').click(function () {
     $('.upload-container').hide();
 });

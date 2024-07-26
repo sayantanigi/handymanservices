@@ -16,7 +16,12 @@ class Home extends MY_Controller {
             redirect('login');
         }
         //$data['get_post'] = $this->db->query("SELECT *, (6367 * acos(cos(radians('".$lat."')) * cos(radians(`latitude`)) * cos(radians(`longitude`) - radians('".$lat."')) + sin(radians('".$lat."')) * sin(radians(`latitude`)))) AS distance FROM `postjob` having `distance` < 10  AND (status = 'Active' ) ORDER BY distance ASC")->result();
-	    $data['get_post'] = $this->Crud_model->GetData('postjob', 'id, post_title, description, user_id, created_date', "status='Active'", '', '(id)desc', '');
+        /*if(!empty($_SESSION['afrebay']['userId'])) {
+            $data['get_post'] = $this->Crud_model->GetData('postjob', 'id, post_title, description, user_id, created_date', "status = 'Active' AND visibility IN(1,2)", '', '(id)desc', '');
+        } else {
+            $data['get_post'] = $this->Crud_model->GetData('postjob', 'id, post_title, description, user_id, created_date', "status = 'Active' AND visibility = 1", '', '(id)desc', '');
+        }*/
+        $data['get_post'] = $this->Crud_model->GetData('postjob', 'id, post_title, description, user_id, created_date', "status = 'Active' AND visibility IN(1,2)", '', '(id)desc', '');
 		$data['countries']=$this->Crud_model->GetData('countries',"","");
 		$data['get_freelancerspost'] = $this->Crud_model->GetData('postjob', '', "is_delete='0'", '', '', '8');
 		$data['get_career'] = $this->Crud_model->GetData('career_tips', '', "status='Active'", '', '', '3');

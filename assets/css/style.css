@@ -19391,7 +19391,7 @@ body.loaded .content {
   opacity: 1;
 }
 .posttabcontent{
-  height: 100vh;
+  height: 152vh;
   overflow: auto;
 }
 .posttabcontent::-webkit-scrollbar {

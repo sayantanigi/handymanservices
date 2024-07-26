@@ -311,13 +311,13 @@ function get_time_ago($time) {
                                                             <a class="shareBtn text-white" href="javacript:void(0)"> <i class="fa-regular fa-share-nodes" aria-hidden="true"></i> Share</a>
                                                         </li>
                                                         <div id="shareMenu" class="hidden">
-                                                            <a href="https://www.facebook.com/sharer/sharer.php?u=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank" class="fa fa-facebook"></a>
-                                                            <a href="https://twitter.com/intent/tweet?text=<?php echo $post_data->post_title; ?>&url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank" class="fa fa-twitter"></a>
-                                                            <a href="mailto:?subject=<?php echo $post_data->post_title; ?>&body=<?= 'I found this interesting: '.base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank" class="fa fa-gmail"></a>
-                                                            <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank" class="fa fa-linkedin"></a>
-                                                            <a href="https://www.instagram.com/?url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank" class="fa fa-instagram"></a>
-                                                            <a href="https://api.whatsapp.com/send?text=<?php echo $post_data->post_title; ?> <?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank" class="fa fa-whatsapp"></a>
-                                                            <a href="https://telegram.me/share/url?url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>&text=<?php echo $post_data->post_title; ?>" target="_blank" class="fa fa-telegram"></a>
+                                                            <a href="https://www.facebook.com/sharer/sharer.php?u=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                                                            <a href="https://twitter.com/intent/tweet?text=<?php echo $post_data->post_title; ?>&url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-square-x-twitter"></i></a>
+                                                            <a href="mailto:?subject=<?php echo $post_data->post_title; ?>&body=<?= 'I found this interesting: '.base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-solid fa-envelope"></i></a>
+                                                            <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                                                            <a href="https://www.instagram.com/?url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                                                            <a href="https://api.whatsapp.com/send?text=<?php echo $post_data->post_title; ?> <?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                                                            <a href="https://telegram.me/share/url?url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>&text=<?php echo $post_data->post_title; ?>" target="_blank"><i class="fa-brands fa-telegram"></i></a>
                                                         </div>
                                                     </ul>
                                                 </div>
@@ -508,7 +508,7 @@ function get_time_ago($time) {
                                 </div>
                             </div>
                             <?php if (@$_SESSION['afrebay']['userType'] == 1 || empty(@$_SESSION['afrebay']['userType'])) { ?>
-                                <div class="col-12 Mobile_Padding" style="margin-top: 30px; position: sticky; top: 160px; height: fit-content;">
+                                <div class="col-12 Mobile_Padding d-none" style="margin-top: 30px; position: sticky; top: 160px; height: fit-content;">
                                     <?php $userBidData = $this->db->query("SELECT * FROM `job_bid` WHERE postjob_id = '" . $post_data->id . "' and user_id = '" . @$_SESSION['afrebay']['userId'] . "'")->result_array();
                                     if (!empty($userBidData)) { ?>
                                         <div class="bd-form"><a href="<?= base_url() ?>jobbid" class="cstm_viewbid_btn"> View Bid</a></div>
@@ -556,7 +556,7 @@ function get_time_ago($time) {
                                             </div>
                                         </form>
                                 </div>
-                        <?php }
+                            <?php }
                                 } ?>
                         </div>
                     </div>
