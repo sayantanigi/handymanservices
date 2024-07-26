@@ -15,21 +15,8 @@ class Home extends MY_Controller {
         if(empty($_SESSION['afrebay']['userId'])) {
             redirect('login');
         }
-        $ip = $_SERVER["REMOTE_ADDR"];
-        $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $ip));
-        if ($query && $query['status'] == 'success') {
-            $country = $query['country'];
-            $state = $query['regionName'];
-            $city = $query['city'];
-            $lat = $query['lat'];
-            $lon = $query['lon'];
-            $this->data['lat'] = $lat;
-            $this->data['lon'] = $lon;
-            $this->data['loc'] = $city . ',' . $state . ',' . $country;
-            $data['get_post'] = $this->db->query("SELECT *, (6367 * acos(cos(radians('".$lat."')) * cos(radians(`latitude`)) * cos(radians(`longitude`) - radians('".$lat."')) + sin(radians('".$lat."')) * sin(radians(`latitude`)))) AS distance FROM `postjob` having `distance` < 10  AND (status = 'Active' ) ORDER BY distance ASC")->result();
-        }
-
-	    //$data['get_post'] = $this->Crud_model->GetData('postjob', 'id, post_title, description, user_id, created_date', "is_delete='0'", '', '(id)desc', '6');
+        //$data['get_post'] = $this->db->query("SELECT *, (6367 * acos(cos(radians('".$lat."')) * cos(radians(`latitude`)) * cos(radians(`longitude`) - radians('".$lat."')) + sin(radians('".$lat."')) * sin(radians(`latitude`)))) AS distance FROM `postjob` having `distance` < 10  AND (status = 'Active' ) ORDER BY distance ASC")->result();
+	    $data['get_post'] = $this->Crud_model->GetData('postjob', 'id, post_title, description, user_id, created_date', "status='Active'", '', '(id)desc', '');
 		$data['countries']=$this->Crud_model->GetData('countries',"","");
 		$data['get_freelancerspost'] = $this->Crud_model->GetData('postjob', '', "is_delete='0'", '', '', '8');
 		$data['get_career'] = $this->Crud_model->GetData('career_tips', '', "status='Active'", '', '', '3');
