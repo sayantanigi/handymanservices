@@ -20,6 +20,16 @@
 			                        </div>
 			                    </div>
 			                    <div class="cardak profile-mobile pt-3">
+                                <span class="text-success-msg f-20" style="text-align: center;">
+                                    <?php if($this->session->flashdata('message')) {
+                                        echo $this->session->flashdata('message');
+                                        unset($_SESSION['message']);
+                                    } ?>
+                                    <?php if($this->session->flashdata('error')) {
+                                        echo $this->session->flashdata('error');
+                                        unset($_SESSION['error']);
+                                    } ?>
+                                    </span>
 			                    	<div class="row">
 			                    		<div class="col-lg-12 profile-dsd">
                                             <input type="text" class="form-control" name="companyname" id="companyname" placeholder="Business name" value="<?php echo $userinfo->companyname;?>" />

@@ -35,9 +35,9 @@
 			<li <?php if ($seg2 =='chat') {?>class="active"<?php }?>>
 				<a href="<?=admin_url(); ?>chat"><i class="fab fa-rocketchat"></i> <span>Messages</span></a>
 			</li>
-			<li <?php if ($seg2 =='jobsbidding') {?>class="active"<?php }?>>
+			<!-- <li <?php if ($seg2 =='jobsbidding') {?>class="active"<?php }?>>
 				<a href="<?= admin_url('jobsbidding')?>"><i class="far fa-calendar-check"></i> <span> Jobs Bidding</span></a>
-			</li>
+			</li> -->
 			<li <?php if ($seg2 =='users') {?>class="active"<?php }?>>
 				<a href="<?=admin_url(); ?>users"><i class="fas fa-user"></i> <span>Users</span></a>
 			</li>

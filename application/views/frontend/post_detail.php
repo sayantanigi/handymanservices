@@ -65,9 +65,7 @@ function get_time_ago($time) {
         margin: 30px 0;
     }
 
-    .Comment_Block .Comment_Img {
-        width: 10%;
-    }
+    
 
     .Comment_Block .Comment_Img img {
         width: 60px;
@@ -126,37 +124,27 @@ function get_time_ago($time) {
         }
 
         .Mobile_Like {
-            margin-top: 10px !important;
-            margin-bottom: 10px !important;
             justify-content: center !important;
         }
-        .Comment_Block {
-            flex-direction: column !important;
-        }
-        .Comment_Block .Comment_Data {
-            width: 100% !important;
-            margin-left: 0 !important;
-            padding: 10px !important;
-        }
+        
+        
         .hidereplyBox {
             flex-direction: column !important;
         }
         .hidereplyBox textarea {
             width: 100% !important;
         }
-        .hidereplyBox a {
-            width: 100% !important;
-        }
+        
     }
 </style>
 <section class="overlape">
-    <div class="block no-padding">
+    <div class="block no-padding bg-primary">
         <div data-velocity="-.1" style="background: url('<?= $banner_img ?>') repeat scroll 50% 422.28px transparent;" class="parallax scrolly-invisible no-parallax"></div>
         <div class="container fluid">
-            <div class="row">
-                <div class="col-lg-12">
+            <div >
+                <div>
                     <div class="inner-header">
-                        <h3 style="text-transform: uppercase;">
+                        <h3>
                             <?php if (!empty($post_data->post_title)) {
                                 echo $post_data->post_title;
                             } ?>
@@ -174,8 +162,8 @@ function get_time_ago($time) {
             unset($_SESSION['message']);
         } ?>
     </div>
-    <div class="container display-table">
-        <div class="row display-table-row">
+    <div class="container ">
+        <div class="row ">
             <div class="col-md-12 col-sm-12 display-table-cell v-align">
                 <div class="user-dashboard">
                     <div class="row row-sm">
@@ -186,7 +174,7 @@ function get_time_ago($time) {
                                         <ul class="workInfoBox">
                                             <li>
                                                 <span>Job Title </span>
-                                                <p><a href="<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" style="text-transform: uppercase;"><?php echo $post_data->post_title; ?></a></p>
+                                                <p><a href="<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" class="text-dark"><?php echo $post_data->post_title; ?></a></p>
                                             </li>
                                             <li><?php if (!empty($post_data->description)) { ?>
                                                 <span>Description</span>
@@ -270,57 +258,63 @@ function get_time_ago($time) {
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-12 Mobile_Like" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
-                                                    <div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
-                                                        <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
-                                                        $chechis_like = $this->db->query("SELECT * FROM postjob_like WHERE postjob_id = '" . $post_data->id . "' AND user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND is_liked = 1")->num_rows();
-                                                        if ($chechis_like > 0) { ?>
-                                                        <span><i style="font-size: 16px; cursor: pointer;" class="fa fa-heart" aria-hidden="true" onclick="dislikepostjob()"></i></span>
-                                                        <?php } else { ?>
-                                                        <span><i style="font-size: 16px; cursor: pointer;" class="fa-regular fa-heart" aria-hidden="true" onclick="likepostjob()"></i></span>
-                                                        <?php }
-                                                        } else { ?>
-                                                        <a style="color: #000 !important; cursor: pointer;" href="<?= base_url() ?>login"><i style="color: #000;" class="fa fa-heart-o" aria-hidden="true"></i></a>
-                                                        <?php }
-                                                        $getLikeCount = $this->db->query("SELECT COUNT(id) as count FROM postjob_like WHERE postjob_id = '" . $post_data->id . "' AND is_liked = 1")->row(); ?>
-                                                        <p style="margin: 0; margin-left: 3px; font-size: 14px; font-weight: 500;"> <?= $getLikeCount->count ?> </p>
-                                                    </div>
-                                                    <div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; margin-left: 20px;">
-                                                        <span><i style="font-size: 16px;" class="fa-regular fa-comment-dots" aria-hidden="true"></i></span>
-                                                        <?php $getCommentCount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment WHERE postjob_id = '" . $post_data->id . "'")->row(); ?>
-                                                        <p style="margin: 0; margin-left: 3px; font-size: 14px; font-weight: 500; "> <?= $getCommentCount->count; ?> </p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-12">
-                                                    <ul class="Mobile_Ul" style="margin: 0; display: flex; align-items: center; justify-content: flex-end; flex-direction: row; width: 250px; float: right;">
-                                                       <!--  <li style="margin: 0 20px 0 0 !important; font-weight: 600; font-size: 15px; color: #000 !important;">
-                                                            <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
+                                                <div class="col-lg-12">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="Mobile_Like" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+                                                            <div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+                                                                <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
                                                                 $chechis_like = $this->db->query("SELECT * FROM postjob_like WHERE postjob_id = '" . $post_data->id . "' AND user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND is_liked = 1")->num_rows();
                                                                 if ($chechis_like > 0) { ?>
-                                                                    <a style="color: #000 !important;" href="javascript:void(0)" onclick="dislikepostjob()"><i style="color: #000;" class="fa fa-heart" aria-hidden="true"></i> Like</a>
+                                                                <span><i style="font-size: 16px; cursor: pointer;" class="fa fa-heart" aria-hidden="true" onclick="dislikepostjob()"></i></span>
                                                                 <?php } else { ?>
-                                                                    <a style="color: #000 !important;" href="javascript:void(0)" onclick="likepostjob()"><i style="color: #000;" class="fa fa-heart-o" aria-hidden="true"></i> Like</a>
-                                                                <?php } ?>
-                                                            <?php } else { ?>
-                                                                <a style="color: #000 !important;" href="<?= base_url() ?>login">
-                                                                    <i style="color: #000;" class="fa fa-heart-o" aria-hidden="true"></i> Like
-                                                                </a>
-                                                            <?php } ?>
-                                                        </li> -->
-                                                        <li style="margin: 0 !important; font-weight: 600; font-size: 15px; color: #000 !important;" id="shareBtn">
-                                                            <a class="shareBtn text-white" href="javacript:void(0)"> <i class="fa-regular fa-share-nodes" aria-hidden="true"></i> Share</a>
-                                                        </li>
-                                                        <div id="shareMenu" class="hidden">
-                                                            <a href="https://www.facebook.com/sharer/sharer.php?u=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-                                                            <a href="https://twitter.com/intent/tweet?text=<?php echo $post_data->post_title; ?>&url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-square-x-twitter"></i></a>
-                                                            <a href="mailto:?subject=<?php echo $post_data->post_title; ?>&body=<?= 'I found this interesting: '.base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-solid fa-envelope"></i></a>
-                                                            <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-                                                            <a href="https://www.instagram.com/?url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                                                            <a href="https://api.whatsapp.com/send?text=<?php echo $post_data->post_title; ?> <?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-                                                            <a href="https://telegram.me/share/url?url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>&text=<?php echo $post_data->post_title; ?>" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+                                                                <span><i style="font-size: 16px; cursor: pointer;" class="fa-regular fa-heart" aria-hidden="true" onclick="likepostjob()"></i></span>
+                                                                <?php }
+                                                                } else { ?>
+                                                                <a style="color: #000 !important; cursor: pointer;" href="<?= base_url() ?>login"><i style="color: #000;" class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                                                <?php }
+                                                                $getLikeCount = $this->db->query("SELECT COUNT(id) as count FROM postjob_like WHERE postjob_id = '" . $post_data->id . "' AND is_liked = 1")->row(); ?>
+                                                                <p style="margin: 0; margin-left: 3px; font-size: 14px; font-weight: 500;"> <?= $getLikeCount->count ?> </p>
+                                                            </div>
+                                                            <div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; margin-left: 20px;">
+                                                                <span><i style="font-size: 16px;" class="fa-regular fa-comment-dots" aria-hidden="true"></i></span>
+                                                                <?php $getCommentCount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment WHERE postjob_id = '" . $post_data->id . "'")->row(); ?>
+                                                                <p style="margin: 0; margin-left: 3px; font-size: 14px; font-weight: 500; "> <?= $getCommentCount->count; ?> </p>
+                                                            </div>
                                                         </div>
-                                                    </ul>
+                                                        <div >
+                                                            <ul class="Mobile_Ul" style="margin: 0; display: flex; align-items: center; justify-content: flex-end; flex-direction: row; width: 250px; float: right;">
+                                                               <!--  <li style="margin: 0 20px 0 0 !important; font-weight: 600; font-size: 15px; color: #000 !important;">
+                                                                    <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
+                                                                        $chechis_like = $this->db->query("SELECT * FROM postjob_like WHERE postjob_id = '" . $post_data->id . "' AND user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND is_liked = 1")->num_rows();
+                                                                        if ($chechis_like > 0) { ?>
+                                                                            <a style="color: #000 !important;" href="javascript:void(0)" onclick="dislikepostjob()"><i style="color: #000;" class="fa fa-heart" aria-hidden="true"></i> Like</a>
+                                                                        <?php } else { ?>
+                                                                            <a style="color: #000 !important;" href="javascript:void(0)" onclick="likepostjob()"><i style="color: #000;" class="fa fa-heart-o" aria-hidden="true"></i> Like</a>
+                                                                        <?php } ?>
+                                                                    <?php } else { ?>
+                                                                        <a style="color: #000 !important;" href="<?= base_url() ?>login">
+                                                                            <i style="color: #000;" class="fa fa-heart-o" aria-hidden="true"></i> Like
+                                                                        </a>
+                                                                    <?php } ?>
+                                                                </li> -->
+                                                                <li style="margin: 0 !important; font-weight: 600; font-size: 15px; color: #000 !important;" id="shareBtn">
+                                                                    <a class="shareBtn text-white" href="javacript:void(0)"> <i class="fa-regular fa-share-nodes" aria-hidden="true"></i> Share</a>
+                                                                </li>
+                                                                <div id="shareMenu" class="hidden">
+                                                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                                                                    <a href="https://twitter.com/intent/tweet?text=<?php echo $post_data->post_title; ?>&url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-square-x-twitter"></i></a>
+                                                                    <a href="mailto:?subject=<?php echo $post_data->post_title; ?>&body=<?= 'I found this interesting: '.base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-solid fa-envelope"></i></a>
+                                                                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                                                                    <a href="https://www.instagram.com/?url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                                                                    <a href="https://api.whatsapp.com/send?text=<?php echo $post_data->post_title; ?> <?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                                                                    <a href="https://telegram.me/share/url?url=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>&text=<?php echo $post_data->post_title; ?>" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+                                                                </div>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                
+                                                
                                                 <div class="col-12">
                                                 <?php
                                                 $getpostComment = $this->db->query("SELECT * FROM postjob_comment WHERE postjob_id = '" . @$post_data->id . "'")->result_array();
@@ -330,7 +324,7 @@ function get_time_ago($time) {
                                                         $rplycount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment_like  WHERE postjob_id = '" . @$post_data->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
                                                 ?>
                                                     <div class="Comment_Block" >
-                                                        <div class="Comment_Img">
+                                                        <div class="Comment_Img mr-2">
                                                             <?php
                                                             $userData = $this->db->query("SELECT * FROM users WHERE userId = '" . $each['user_id'] . "'")->row();
                                                             if (!empty($userData->profilePic) && file_exists('uploads/users/' . $userData->profilePic)) { ?>

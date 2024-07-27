@@ -35,17 +35,10 @@ $url = end($actual_link1);
                         <div class="link_widgets">
                             <div class="row">
                                 <div class="col-lg-12">
+                                    <a href="<?= base_url('about-us')?>" title="About us">About Us</a>
                                     <a href="<?= base_url('customer')?>" title="Explore Customers">Explore Customers</a>
                                     <a href="<?= base_url('professionals')?>" title="Explore Professionals">Explore Professionals</a>
                                     <a href="<?= base_url('findwork')?>" title="Explore Job Openings">Explore Job Openings</a>
-                                    <?php if($get_setting->required_subscription == '1') { ?>
-                                    <a href="<?= base_url('customer_pricing')?>" title="Customers Pricing">Customers Pricing</a>
-                                    <a href="<?= base_url('professionals_pricing')?>" title="Professionals Pricing">Professionals Pricing</a>
-                                    <?php } else {
-                                    if(empty($_SESSION['afrebay']['userId'])) { ?>
-                                    <a href="<?= base_url('signup')?>" title="Customer Sign up">Customer Sign up</a>
-                                    <a href="<?= base_url('signup')?>" title="Professionals Sign up">Professionals Sign up</a>
-                                    <?php } } ?>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +50,6 @@ $url = end($actual_link1);
                         <div class="link_widgets">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <a href="<?= base_url('about-us')?>" title="About us">About Us</a>
                                     <a href="<?= base_url('contact-us')?>" title="Contact us">Contact Us</a>
                                     <a href="<?= base_url('career-tips')?>" title="Blog">Blog</a>
                                     <a href="<?= base_url('privacy-policy')?>" title="Privacy Policy">Privacy Policy</a>

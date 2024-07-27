@@ -51,15 +51,20 @@ class Post_job extends MY_Controller {
 			$btn .= ''.anchor(base_url('admin/update-postjob/'.base64_encode($row->id)),'<span class="btn btn-sm bg-success-light mr-2" title="Edit"><i class="far fa-edit mr-1"></i></span>');
 			// $btn .= ''.anchor(base_url('admin/deleteworkdetail/'.base64_encode($row->id)),'<span class="btn btn-sm bg-danger-light mr-2" title="Delete" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash mr-1"></i></span>');
 			$btn .= '<span class="btn btn-sm bg-danger-light mr-2" title="Delete" onclick="deleteJobpost('.$row->id.');"><i class="fa fa-trash mr-1"></i></span>';
-			$userDetails = $this->db->query("SELECT * FROM users WHERE userId = '".$row->user_id."'")->result_array();
+			$userDetails = $this->db->query("SELECT * FROM users WHERE userId = '".$row->user_id."'")->row();
+            if(!empty($userDetails->companyname)) {
+                $name = $userDetails->companyname;
+            } else {
+                $name = $userDetails->firstname.' '.$userDetails->lastname;
+            }
 			$no++;
 			$nestedData = array();
 			$nestedData[] = $no;
-			$nestedData[] = ucwords($userDetails[0]['companyname']);
+			$nestedData[] = ucwords($name);
 			$nestedData[] = ucwords($string);
-			$nestedData[] = ucwords($row->category_name);
-			$nestedData[] = $row->duration;
-			$nestedData[] = "USD"." ".$row->charges;
+			//$nestedData[] = ucwords($row->category_name);
+			//$nestedData[] = $row->duration;
+			$nestedData[] = "";
 			$nestedData[] = date('d-m-Y', strtotime($row->created_date));
 			$nestedData[] = $status."<input type='hidden' id='status".$row->id."' value='".$row->status."' />";
 			$nestedData[] = $btn;

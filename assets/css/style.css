@@ -11034,9 +11034,7 @@ footer.ft .scrollup {
 .responsive-opensec .btn-extars {
   float: left;
   width: 100%;
-  border-top: 1px solid #38425f;
-  border-bottom: 1px solid #38425f;
-  padding: 20px 0;
+   padding: 20px 0;
 }
 .res-search {
   float: left;
@@ -18697,7 +18695,7 @@ section.topak
 }
 .postCommentbtn{
     display: block;
-  padding: 8px 16px;
+  padding: 8px 8px;
   color: #fff;
   background: #2892ff;
   font-size: 14px;
@@ -18852,7 +18850,7 @@ section.topak
   height: 50px;
   min-height: 50px;
   border-radius: 30px;
-  padding: 10px 90px 5px 15px;
+  padding: 5px 90px 5px 15px;
   font-size: 14px;
   margin-bottom: 10px;
 }
@@ -18865,7 +18863,7 @@ section.topak
   font-size: 13px;
   padding: 0 5px;
   min-height: 30px;
-  min-width: 80px;
+  min-width: 52px;
 }
 .uploadOptionPost label{
   font-size: 14px;
@@ -19113,6 +19111,7 @@ section.topak
   padding: 30px 0 5px;
   margin-bottom: 0px;
 }
+.emojionearea .emojionearea-button{right:62px!important;top:13px!important}
 @media(max-width:991px){
   .fixdPosthead{
     top: 0;
@@ -19125,6 +19124,9 @@ section.topak
   flex-wrap: wrap;
   line-height: 0;
   margin: 0 -2px;
+}
+.box-image1{
+  width: 100%;
 }
 .box-image4{
     width: 50%;
@@ -19592,4 +19594,8 @@ body.loaded .content {
 }
 .filterContent .btn{
   border-radius: 8px;
+}
+.boxdownpost .Comment_Mobile .emojionearea-button {
+    top: 16px !important;
+    right: 88px !important;
 }

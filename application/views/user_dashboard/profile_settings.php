@@ -37,6 +37,10 @@ if($data_request=='user') {
                             echo $this->session->flashdata('message');
                             unset($_SESSION['message']);
                         } ?>
+                        <?php if($this->session->flashdata('error')) {
+                            echo $this->session->flashdata('error');
+                            unset($_SESSION['error']);
+                        } ?>
                         </span>
                         <div class="row">
                             <div class="bootstrap snippet col-xl-6 col-lg-6 col-md-6">
@@ -89,6 +93,18 @@ if($data_request=='user') {
                                     <div id="vld_zip" style="color:red; margin-top: 10px;">Please enter Zip Code.</div>
                                 </div>
                             </div>
+                            <?php if($_SESSION['afrebay']['userType'] == '2') { ?>
+                            <div class="col-lg-6 profile-dsd">
+                                <div class="mb-4 float-left w-100">
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" value="<?php echo $userinfo->email;?>"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 profile-dsd">
+                                <div class="mb-4 float-left w-100">
+                                    <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Contact Number" value="<?php echo $userinfo->mobile;?>" readonly/>
+                                </div>
+                            </div>
+                            <?php } ?>
                             <div class="col-lg-12 mb-4">
                                 <div class="new-pro uploadProfilephoto workupload">
                                     <?php

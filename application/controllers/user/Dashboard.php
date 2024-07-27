@@ -70,6 +70,7 @@ class Dashboard extends CI_Controller {
 				$image  = '';
 			}
 		}
+
 		if ($_FILES['backgroundPic']['name'] != '') {
 			$src = $_FILES['backgroundPic']['tmp_name'];
 			$filEnc = time();
@@ -148,6 +149,7 @@ class Dashboard extends CI_Controller {
                 $this->Crud_model->SaveData('users_work_sample',$details_data);
 	        }
         }
+
 		if(!empty($this->input->post('key_skills'))) {
 			$key_skills = $this->input->post('key_skills');
 			for ($i=0; $i < count($key_skills); $i++) {
@@ -183,29 +185,34 @@ class Dashboard extends CI_Controller {
 			$business_category = '';
 		}
 
-		$data = array(
-			'firstname' => $_POST['firstname'],
-			'lastname' => $_POST['lastname'],
-            'profilePic' => $image,
-			'backgroundPic' => $bimage,
-			'zip' => $_POST['zip'],
-            'short_bio' => $_POST['short_bio'],
-        );
-		//print_r($data); die();
-		$this->Crud_model->SaveData('users', $data, "userId='" . $_SESSION['afrebay']['userId'] . "'");
-		if($_POST['from_data_request']=='admin'){
-		    $this->session->set_flashdata('message', 'Profile Updated Successfull !');
-		    redirect(base_url('admin/users'));
-		}
-		else{
-            $this->session->set_flashdata('message', 'Profile Updated Successfull !');
-            if($_SESSION['afrebay']['userType'] == '2') {
-                redirect(base_url('homepage'));
-            } else {
-                redirect(base_url('business_details'));
+        $checkUserEmail = $this->db->query("SELECT * FROM users WHERE email = '".$_POST['email']."' AND userId != '".$_SESSION['afrebay']['userId']."'")->row();
+        if(!empty($checkUserEmail)) {
+            $this->session->set_flashdata('error', 'Email already exists');
+            redirect(base_url('profile'));
+        } else {
+            $data = array(
+                'firstname' => $_POST['firstname'],
+                'lastname' => $_POST['lastname'],
+                'profilePic' => $image,
+                'email' => $_POST['email'],
+                'backgroundPic' => $bimage,
+                'zip' => $_POST['zip'],
+                'short_bio' => $_POST['short_bio'],
+            );
+            $this->Crud_model->SaveData('users', $data, "userId='" . $_SESSION['afrebay']['userId'] . "'");
+            if($_POST['from_data_request']=='admin'){
+                $this->session->set_flashdata('message', 'Profile Updated Successfull !');
+                redirect(base_url('admin/users'));
             }
-
-		}
+            else{
+                $this->session->set_flashdata('message', 'Profile Updated Successfull !');
+                if($_SESSION['afrebay']['userType'] == '2') {
+                    redirect(base_url('homepage'));
+                } else {
+                    redirect(base_url('business_details'));
+                }
+            }
+        }
 	}
 
     public function business_details() {
@@ -264,21 +271,27 @@ class Dashboard extends CI_Controller {
                 $this->Crud_model->SaveData('users_work_sample',$details_data);
 	        }
         }
+        $checkUserEmail = $this->db->query("SELECT * FROM users WHERE email = '".$_POST['email']."' AND userId != '".$_SESSION['afrebay']['userId']."'")->row();
+        if(!empty($checkUserEmail)) {
+            $this->session->set_flashdata('error', 'Email already exists');
+            redirect(base_url('business_details'));
+        } else {
+            $data = array(
+                'companyname' => $_POST['companyname'],
+                'mobile' => $_POST['mobile'],
+                'email' => $_POST['email'],
+                'serviceType' => $business_category,
+                'address' => $_POST['address'],
+                'latitude' => $_POST['latitude'],
+                'longitude' => $_POST['longitude'],
+                'reference_link' => $_POST['reference_link'],
+                'hourly_rate' => $_POST['hourly_rate'],
+            );
+            //print_r($data); die();
+            $this->Crud_model->SaveData('users', $data, "userId='" . $_POST['id'] . "'");
+            redirect(base_url('homepage'));
+        }
 
-        $data = array(
-			'companyname' => $_POST['companyname'],
-			'mobile' => $_POST['mobile'],
-            'email' => $_POST['email'],
-            'serviceType' => $business_category,
-			'address' => $_POST['address'],
-            'latitude' => $_POST['latitude'],
-			'longitude' => $_POST['longitude'],
-            'reference_link' => $_POST['reference_link'],
-            'hourly_rate' => $_POST['hourly_rate'],
-		);
-		//print_r($data); die();
-		$this->Crud_model->SaveData('users', $data, "userId='" . $_POST['id'] . "'");
-        redirect(base_url('homepage'));
     }
 	function getVisIpAddr() {
     	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -1495,7 +1508,7 @@ class Dashboard extends CI_Controller {
                     <div class="boxdownpost">
                         <div class="d-flex">
                             <div class="commnetUser">
-                                <img src="https://techg.igiapp.com/handymanservices/uploads/users/440_Image1.jpg">
+                                <img src="https://techg.igiapp.com/handymanservices/uploads/no_pimage.png">
                             </div>
                             <div class="Comment_Mobile position-relative flex-fill w-100">
                                 <textarea class="postComment mt-0 form-control f1 emoji_act" type="text" placeholder="Enter your comments" name="comment_<?= $row->id ?>" id="comment_<?= $row->id ?>"></textarea>
@@ -1739,7 +1752,7 @@ class Dashboard extends CI_Controller {
                     <div class="boxdownpost">
                         <div class="d-flex">
                             <div class="commnetUser">
-                                <img src="https://techg.igiapp.com/handymanservices/uploads/users/440_Image1.jpg">
+                                <img src="https://techg.igiapp.com/handymanservices/uploads/no_pimage.png">
                             </div>
                             <div class="Comment_Mobile position-relative flex-fill w-100">
                                 <textarea class="postComment mt-0 form-control f1 emoji_act" type="text" placeholder="Enter your comments" name="comment_<?= $row->id ?>" id="comment_<?= $row->id ?>"></textarea>

@@ -26,9 +26,9 @@
                                     <th>#</th>
                                     <th style="width: 165px">Posted By</th>
                                     <th style="width: 165px">Post Title</th>
-                                    <th>Job Category</th>
-                                    <th>Duration</th>
-                                    <th style="width: 95px;">Budget</th>
+                                    <!-- <th>Job Category</th> -->
+                                    <!-- <th>Duration</th> -->
+                                    <th style="width: 95px;"></th>
                                     <th style="width: 95px;">Posted Date</th>
                                     <th>Status</th>
                                     <th>Manage</th>

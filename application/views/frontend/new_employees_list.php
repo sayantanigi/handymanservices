@@ -113,7 +113,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                     </select>
                                 </div>
                             </div>
-                            <div class="widget">
+                            <!-- <div class="widget">
                                 <h3 class="sb-title closed">Last Activity</h3>
                                 <div class="specialism_widget">
                                     <div class="simple-checkbox">
@@ -126,7 +126,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <?php if(!empty($postid)){?>
                             <input type="hidden" name="post_id" id="post_id" value="<?= @$postid?>">
                             <?php } else{?>

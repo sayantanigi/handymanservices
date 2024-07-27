@@ -2,7 +2,7 @@
 $get_setting=$this->Crud_model->get_single('setting');
 $get_category=$this->Crud_model->GetData('category','',"status='Active'");
 // print_r($_SESSION);
-// if(is_numeric($_SESSION['afrebay']['userId'])){  // return **TRUE** if it is numeric
+// if(is_numeric(@$_SESSION['afrebay']['userId'])){  // return **TRUE** if it is numeric
 //     echo "The input is numeric";
 // }else{
 //     echo "The input is not numeric";
@@ -76,10 +76,7 @@ $get_category=$this->Crud_model->GetData('category','',"status='Active'");
         flex-direction: column !important;
         align-items: flex-start !important;
     }
-    .btn-extars .account-btns li:nth-child(2) {
-        margin-left: 20px !important;
     }
-}
 </style>
 <script>
 function completeSub() {
@@ -103,7 +100,7 @@ $(function () {
         <div class="responsive-header" style="background: #ffffff;">
             <div class="responsive-menubar" style="display: flex; align-items: center; justify-content: space-between;">
                 <div class="res-logo">
-                    <?php if(!empty($_SESSION['afrebay']['userId'])) { ?>
+                    <?php if(!empty(@$_SESSION['afrebay']['userId'])) { ?>
                     <a href="<?=base_url(); ?>homepage" title=""><img src="<?=base_url(); ?>uploads/logo/<?= $get_setting->flogo?>" alt="" /></a>
                     <?php } else { ?>
                     <a href="<?=base_url(); ?>" title=""><img src="<?=base_url(); ?>uploads/logo/<?= $get_setting->flogo?>" alt="" /></a>
@@ -115,16 +112,16 @@ $(function () {
                 </div>
             </div>
             <div class="responsive-opensec" style="background: #00458c; padding: 0;">
-                <div class="btn-extars" style="display: flex; align-items: center; justify-content: space-between; border-color: #fff; padding: 20px 30px;">
-                <?php
-                if(!empty($_SESSION['afrebay']['userId'])) {
+                <div class="btn-extars" style="display: flex; align-items: center; justify-content: space-between; border-color: #fff; ">
+                <!-- <?php
+                if(!empty(@$_SESSION['afrebay']['userId'])) {
                     if($_SESSION['afrebay']['userType'] == '2') {
                         if($get_setting->required_subscription == '1') {
-                            $get_sub_data = $this->db->query("SELECT * FROM employer_subscription WHERE employer_id='".$_SESSION['afrebay']['userId']."' AND (status = '1' OR status = '2')")->result_array();
+                            $get_sub_data = $this->db->query("SELECT * FROM employer_subscription WHERE employer_id='".@$_SESSION['afrebay']['userId']."' AND (status = '1' OR status = '2')")->result_array();
                             if(empty($get_sub_data)) { ?>
                             <a href="javascript:void(0)" title="" class="post-job-btn" style="text-decoration: none !important;" id="completeSub"><i class="la la-plus"></i>Post Work<span id="completeSubtext">Please activate a subscription package and complete your profile to proceed with the post job activities.</span></a>
                             <?php } else if(!empty($get_sub_data)) {
-                                $profile_check = $this->db->query("SELECT `profilePic`, `firstname`, `lastname`, `email`, `address`, `short_bio` FROM `users` WHERE userId = '".@$_SESSION['afrebay']['userId']."'")->result_array();
+                                $profile_check = $this->db->query("SELECT `profilePic`, `firstname`, `lastname`, `email`, `address`, `short_bio` FROM `users` WHERE userId = '".@@$_SESSION['afrebay']['userId']."'")->result_array();
                                 if(empty($profile_check[0]['firstname']) || empty($profile_check[0]['lastname']) || empty($profile_check[0]['email']) || empty($profile_check[0]['address'])  || empty($profile_check[0]['short_bio'])) { ?>
                                     <a href="javascript:void(0)" title="" class="post-job-btn" style="text-decoration: none !important;" id="completeSub"><i class="la la-plus"></i>Post Work<span id="completeSubtext">Please complete your profile to proceed with the post job activities.</span></a>
                                 <?php } else { ?>
@@ -133,7 +130,7 @@ $(function () {
                                 <a href="<?= base_url('login')?>" title="" class="post-job-btn" style="text-decoration: none !important;"><i class="la la-plus"></i>Post Work</a>
                             <?php
                             } } else {
-                            $profile_check = $this->db->query("SELECT `profilePic`, `firstname`, `lastname`, `email`, `address`, `short_bio` FROM `users` WHERE userId = '".@$_SESSION['afrebay']['userId']."'")->result_array();
+                            $profile_check = $this->db->query("SELECT `profilePic`, `firstname`, `lastname`, `email`, `address`, `short_bio` FROM `users` WHERE userId = '".@@$_SESSION['afrebay']['userId']."'")->result_array();
                             if(empty($profile_check[0]['firstname']) || empty($profile_check[0]['lastname']) || empty($profile_check[0]['email']) || empty($profile_check[0]['address'])  || empty($profile_check[0]['short_bio'])) { ?>
                                 <a href="javascript:void(0)" title="" class="post-job-btn" style="text-decoration: none !important;" id="completeSub"><i class="la la-plus"></i>Post Work<span id="completeSubtext">Please complete your profile to proceed with the post job activities.</span></a>
                             <?php
@@ -141,14 +138,26 @@ $(function () {
                                 <a href="<?= base_url('postwork')?>" title="" class="post-job-btn" style="text-decoration: none !important;"><i class="la la-plus"></i>Post Work</a>
                             <?php } } }
                 } else { ?>
-                <!-- <a href="<?= base_url('login')?>" title="" class="post-job-btn" style="text-decoration: none !important;"><i class="la la-plus"></i>Post Work</a> -->
-                <?php } ?>
+                <a href="<?= base_url('login')?>" title="" class="post-job-btn" style="text-decoration: none !important;"><i class="la la-plus"></i>Post Work</a>
+                <?php } ?> -->
                     <ul class="account-btns" style="margin: 0;">
-                        <?php if(!empty($_SESSION['afrebay']['userId'])){?>
-                            <li class="signup-popup">
-                                <a href="<?=base_url(); ?>dashboard"><i class="la la-key"></i> My Account</a>
+                        <?php if(!empty(@$_SESSION['afrebay']['userId'])){?>
+                            <li class="signup-popup w-100 ml-0">
+                                <a href="<?=base_url(); ?>profile"><i class="la la-user"></i> My Account</a>
                             </li>
-                            <li class="signup-popup">
+                            <li class="signup-popup w-100 ml-0">
+                                <?php
+                                            $uid = $_SESSION['afrebay']['userType'];
+                                            if(@$_SESSION['afrebay']['userType']=='1') { ?>
+                                            <a href="<?php echo base_url("professionals_detail/".base64_encode(@$_SESSION['afrebay']['userId']))?>" title=""><i class="la la-eye"></i> View Profile</a>
+                                            <?php } else if(@$_SESSION['afrebay']['userType']=='2') { ?>
+                                            <a href="<?php echo base_url("customer_detail/".base64_encode(@$_SESSION['afrebay']['userId']))?>" title=""><i class="la la-eye"></i> View Profile</a>
+                                            <?php } ?>
+                            </li>
+                            <li class="signup-popup w-100 ml-0">
+                                <a href="<?=base_url(); ?>profile"><i class="la la-key"></i> Change Password</a>
+                            </li>
+                            <li class="signup-popup w-100 ml-0">
                                 <a href="<?=base_url(); ?>logout"><i class="la la-external-link-square"></i> Logout</a>
                             </li>
                         <?php } else {?>
@@ -181,7 +190,7 @@ $(function () {
                 <div class="container-fluid Header_Menu_Nav">
                     <div class="d-flex align-items-center">
                         <div class="logo mr-5">
-                        <?php if(!empty($_SESSION['afrebay']['userId'])) { ?>
+                        <?php if(!empty(@$_SESSION['afrebay']['userId'])) { ?>
                         <a href="<?=base_url(); ?>homepage" title="">
                             <img class="hidesticky" src="<?=base_url(); ?>uploads/logo/<?= $get_setting->logo?>" alt="" />
                             <img class="showsticky" src="<?=base_url(); ?>uploads/logo/<?= $get_setting->logo?>" alt="" />
@@ -196,7 +205,7 @@ $(function () {
                         <?php } ?>
                         </div>
                         <div class="d-flex align-items-center">
-                            <?php if(!empty($_SESSION['afrebay']['userId'])) { ?>
+                            <?php if(!empty(@$_SESSION['afrebay']['userId'])) { ?>
                             <form method="post" action="<?= base_url('search-work') ?>">
                                 <div style="align-items: center !important; flex-direction: column;">
                                     <div class="d-flex position-relative">
@@ -221,7 +230,7 @@ $(function () {
                                     $uri = $uri[2];
                                     ?>
                                     <?php
-                                    if(!empty($_SESSION['afrebay']['userId'])) { ?>
+                                    if(!empty(@$_SESSION['afrebay']['userId'])) { ?>
                                     <li class="">
                                         <a href="<?= base_url('homepage')?>" title="Home" class="<?php if($uri == 'homepage') { echo "active"; } else {echo "";}?>">
                                         <i class="fa-solid fa-house"></i></i><?php if($uri == 'homepage') { echo " Home"; } else {echo "";}?>
@@ -240,8 +249,8 @@ $(function () {
                                     <?php } ?>
                                     <li class="">
                                     <?php
-                                    if(!empty($_SESSION['afrebay']['userId'])) {
-                                        if(is_numeric($_SESSION['afrebay']['userId'])) { ?>
+                                    if(!empty(@$_SESSION['afrebay']['userId'])) {
+                                        if(is_numeric(@$_SESSION['afrebay']['userId'])) { ?>
                                         <a href="<?= base_url('chat')?>" title="Messages" class="<?php if($uri == 'chat') { echo "active"; } else {echo "";}?>">
                                             <i class="fa-solid fa-comment-dots"></i><?php if($uri == 'chat') { echo " Messages"; } else {echo "";}?></a>
                                     <?php } else { ?>
@@ -253,9 +262,9 @@ $(function () {
                         </div>
                     </div>
                     <div class="btn-extars">
-                        <?php if(is_numeric($_SESSION['afrebay']['userId'])) { ?>
+                        <?php if(is_numeric(@$_SESSION['afrebay']['userId'])) { ?>
                         <ul class="account-btns">
-                            <?php if(!empty($_SESSION['afrebay']['userId'])) {
+                            <?php if(!empty(@$_SESSION['afrebay']['userId'])) {
                                 if(!empty($_SESSION['afrebay']['firstname'])) {
                                     $fullname = $_SESSION['afrebay']['firstname']." ".$_SESSION['afrebay']['lastname'];
                                 } else {
@@ -265,7 +274,7 @@ $(function () {
                                 <li class="menu-item-has-children User_Dashboard_Menu">
                                     <a class="Profile_dashboard_btn" href="javascript:void(0)" title="">
                                         <?php
-                                        $getUserimg = $this->db->query("SELECT * FROM users WHERE userId = '".$_SESSION['afrebay']['userId']."'")->row();
+                                        $getUserimg = $this->db->query("SELECT * FROM users WHERE userId = '".@$_SESSION['afrebay']['userId']."'")->row();
                                         if(!empty($getUserimg->profilePic) && file_exists('uploads/users/'.$getUserimg->profilePic)) {
                                             $img = base_url('uploads/users/'.$getUserimg->profilePic);
                                         } else {
@@ -283,9 +292,9 @@ $(function () {
                                             <?php
                                             $uid = $_SESSION['afrebay']['userType'];
                                             if(@$_SESSION['afrebay']['userType']=='1') { ?>
-                                            <a href="<?php echo base_url("professionals_detail/".base64_encode($_SESSION['afrebay']['userId']))?>" title="">View Profile</a>
+                                            <a href="<?php echo base_url("professionals_detail/".base64_encode(@$_SESSION['afrebay']['userId']))?>" title="">View Profile</a>
                                             <?php } else if(@$_SESSION['afrebay']['userType']=='2') { ?>
-                                            <a href="<?php echo base_url("customer_detail/".base64_encode($_SESSION['afrebay']['userId']))?>" title="">View Profile</a>
+                                            <a href="<?php echo base_url("customer_detail/".base64_encode(@$_SESSION['afrebay']['userId']))?>" title="">View Profile</a>
                                             <?php } ?>
                                         </li>
                                         <li>
