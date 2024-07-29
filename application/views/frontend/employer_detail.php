@@ -40,16 +40,16 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                             </h3>
                                             <!--<span><i class="la la-map-marker"></i><?= @$userdata->address; ?></span>
                                             <span class="job-is ft">Full time</span>-->
-                                            <ul class="tags-jobs">
+                                            <!-- <ul class="tags-jobs">
                                                 <li><i class="la la-file-text"></i> Applications <?= count($get_post); ?></li>
-                                                <!-- <li><i class="la la-calendar-o"></i>
+                                                <li><i class="la la-calendar-o"></i>
                                                     <?php $getdate = $this->Crud_model->get_single('postjob', "user_id='" . $userdata->userId . "'");
                                                     if (!empty($getdate->appli_deadeline)) { ?>
                                                     Post Date: <?= date('M d,Y', strtotime(@$getdate->appli_deadeline));
                                                             } ?>
-                                                </li> -->
+                                                </li>
                                                 <li><i class="la la-eye"></i> Views <?= @$userdata->view_count ?></li>
-                                            </ul>
+                                            </ul> -->
                                             <?php if(@$_SESSION['afrebay']['userId'] != $userdata->userId) { ?>
                                             <div id="status-options">
                                                 <?php if(!empty(@$_SESSION['afrebay']['userId'])) {
@@ -189,74 +189,43 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                         <h3>Company Information</h3>
                                         <ul>
                                             <li>
-                                                <i class="la la-eye"></i>
-                                                <h3>Viewed</h3>
-                                                <span><?= @$userdata->view_count ?></span>
-                                            </li>
-                                            <li>
                                                 <i class="la la-file-text"></i>
                                                 <h3>Posted Jobs</h3>
                                                 <span><?= @$total_post; ?></span>
                                             </li>
-                                            <!-- <li>
-                                                <i class="la la-map"></i>
-                                                <h3>Location</h3>
-                                                <span>
-                                                    <?php
-                                                    @$userdata->address;
-                                                    $splitAddress = explode(',', @$userdata->address);
-                                                    $numItems = count($splitAddress);
-                                                    $i = 0;
-                                                    foreach ($splitAddress as $key => $value) {
-                                                        if (0 === --$numItems) {
-                                                            echo $value;
-                                                        }
-                                                    }
-                                                    ?>
-                                                </span>
-                                            </li> -->
-
-                                            <?php
-                                            //$skills = $this->db->query("SELECT group_concat(required_key_skills) as skill FROM postjob WHERE user_id = '".$userdata->userId."'")->result_array();
-                                            //if(!empty($skills[0]['skill'])) {
-                                            ?>
-                                            <!-- <li>
-                                                <i class="la la-bars"></i>
-                                                <h3>Skills</h3>
-                                                <span>
-                                                <?php echo $uniq_skill = implode(', ', array_unique(explode(',', $skills[0]['skill']))); ?>
-                                                </span>
-                                            </li> -->
-                                            <?php // }
-                                            ?>
-                                            <?php if (!empty(@$userdata->foundedyear)) { ?>
-                                                <li>
-                                                    <i class="la la-clock-o"></i>
-                                                    <h3>Since</h3>
-                                                    <span><?= @$userdata->foundedyear; ?></span>
-                                                </li>
-                                            <?php } ?>
-                                            <!-- <li>
-                                                <i class="la la-users"></i>
-                                                <h3>Team Size</h3>
-                                                <span>
-                                                    <?php if ($userdata->teamsize > '10000') {
-                                                        echo "10000+";
-                                                    } else {
-                                                        echo $userdata->teamsize;
-                                                    }
-                                                    ?>
-                                                </span>
-                                            </li>
-                                            <li>
-                                                <i class="la la-users"></i>
-                                                <h3>TAX ID</h3>
-                                                <span>
-                                                    <?php echo $userdata->teamsize; ?>
-                                                </span>
-                                            </li> -->
                                         </ul>
                                     </div>
+                                    <?php if($_SESSION['afrebay']['userId'] == $userdata->userId ){?>
+                                    <div class="quick-form-job">
+                                        <h3>Rate <?= "@".$_SESSION['afrebay']['username']?></h3>
+                                        <form method="post" action="<?= base_url('user/dashboard/save_employer_rating')?>">
+                                            <div class="row m-0">
+                                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                                    <span class="star-rating star-5">
+                                                        <input type="radio" name="rating" value="1"><i></i>
+                                                        <input type="radio" name="rating" value="2"><i></i>
+                                                        <input type="radio" name="rating" value="3"><i></i>
+                                                        <input type="radio" name="rating" value="4"><i></i>
+                                                        <input type="radio" name="rating" value="5"><i></i>
+                                                    </span>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 Form_Subject">
+                                                    <input type="text" placeholder="Enter Subject" name="subject"
+                                                        required />
+                                                    <input type="hidden" value="<?= @$user_detail->userId ?>"
+                                                        name="user_id">
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 Form_Textarea">
+                                                    <textarea placeholder="Enter review" name="review"></textarea>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 Form_Btn">
+                                                    <button class="submit btn btn-info">Submit</button>
+                                                </div>
+                                            </div>
+                                            <!--  <span>You accepts our <a href="javascript:void(0)" title="">Terms and Conditions</a></span> -->
+                                        </form>
+                                    </div>
+                                <?php } ?>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 column">
                                     <div class="Product_Details">

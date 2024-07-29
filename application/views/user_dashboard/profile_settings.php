@@ -88,8 +88,15 @@ if($data_request=='user') {
                                     <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value="<?php echo $userinfo->lastname;?>"  onkeypress="only_alphabets(event)" />
                                     <div id="vld_lastname" style="color:red; margin-top: 10px;">Please enter Last Name.</div>
                                 </div>
+                                <?php
+                                $pattern = '/\b\d{6}\b/';
+                                // Use preg_match to find the postal code
+                                if (preg_match($pattern, $userinfo->address, $matches)) {
+                                    $postalCode = $matches[0];
+                                }
+                                ?>
                                 <div class="mb-0 float-left w-100">
-                                    <input type="text" class="form-control" name="zip" id="zip" placeholder="Zip Code" value="<?php echo @$userinfo->zip;?>" onkeypress="only_number(event)" maxlength="6" />
+                                    <input type="text" class="form-control" name="zip" id="zip" placeholder="Zip Code" value="<?php echo @$postalCode;?>" onkeypress="only_number(event)" maxlength="6" />
                                     <div id="vld_zip" style="color:red; margin-top: 10px;">Please enter Zip Code.</div>
                                 </div>
                             </div>
@@ -101,7 +108,7 @@ if($data_request=='user') {
                             </div>
                             <div class="col-lg-6 profile-dsd">
                                 <div class="mb-4 float-left w-100">
-                                    <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Contact Number" value="<?php echo $userinfo->mobile;?>" readonly/>
+                                    <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Contact Number" value="<?php echo $userinfo->mobile;?>"/>
                                 </div>
                             </div>
                             <?php } ?>

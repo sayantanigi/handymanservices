@@ -23,7 +23,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                             <div class="row m-0">
                                 <div class="col-lg-12 col-md-12 col-sm-12 text-center mb-3">
                                     <h3 class="h3 font-weight-bold text-dark">Welcome Back</h3>
-                                    <span>Enter your email address / phone number and password</span>
+                                    <span>Enter your Username and Password</span>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 SignIn_Right">
                                     <?php if($this->session->flashdata('message')) { ?>
@@ -49,7 +49,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                             <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <div class="cfield">
                                                     <div class="cfield_Input">
-                                                        <input type="text" placeholder="Email address or username" name="email" class="form-control" />
+                                                        <input type="text" placeholder="username" name="email" class="form-control" />
                                                         <span class="iconkey">
                                                             <i class="la la-user"></i>
                                                         </span>
@@ -60,7 +60,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                             <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <div class="cfield">
                                                     <div class="cfield_Input">
-                                                        <input type="password" placeholder="Password" name="password" id="login_pass" class="form-control"/>
+                                                        <input type="password" placeholder="password" name="password" id="login_pass" class="form-control"/>
                                                         <span class="iconkey">
                                                             <i class="la la-key" onclick="checkPass()"></i>
                                                         </span>

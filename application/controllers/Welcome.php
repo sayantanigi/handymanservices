@@ -290,7 +290,7 @@ class Welcome extends CI_Controller {
 		$data=array(
 			'user_id'=>$_SESSION['afrebay']['userId'],
 			'required_key_skills'=> $keySkills,
-			'category_id'=>$this->input->post('category_id',TRUE),
+			'category_id'=>$this->input->post('cat_value',TRUE),
 			'subcategory_id'=>$this->input->post('subcategory_id',TRUE),
 			'post_title'=>nl2br($this->input->post('post_title',TRUE)),
 			'description'=>$this->input->post('description',TRUE),
@@ -308,7 +308,7 @@ class Welcome extends CI_Controller {
             'visibility'=>$visibility,
 			'created_date'=>date('Y-m-d H:i:s', time()),
 		);
-        //echo "<pre>"; print_r($data); die();
+        echo "<pre>"; print_r($data); die();
 		$this->Crud_model->SaveData('postjob',$data);
 		$insert_jid = $this->db->insert_id();
 		if(!empty($insert_jid)) {

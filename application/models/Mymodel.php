@@ -29,7 +29,7 @@ class Mymodel extends MY_Model {
 		return $this->fetch($sql,false);
 	}
 	public function check_record($email, $password){
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        /*if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $email = $email;
             $this->db->select ( "*" );
             $this->db->from("users");
@@ -45,16 +45,24 @@ class Mymodel extends MY_Model {
             $this->db->where("password", base64_encode($password));
             $this->db->where("status", '1');
             $query = $this->db->get();
-        }
+        }*/
+        $email = $email;
+        $this->db->select ( "*" );
+        $this->db->from("users");
+        $this->db->where("username", $email);
+        $this->db->where("password", base64_encode($password));
+        $this->db->where("status", '1');
+        $query = $this->db->get();
+        //print_r($query); die();
 		if($query->num_rows() > 0) {
             $result = $query->row();
             $data['afrebay'] = array(
                 'userId'=>$result->userId,
-				//'companyname'=>$result->companyname,
-                //'firstname'=>$result->firstname,
-				//'lastname'=>$result->lastname,
+				'username'=>$result->username,
+                'firstname'=>$result->firstname,
+				'lastname'=>$result->lastname,
                 'userEmail'=>$result->email,
-                'userMobile'=>$result->mobile,
+                //'userMobile'=>$result->mobile,
                 'userType'=>$result->userType,
                 'UserLoggedIn'=> TRUE,
             );

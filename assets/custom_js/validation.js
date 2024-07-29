@@ -126,7 +126,7 @@ function reset_location()
 function only_number(event)
 {
     var x = event.which || event.keyCode;
-    console.log(x);
+    //console.log(x);
     if((x >= 48 ) && (x <= 57 ) || x == 8 | x == 9 || x == 13 )
     {
         return;
@@ -138,7 +138,7 @@ function only_number(event)
 function only_alphabets(event)
 {
     var x = event.which || event.keyCode;
-    console.log(x);
+    //console.log(x);
     if((x >= 65 ) && (x <= 90 ) || (x >= 97 ) && (x <= 122 ) ||(x==32))
     {
         return;
@@ -150,7 +150,7 @@ function only_alphabets(event)
 function only_specialAlphabets(event)
 {
     var x = event.which || event.keyCode;
-    console.log(x);
+    //console.log(x);
     if((x >= 65 ) && (x <= 90 ) || (x >= 97 ) && (x <= 122 ) || (x==32)  || (x==45)  || (x==39))
     {
         return;

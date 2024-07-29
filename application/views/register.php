@@ -5,23 +5,9 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
     $banner_img = base_url("assets/images/resource/mslider1.jpg");
 } ?>
 <style>
-    #register-messages {
-        text-align: center;
-        margin-top: 25px;
-        display: none;
-    }
-
-    #register-messages-notemail {
-        text-align: center;
-        margin-top: 25px;
-        display: none;
-    }
-
-    #err-messages {
-        text-align: center;
-        margin-top: 10px;
-        display: none;
-    }
+#register-messages { text-align: center; margin-top: 25px; display: none; }
+#register-messages-notemail { text-align: center; margin-top: 25px; display: none; }
+#err-messages { text-align: center; margin-top: 10px; display: none; }
 </style>
 <div class="shutter left"></div>
 <div class="shutter right"></div>
@@ -45,11 +31,6 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <h3 class="h3 font-weight-bold text-dark text-center">Start Your <br> Handyman Journey</h3>
-                                        <!-- div class="select-user mb-3">
-                                        <span class="user-tab active" user_type="1" onclick="get_value(1)">Professional</span>
-                                        <span class="user-tab" user_type="2" onclick="get_value(2)">Customer</span>
-                                    </div>
-                                    <div class="error" id="err_usertype"></div> -->
                                     </div>
                                     <div class="col-lg-12">
                                         <div id="register-messages" class="text-success-msg f-20">
@@ -61,7 +42,6 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                             <p style="color: red;"></p>
                                         </div>
                                         <form id="signUp_form" action="#" method="post">
-
                                             <div class="row m-0">
                                                 <div class="col-lg-12">
                                                     <div class="extra-login reg mb-3">
@@ -88,13 +68,13 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                                     </div>
                                                     <div class="error text-left" id="err_lastname"></div>
                                                 </div>
-                                                <div class="col-lg-12 company_name">
+                                                <div class="col-lg-12 username">
                                                     <div class="cfield cfield_top">
                                                         <div class="cfield_Input">
-                                                            <input type="text" placeholder="Company Name" name="company_name" id="company_name" class="form-control" />
+                                                            <input type="text" placeholder="User Name" name="username" id="username" class="form-control"/>
                                                         </div>
                                                     </div>
-                                                    <div class="error text-left" id="err_companyname"></div>
+                                                    <div class="error text-left" id="err_username"></div>
                                                 </div>
                                                 <div class="col-lg-12 email">
                                                     <div class="error text-left" id="err_email"></div>
@@ -136,7 +116,6 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12 SignUp_Btn">
-                                                    <input type="hidden" name="user_type" id="user_type">
                                                     <button type="button" class="btn logbtn w-100" id="rSignUp" onclick="return btn_register();">Continue</button>
                                                     <input type="hidden" name="location" id="location" value="<?= @$loc ?>" placeholder="Set Location" />
                                                     <input type="hidden" id="search_lat" name="s_lat" value="<?= @$lat ?>">
@@ -152,7 +131,6 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                 </div>
                             </div>
                         </div>
-
                         <div class="logForm" style="width :100%; margin-top: 10px; display: flex; float: left; margin-right: 20px;">
                             <div class="col-lg-12 text-center">
                                 <a href="<?= base_url() ?>login" class="text-primary font-weight-bold">Sign In</a>
@@ -165,15 +143,15 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
     </section>
 </div>
 <style>
-    #loader {
-        display: none;
-        width: 40px;
-    }
+#loader {
+    display: none;
+    width: 40px;
+}
 </style>
 <script src="<?= base_url('assets/js/jquery.min.js') ?>" type="text/javascript"></script>
+<script type="text/javascript" src="<?= base_url('assets/custom_js/register.js') ?>"></script>
 <script>
     window.addEventListener('load', () => {
         document.body.classList.add('loaded');
     });
 </script>
-<script type="text/javascript" src="<?= base_url('assets/custom_js/register.js') ?>"></script>
