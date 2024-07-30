@@ -54,11 +54,6 @@ function get_time_ago($time) {
                                 <div class="crpostUser mr-3">
                                     <?php
                                     $getUser_details = $this->db->query("SELECT * FROM users WHERE userId = '" . $_SESSION['afrebay']['userId'] . "'")->row();
-                                    if (!empty($getUser_details->companyname)) {
-                                        $name = $getUser_details->companyname;
-                                    } else {
-                                        $name = $getUser_details->firstname . " " . $getUser_details->lastname;
-                                    }
                                     if (!empty($getUser_details->profilePic) && file_exists('uploads/users/' . $getUser_details->profilePic)) {
                                         $profilePic = base_url('uploads/users/' . $getUser_details->profilePic);
                                     } else {
@@ -124,21 +119,12 @@ function get_time_ago($time) {
                                                 <img style="width: 70px; height: 70px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="">
                                                 <?php } ?>
                                                 <div class="TextData" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 15px;">
-                                                    <h3 style="font-size: 20px; font-weight: 600; margin: 0; color: #000;">
-                                                    <?php
-                                                    if (!empty($get_user->companyname)) {
-                                                        echo $get_user->companyname;
-                                                    } else {
-                                                        echo $get_user->firstname . " " . $get_user->lastname;
-                                                    }
-                                                    ?>
-                                                    </h3>
-                                                    <p style="margin: 0; font-size: 13px; color: #b1b1b1;">Posted -
-                                                        <?php echo get_time_ago(strtotime($row->created_date)) ?>
-                                                    </p>
+                                                    <a href="<?php if($get_user->userType == '1') {echo base_url('professionals_detail/'.base64_encode($get_user->userId)); } else{ echo base_url('customer_detail/'.base64_encode($get_user->userId)); }?>">
+                                                        <h3 style="font-size: 20px; font-weight: 600; margin: 0; color: #000;"><?php echo "@".$get_user->username; ?></h3>
+                                                    </a>
+                                                    <p style="margin: 0; font-size: 13px; color: #b1b1b1;">Posted <?php echo get_time_ago(strtotime($row->created_date)) ?> </p>
                                                 </div>
                                             </div>
-                                            <?php if (@$_SESSION['afrebay']['userId'] === @$row->user_id) { ?>
                                             <div>
                                                 <div class="btn-group dropleft dropPost">
                                                     <a class="dotsdrop" href="#" role="button"
@@ -147,8 +133,16 @@ function get_time_ago($time) {
                                                     </a>
                                                     <div class="dropdown-menu  dropdown-menu-lg-right">
                                                         <!-- <a class="dropdown-item" href="<?= base_url() ?>update-postjob/<?= base64_encode($row->id) ?>">Edit Post</a> -->
+                                                        <?php if (@$_SESSION['afrebay']['userId'] === @$row->user_id) { ?>
                                                         <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="jobDelete(<?= $row->id ?>)"><img src="<?= base_url('assets/images/PostIcon7.png'); ?>">Delete Post</a>
-                                                        <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon8.png'); ?>"> Save Post</a>
+                                                        <?php } ?>
+                                                        <?php
+                                                        $getsavepostData = $this->db->query("SELECT * FROM users_save_post WHERE post_id = '".$row->id."' AND user_id = '".$_SESSION['afrebay']['userId']."' AND status = '1'")->row();
+                                                        if (!empty($getsavepostData)) { ?>
+                                                        <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="unsavePost(<?= $row->id ?>)"><img src="<?= base_url('assets/images/bookmark.png'); ?>"> Unsave Post</a>
+                                                        <?php } else { ?>
+                                                        <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="savePost(<?= $row->id ?>)"><img src="<?= base_url('assets/images/PostIcon8.png'); ?>"> Save Post</a>
+                                                        <?php } ?>
                                                         <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon9.png'); ?>"> Forward Post</a>
                                                         <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon10.png'); ?>"> Not interested in this post</a>
                                                         <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon4.png'); ?>"> Follow @Username</a>
@@ -160,10 +154,12 @@ function get_time_ago($time) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <?php } ?>
                                         </div>
-                                        <p class="CommentData" style="margin-top: 15px;margin-bottom:8px;font-size: 14px;color: #000;line-height: 25px;"> <?= ucfirst($row->post_title) ?></p>
-                                        <p class="CommentData" style="margin-top: 8px;margin-bottom: 8px;font-size: 14px;color: #000;line-height: 18px;"> <?= ucfirst($row->description) ?></p>
+                                        <p class="CommentData" style="margin-top: 15px;margin-bottom:8px;font-size: 14px;color: #000;line-height: 25px;"> <?= ucfirst($row->post_title)?></p>
+                                        <?php if(!empty($row->category_id)) {
+                                            $get_category = $this->db->query("SELECT * FROM category WHERE id = '".$row->category_id."'")->row();
+                                        } ?>
+                                        <p class="CommentData" style="margin-top: 8px;margin-bottom: 8px;font-size: 14px;color: #2892ff;line-height: 18px;"> <?= "#".ucfirst(str_replace(' ', '', $get_category->category_name)) ?></p>
                                         <div class="imageData">
                                             <?php
                                             $getImage = $this->db->query("SELECT * FROM postjob_image WHERE job_id = '" . $row->id . "'")->result_array();
@@ -340,22 +336,13 @@ function get_time_ago($time) {
                                                                     } ?>
                                                                     <!-- </div> -->
                                                                     <div class="replyBox mt-3" id="replyBox_<?= $each['id']; ?>">
-                                                                        <textarea required="" name="users_rply_<?= $each['id']; ?>"
-                                                                            id="users_rply_<?= $each['id']; ?>"
-                                                                            placeholder="Reply"></textarea>
-                                                                        <a href="javascript:void(0)" class="replySubmit"
-                                                                            onclick="postUserComment(<?= $row->id; ?>, <?= $each['id']; ?>)">
-                                                                            Reply
-                                                                        </a>
+                                                                        <textarea required="" name="users_rply_<?= $each['id']; ?>" id="users_rply_<?= $each['id']; ?>" placeholder="Reply"></textarea>
+                                                                        <a href="javascript:void(0)" class="replySubmit" onclick="postUserComment(<?= $row->id; ?>, <?= $each['id']; ?>)"> Reply </a>
                                                                         <div class="uploadOptionPost">
-                                                                            <div data-toggle="modal" data-target="#postModal"
-                                                                                onclick="postData()" style="margin-top: 20px;">
-                                                                                <label id="postBoximgup"><img
-                                                                                        src="assets/images/photo-icon.png">
-                                                                                    Image</label>
-                                                                                <label id="postBoxvidup"><img
-                                                                                        src="assets/images/video-icon.png">
-                                                                                    Video</label>
+                                                                            <div data-toggle="modal" style="margin-top: 20px;">
+                                                                                <label id="postBoximgup"><img src="assets/images/photo-icon.png"> Image</label>
+                                                                                <label id="postBoxvidup"><img src="assets/images/video-icon.png"> Video</label>
+                                                                                <!-- <input type="file" id="file-upload" name="postjobPic[]" multiple class="text-center center-block file-upload" /> -->
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -369,7 +356,7 @@ function get_time_ago($time) {
                                                     <div class="d-flex">
                                                         <div class="commnetUser">
                                                             <img
-                                                                src="https://techg.igiapp.com/handymanservices/uploads/no_pimage.png">
+                                                                src="<?php base_url()?>uploads/no_pimage.png">
                                                         </div>
                                                         <div class="Comment_Mobile position-relative flex-fill w-100">
                                                             <textarea class="postComment mt-0 form-control f1 emoji_act"
@@ -389,12 +376,10 @@ function get_time_ago($time) {
                                                                 <?php } ?>
                                                             </div>
                                                             <div class="uploadOptionPost" style="margin-top: 20px;">
-                                                                <div data-toggle="modal" data-target="#postModal"
-                                                                    onclick="postData()">
-                                                                    <label id="postBoximgup"><img
-                                                                            src="assets/images/photo-icon.png"> Image</label>
-                                                                    <label id="postBoxvidup"><img
-                                                                            src="assets/images/video-icon.png"> Video</label>
+                                                                <div data-toggle="modal">
+                                                                    <label id="postBoximgup"><img src="assets/images/photo-icon.png"> Image</label>
+                                                                    <label id="postBoxvidup"><img src="assets/images/video-icon.png"> Video</label>
+                                                                    <!-- <input type="file" id="file-upload" name="postjobPic[]" multiple class="text-center center-block file-upload" /> -->
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -486,9 +471,16 @@ function get_time_ago($time) {
                                         <div>
                                             <h3>
                                                 <?php
-                                                if (!empty($getPostID->post_id)) {
-                                                    $getPostLike = $this->db->query("SELECT COUNT(id) as total_like FROM postjob_like WHERE postjob_id IN (" . $getPostID->post_id . ")")->row();
-                                                    echo $getPostLike->total_like;
+                                                // if($_SESSION['afrebay']['userType'] == "2") {
+                                                //     echo "SELECT COUNT(id) as review FROM employer_rating WHERE worker_id = '".$_SESSION['afrebay']['userId']."'";
+                                                //     $getreview = $this->db->query("SELECT COUNT(id) as review FROM employer_rating WHERE worker_id = '".$_SESSION['afrebay']['userId']."'")->row();
+                                                // } else {
+                                                //     echo "SELECT COUNT(id) as review FROM employer_rating WHERE employer_id = '".$_SESSION['afrebay']['userId']."'";
+                                                //     $getreview = $this->db->query("SELECT COUNT(id) as review FROM employer_rating WHERE employer_id = '".$_SESSION['afrebay']['userId']."'")->row();
+                                                // }
+                                                $getreview = $this->db->query("SELECT COUNT(id) as review FROM employer_rating WHERE worker_id = '".$_SESSION['afrebay']['userId']."'")->row();
+                                                if (!empty($getreview->review)) {
+                                                    echo $getreview->review;
                                                 } else {
                                                     echo "0";
                                                 }
@@ -516,7 +508,7 @@ function get_time_ago($time) {
                                 <?php
                                 $getPostData = $this->db->query("SELECT GROUP_CONCAT(id) as id FROM postjob WHERE user_id = '" . $_SESSION['afrebay']['userId'] . "'")->row();
                                 if (!empty($getPostData->id)) {
-                                    $checkPostLike = $this->db->query("SELECT * FROM postjob_like WHERE postjob_id IN (" . $getPostData->id . ") AND is_liked = '1' ORDER BY id DESC")->result_array();
+                                    $checkPostLike = $this->db->query("SELECT * FROM postjob_like WHERE postjob_id IN (" . $getPostData->id . ") AND is_liked = '1' AND user_id != '".$_SESSION['afrebay']['userId']."'ORDER BY id DESC")->result_array();
                                     foreach ($checkPostLike as $postLike) {
                                         $getUserDetails = $this->db->query("SELECT * FROM users WHERE userId = '" . $postLike['user_id'] . "'")->row();
                                         if (!empty($getUserDetails->profilePic) && file_exists('uploads/users/' . $getUserDetails->profilePic)) {
@@ -540,9 +532,40 @@ function get_time_ago($time) {
                                                 <a href="javascript:void(0)"><img src="<?= $profilePic; ?>"></a>
                                             </div>
                                             <div>
-                                                <h4><a href="<?= $link; ?>" target="_blank"><span
-                                                            class="font-weight-bold"><?= $fullname; ?></span> liked your
-                                                        post.</a></h4>
+                                                <h4><a href="<?= $link; ?>" target="_blank"><span class="font-weight-bold"><?= "@".$getUserDetails->username; ?></span> liked your post.</a></h4>
+                                                <p><?php echo get_time_ago(strtotime($postLike['created_at'])) ?></p>
+                                            </div>
+                                        </div>
+                                    <?php }
+                                } ?>
+                                <?php
+                                $getPostData = $this->db->query("SELECT GROUP_CONCAT(id) as id FROM postjob WHERE user_id = '" . $_SESSION['afrebay']['userId'] . "'")->row();
+                                if (!empty($getPostData->id)) {
+                                    $checkPostLike = $this->db->query("SELECT * FROM postjob_comment WHERE postjob_id IN (" . $getPostData->id . ") AND user_id != '".$_SESSION['afrebay']['userId']."'ORDER BY id DESC")->result_array();
+                                    foreach ($checkPostLike as $postLike) {
+                                        $getUserDetails = $this->db->query("SELECT * FROM users WHERE userId = '" . $postLike['user_id'] . "'")->row();
+                                        if (!empty($getUserDetails->profilePic) && file_exists('uploads/users/' . $getUserDetails->profilePic)) {
+                                            $profilePic = base_url() . 'uploads/users/' . $getUserDetails->profilePic;
+                                        } else {
+                                            $profilePic = base_url() . 'uploads/no_pimage.png';
+                                        }
+                                        if (!empty($getUserDetails->companyname)) {
+                                            $fullname = $getUserDetails->companyname;
+                                        } else {
+                                            $fullname = $getUserDetails->firstname . ' ' . $getUserDetails->lastname;
+                                        }
+                                        if ($getUserDetails->userType == '2') {
+                                            $link = base_url('customer_detail/' . base64_encode($getUserDetails->userId));
+                                        } else {
+                                            $link = base_url('professionals_detail/' . base64_encode($getUserDetails->userId));
+                                        }
+                                        ?>
+                                        <div class="d-flex mb-2 activitylist align-items-center">
+                                            <div class="activityUser">
+                                                <a href="javascript:void(0)"><img src="<?= $profilePic; ?>"></a>
+                                            </div>
+                                            <div>
+                                                <h4><a href="<?= $link; ?>" target="_blank"><span class="font-weight-bold"><?= "@".$getUserDetails->username; ?></span> commented your post.</a></h4>
                                                 <p><?php echo get_time_ago(strtotime($postLike['created_at'])) ?></p>
                                             </div>
                                         </div>
@@ -664,7 +687,7 @@ function get_time_ago($time) {
                             <div class="modaluserimg">
                                 <img src="<?= $profilePic; ?>">
                             </div>
-                            <h3 class="mb-0 ml-2 h6 font-weight-bold text-dark"><?= $name; ?></h3>
+                            <h3 class="mb-0 ml-2 h6 font-weight-bold text-dark"><?= "@".$getUser_details->username; ?></h3>
                         </div>
                         <div class="d-flex selectPost align-items-center">
                             <div><i class="fa-solid fa-earth-americas"></i></div>
@@ -687,14 +710,12 @@ function get_time_ago($time) {
                             <p>Images must be less than 5 MB in size</p>
                         </label>
                         <!-- <input type="file" id="file-upload" accept="image/*" > -->
-                        <input type="file" id="file-upload" name="postjobPic[]" multiple
-                            class="text-center center-block file-upload" />
+                        <input type="file" id="file-upload" name="postjobPic[]" multiple class="text-center center-block file-upload" />
                     </div>
                     <div class="upload-container mb-2" id="videoUpload">
                         <a href="#" class="closemediaupload"><i class="fa-sharp fa-light fa-xmark"></i></a>
                         <label for="file-upload">
-                            <img src="<?php base_url(); ?>assets/images/videoIcon.png" alt="Upload Video"
-                                class="uploadImgicon">
+                            <img src="<?php base_url(); ?>assets/images/videoIcon.png" alt="Upload Video" class="uploadImgicon">
                             <p class="text-dark font-weight-bold">Add videos</p>
                             <p>Videos must be less than 25 MB in size</p>
                         </label>
@@ -713,7 +734,7 @@ function get_time_ago($time) {
                         </div>
                     </div>
                     <div style="background: #F6F6F6; border-radius: 10px; margin-bottom: 15px;">
-                        <select name="category" id="category" class="categories_style" style="width: 100%; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; height: 40px;">
+                        <select name="category" id="category" class="categories_style" style="width: 100%; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; height: 40px;" onchange="getcategoryval(this.value);">
                             <option value="">Select Category</option>
                             <?php
                             $getCategory = $this->db->query("SELECT * FROM category WHERE status = 'Active'")->result_array();
@@ -727,6 +748,7 @@ function get_time_ago($time) {
                         <input type="hidden" name="location" id="location_guest" value="<?= @$loc ?>" placeholder="Set Location" />
                         <input type="hidden" name="s_lat" id="search_lat_guest" value="<?= @$lat ?>">
                         <input type="hidden" name="s_lon" id="search_lon_guest" value="<?= @$lon ?>">
+                        <input type="hidden" name="cat_valmod" id="cat_valmod" value="">
                         <button class="w-100 postbtn" type="submit">Post</button>
                     </div>
                 </form>
@@ -734,6 +756,7 @@ function get_time_ago($time) {
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -768,658 +791,479 @@ function get_time_ago($time) {
         </div>
     </div>
 </div>
+
 <style>
-    #city,
-    #state,
-    .chosen_country {
-        color: #888;
-        height: 60px;
-        border-radius: 50px;
-        padding: 17px !important
-    }
-
-    #city,
-    #state {
-        display: block
-    }
-
-    .jconfirm-content-pane {
-        text-align: center;
-        font-size: 18px
-    }
-
-    .jconfirm-buttons {
-        margin-right: 140px;
-        display: inline-block
-    }
-
-    #country-list {
-        float: left;
-        list-style: none;
-        margin-top: 60px;
-        padding: 0;
-        width: 98%;
-        position: absolute;
-        z-index: 1
-    }
-
-    #country-list li {
-        padding: 10px 30px;
-        background: #fff;
-        margin: 0 !important;
-        border-radius: 10px;
-        border-bottom: 1px solid #eee
-    }
-
-    #country-list li:hover {
-        background: #ece3d2;
-        cursor: pointer
-    }
-
-    ::-webkit-scrollbar {
-        width: 10px;
-        background-color: transparent
-    }
-
-    ::-webkit-scrollbar-track {
-        background: 0 0
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 5px
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555
-    }
-
-    .pf-map iframe {
-        height: 525px !important
-    }
-
-    #map {
-        position: relative !important;
-        height: 500px !important;
-        max-width: 100% !important
-    }
-
-    .hidereplyBox {
-        display: none !important
-    }
-
-    .showreplyBox {
-        display: block !important
-    }
-
+    #city,#state,.chosen_country{color:#888;height:60px;border-radius:50px;padding:17px!important}
+    #city,#state{display:block}
+    .jconfirm-content-pane{text-align:center;font-size:18px}
+    .jconfirm-buttons{margin-right:140px;display:inline-block}
+    #country-list{float:left;list-style:none;margin-top:60px;padding:0;width:98%;position:absolute;z-index:1}
+    #country-list li{padding:10px 30px;background:#fff;margin:0!important;border-radius:10px;border-bottom:1px solid #eee}
+    #country-list li:hover{background:#ece3d2;cursor:pointer}
+    ::-webkit-scrollbar{width:10px;background-color:transparent}
+    ::-webkit-scrollbar-track{background:0 0}
+    ::-webkit-scrollbar-thumb{background:#888;border-radius:5px}
+    ::-webkit-scrollbar-thumb:hover{background:#555}
+    .pf-map iframe{height:525px!important}
+    #map{position:relative!important;height:500px!important;max-width:100%!important}
+    .hidereplyBox{display:none!important}
+    .showreplyBox{display:block!important}
     @media screen and (max-width:425px) {
-
-        .ADD_Sense,
-        .Comment_Mobile textarea,
-        .Rply_Comment_Block ul,
-        .TopBar a,
-        .TopBar ul,
-        .hidereplyBox a,
-        .hidereplyBox textarea {
-            width: 100% !important
-        }
-
-        .TopBar ul li,
-        .job-field input {
-            padding: 0 20px !important
-        }
-
-        .job-field .la-search {
-            font-size: 25px !important;
-            top: 20px !important
-        }
-
-        .Mobile_Btn_Container_1 {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 !important
-        }
-
-        .Comment_Data,
-        .PostContainer .DataContainer .Comment_Block {
-            padding: 10px !important
-        }
-
-        .Mobile_Btn_Container_1 .btn-primary {
-            margin-bottom: 20px !important
-        }
-
-        .TopBar {
-            flex-direction: column !important;
-            height: 110px !important
-        }
-
-        .TopBar ul {
-            justify-content: space-evenly
-        }
-
-        .TopBar a span {
-            width: 100px !important
-        }
-
-        .PostContainer .DataContainer .InfoBlock {
-            height: 50px !important
-        }
-
-        .PostContainer .DataContainer .InfoBlock img {
-            height: 50px !important;
-            width: 50px !important
-        }
-
-        .PostContainer .DataContainer .InfoBlock .TextData h3 {
-            font-size: 16px !important
-        }
-
-        .PostContainer .DataContainer .InfoBlock .TextData p {
-            line-height: 20px !important
-        }
-
-        .PostContainer .DataContainer .CommentData {
-            font-size: 14px !important;
-            line-height: 20px !important
-        }
-
-        .Comment_Data {
-            margin-left: 0 !important
-        }
-
-        .ADD_Sense {
-            height: 120px !important;
-            top: calc(100vh - 130px) !important;
-            padding-left: 0 !important;
-            align-items: center !important;
-            justify-content: center !important;
-            left: 0 !important
-        }
+        .ADD_Sense,.Comment_Mobile textarea,.Rply_Comment_Block ul,.TopBar a,.TopBar ul,.hidereplyBox a,.hidereplyBox textarea{width:100%!important}
+        .TopBar ul li,.job-field input{padding:0 20px!important}
+        .job-field .la-search{font-size:25px!important;top:20px!important}
+        .Mobile_Btn_Container_1{display:flex;align-items:center;justify-content:center;padding:0!important}
+        .Comment_Data,.PostContainer .DataContainer .Comment_Block{padding:10px!important}
+        .Mobile_Btn_Container_1 .btn-primary{margin-bottom:20px!important}
+        .TopBar{flex-direction:column!important;height:110px!important}
+        .TopBar ul{justify-content:space-evenly}.TopBar a span{width:100px!important}
+        .PostContainer .DataContainer .InfoBlock{height:50px!important}
+        .PostContainer .DataContainer .InfoBlock img{height:50px!important;width:50px!important}
+        .PostContainer .DataContainer .InfoBlock .TextData h3{font-size:16px!important}
+        .PostContainer .DataContainer .InfoBlock .TextData p{line-height:20px!important}
+        .PostContainer .DataContainer .CommentData{font-size:14px!important;line-height:20px!important}
+        .Comment_Data{margin-left:0!important}
+        .ADD_Sense{height:120px!important;top:calc(100vh - 130px)!important;padding-left:0!important;align-items:center!important;justify-content:center!important;left:0!important}
     }
-
-    .emojionearea,
-    .emojionearea.form-control {
-        border: none !important;
-        box-shadow: none !important
-    }
-
-    .emojionearea .emojionearea-editor:empty:before {
-        text-align: start !important
-    }
-
-    .emojionearea .emojionearea-button.active+.emojionearea-picker-position-bottom {
-        margin-top: 37px !important
-    }
-
-    .emojionearea .emojionearea-picker.emojionearea-picker-position-bottom {
-        margin-top: 10px !important;
-        right: 10px !important;
-        top: 47px !important
-    }
-
-    .emojionearea .emojionearea-editor {
-        min-height: 3em !important;
-        max-height: 0 !important
-    }
-
-    .emojionearea .emojionearea-picker .emojionearea-search>input {
-        padding: 0px 0px 0px 11px !important;
-        border-radius: 8px !important;
-    }
-
-    .Comment_Mobile .emojionearea-editor {
-        background: #f4f4f4;
-        font-size: 14px !important;
-        margin-bottom: 0 !important;
-        float: unset !important;
-        padding: 10px 105px 10px 20px !important;
-        border-radius: 45px !important;
-        min-height: 55px !important;
-        margin-top: 0px !important;
-        width: 100%;
-        border: 0 !important;
-        height: auto !important;
-        background-color: #f4f4f4 !important;
-    }
-
-    .Comment_Mobile .emojionearea-button {
-        top: 45px !important;
-    }
-
-    .hidden {
-        display: none;
-    }
-
-    .shareMenu {
-        border: 1px solid #ccc;
-        padding: 5px;
-        background-color: white;
-        float: right;
-    }
-    .PostItem {
-        height: 30px;
-        display: flex;
-        padding: 0;
-        align-items: center;
-        justify-content: flex-start;
-        padding-left: 10px;
-    }
-
-    .PostItem img {
-        height: 16px;
-        width: 16px;
-        object-fit: contain;
-        margin-right: 5px;
-    }
+    .emojionearea,.emojionearea.form-control{border:none!important;box-shadow:none!important}
+    .emojionearea .emojionearea-editor:empty:before{text-align:start!important}
+    .emojionearea .emojionearea-button.active+.emojionearea-picker-position-bottom{margin-top:37px!important}
+    .emojionearea .emojionearea-picker.emojionearea-picker-position-bottom{margin-top:10px!important;right:10px!important;top:47px!important}
+    .emojionearea .emojionearea-editor{min-height:3em!important;max-height:0!important}
+    .emojionearea .emojionearea-picker .emojionearea-search>input{padding:0 0 0 11px!important;border-radius:8px!important}
+    .Comment_Mobile .emojionearea-editor{background:#f4f4f4;font-size:14px!important;margin-bottom:0!important;float:unset!important;padding:10px 105px 10px 20px!important;border-radius:45px!important;min-height:55px!important;margin-top:0!important;width:100%;border:0!important;height:auto!important;background-color:#f4f4f4!important}
+    .Comment_Mobile .emojionearea-button{top:45px!important}
+    .hidden{display:none}
+    .shareMenu{border:1px solid #ccc;padding:5px;background-color:#fff;float:right}
+    .PostItem{height:30px;display:flex;padding:0 0 0 10px;align-items:center;justify-content:flex-start}
+    .PostItem img{height:16px;width:16px;object-fit:contain;margin-right:5px}
 </style>
 <script>
-    $(document).ready(function () {
-        // const shareBtn = $('#shareBtn');
-        // const shareMenu = $('#shareMenu');
-        // shareBtn.click(function() {
-        //     shareMenu.toggle();
-        // });
-        var base_url = $("#base_url").val();
-        var id = 'United States';
-        $.ajax({
-            type: "post",
-            cache: false,
-            url: base_url + "Welcome/states_by_country",
-            data: {
-                country_name: id
-            },
-            beforeSend: function () { },
-            success: function (returndata) {
-                $('.state_field').show();
-                $('#state').html(returndata);
-                $('#city').html('<option value="">Select State First</option>');
-            }
-        });
-        $("#search-box").keyup(function () {
-            var text = $("#search-box").val();
-            var base_url = $("#base_url").val();
-            $.ajax({
-                type: "POST",
-                url: base_url + "Welcome/get_category_list",
-                data: {
-                    category_name: text
-                },
-                beforeSend: function () {
-                    $("#search-box").css("background", "#FFF url(<?php base_url() ?>uploads/LoaderIcon.gif) no-repeat 165px");
-                },
-                success: function (data) {
-                    //console.log(data);
-                    $("#suggesstion-box").show();
-                    $("#suggesstion-box").html(data);
-                    $("#search-box").css("background", "#FFF");
-                }
-            });
-        });
-        $(".emoji_act").emojioneArea({
-            emojiPlaceholder: ":smile_cat:",
-            searchPlaceholder: "Search",
-            buttonTitle: "Use your TAB key to insert emoji faster",
-            searchPosition: "bottom",
-            pickerPosition: "bottom"
-        });
-    })
-    $("#generalForm").submit(function () {
-        var post_title = $('#post_title').val();
-        if (post_title == '') {
-            $(".emojionearea-editor").attr("placeholder", "Please Enter Post Title");
-            $("emojionearea-editor").prop("required", true);
-            $(".emojionearea-editor").focus();
-            return false;
+$(document).ready(function () {
+    // const shareBtn = $('#shareBtn');
+    // const shareMenu = $('#shareMenu');
+    // shareBtn.click(function() {
+    //     shareMenu.toggle();
+    // });
+    var base_url = $("#base_url").val();
+    var id = 'United States';
+    $.ajax({
+        type: "post",
+        cache: false,
+        url: base_url + "Welcome/states_by_country",
+        data: {
+            country_name: id
+        },
+        beforeSend: function () { },
+        success: function (returndata) {
+            $('.state_field').show();
+            $('#state').html(returndata);
+            $('#city').html('<option value="">Select State First</option>');
         }
     });
-    $("#generalForm1").submit(function () {
-        var post_title = $('.emojionearea-editor').text();
-        if (post_title == '') {
-            $(".emojionearea-editor").attr("placeholder", "Please Enter Post Title");
-            $("emojionearea-editor").prop("required", true);
-            $(".emojionearea-editor").focus();
-            return false;
-        }
-    });
-
-    function getState(val) {
+    $("#search-box").keyup(function () {
+        var text = $("#search-box").val();
         var base_url = $("#base_url").val();
-        var id = val;
         $.ajax({
-            type: "post",
-            cache: false,
-            url: base_url + "Welcome/states_by_country",
-            data: {
-                country_name: id
-            },
-            beforeSend: function () { },
-            success: function (returndata) {
-                $('.state_field').show();
-                $('#state').html(returndata);
-                $('#city').html('<option value="">Select State First</option>');
-            }
-        });
-    }
-
-    function getCity(val) {
-        var base_url = $("#base_url").val();
-        var id = val;
-        $.ajax({
-            type: "post",
-            cache: false,
-            url: base_url + "Welcome/cities_by_state",
-            data: {
-                state_name: id
-            },
-            beforeSend: function () { },
-            success: function (returndata) {
-                $('.city_field').show();
-                $('#city').html(returndata);
-            }
-        });
-    }
-
-    function viewProfile() {
-        $.alert({
-            title: '',
-            content: "Please login to view professional's profile",
-        });
-    }
-
-    function selectcategory(val) {
-        $("#search-box").val(val);
-        $("#suggesstion-box").hide();
-    }
-
-    function removeAdd() {
-        $('#location').val('');
-        $('#search_lon').val('');
-        $('#search_lat').val('');
-    }
-
-    // for posting Comment
-    function postComment(postjobID) {
-        if ($('#comment_' + postjobID).val() == "") {
-            $('#err_comment_' + postjobID).fadeIn().html('Please enter your comment first').css('color', 'red');
-            setTimeout(function () {
-                $("#err_comment_" + postjobID).html("");
-            }, 3000);
-            $("#comment_" + postjobID).css('border-color', 'red');
-            setTimeout(function () {
-                $("#comment_" + postjobID).css('border-color', '#80bdff');
-            }, 3000);
-            return false;
-        } else {
-            var user_id = $('#userID').val();
-            var postjob_id = postjobID;
-            var comment_id = $('#comment_id').val();
-            var comment = $('#comment_' + postjobID).val();
-            $.ajax({
-                url: "<?= base_url() ?>user/dashboard/postComment",
-                type: "POST",
-                data: {
-                    user_id: user_id,
-                    postjob_id: postjob_id,
-                    comment_id: comment_id,
-                    comment: comment
-                },
-                success: function (data) {
-                    //console.log(data);
-                    $('.success_msg').text(data);
-                    $('#comment').val('');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 3000);
-                }
-            })
-        }
-    }
-
-    //show/hide reply box
-    function replylink(postId, commentid) {
-        $('#replyBox_' + commentid).toggleClass('showreplyBox');
-        //$('#replyBox_' + commentid).removeClass('hidereplyBox');
-    }
-
-    //for user comment's reply
-    function postUserComment(postId, commentid) {
-        if ($('#users_rply_' + commentid).val() == "") {
-            $("#users_rply_" + commentid).css('border-color', 'red');
-            $('#users_rply_' + commentid).attr("placeholder", "Please type your reply here");
-            setTimeout(function () {
-                $("#users_rply_" + commentid).css('border-color', '#80bdff');
-            }, 3000);
-            return false;
-        } else {
-            var user_id = $('#userID').val();
-            var postjob_id = postId;
-            var comment_id = commentid;
-            var comment = $('#users_rply_' + commentid).val();
-            $.ajax({
-                url: "<?= base_url() ?>user/dashboard/postUserReply",
-                type: "POST",
-                data: {
-                    user_id: user_id,
-                    postjob_id: postjob_id,
-                    comment_id: comment_id,
-                    comment: comment
-                },
-                success: function (data) {
-                    //console.log(data);
-                    $('.success_msg').text(data);
-                    $('#comment').val('');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 3000);
-                }
-            })
-        }
-    }
-
-    // for liking Comment
-    function likepostjob(postjobID) {
-        var user_id = $('#userID').val();
-        var postjob_id = postjobID;
-        $('.fa-heart-o').css('color', '#000 !important');
-        $.ajax({
-            url: "<?= base_url() ?>user/dashboard/likepostjob",
             type: "POST",
+            url: base_url + "Welcome/get_category_list",
             data: {
-                user_id: user_id,
-                postjob_id: postjob_id
+                category_name: text
+            },
+            beforeSend: function () {
+                $("#search-box").css("background", "#FFF url(<?php base_url() ?>uploads/LoaderIcon.gif) no-repeat 165px");
             },
             success: function (data) {
-                location.reload();
+                //console.log(data);
+                $("#suggesstion-box").show();
+                $("#suggesstion-box").html(data);
+                $("#search-box").css("background", "#FFF");
             }
-        })
+        });
+    });
+    $(".emoji_act").emojioneArea({
+        emojiPlaceholder: ":smile_cat:",
+        searchPlaceholder: "Search",
+        buttonTitle: "Use your TAB key to insert emoji faster",
+        searchPosition: "bottom",
+        pickerPosition: "bottom"
+    });
+})
+$("#generalForm").submit(function () {
+    var post_title = $('#post_title').val();
+    if (post_title == '') {
+        $(".emojionearea-editor").attr("placeholder", "Please Enter Post Title");
+        $("emojionearea-editor").prop("required", true);
+        $(".emojionearea-editor").focus();
+        return false;
     }
+});
+$("#generalForm1").submit(function () {
+    var post_title = $('.emojionearea-editor').text();
+    if (post_title == '') {
+        $(".emojionearea-editor").attr("placeholder", "Please Enter Post Title");
+        $("emojionearea-editor").prop("required", true);
+        $(".emojionearea-editor").focus();
+        return false;
+    }
+});
 
-    // for liking user each Comment
-    function likeuserrply(postId, commentid) {
+function getState(val) {
+    var base_url = $("#base_url").val();
+    var id = val;
+    $.ajax({
+        type: "post",
+        cache: false,
+        url: base_url + "Welcome/states_by_country",
+        data: {
+            country_name: id
+        },
+        beforeSend: function () { },
+        success: function (returndata) {
+            $('.state_field').show();
+            $('#state').html(returndata);
+            $('#city').html('<option value="">Select State First</option>');
+        }
+    });
+}
+
+function getCity(val) {
+    var base_url = $("#base_url").val();
+    var id = val;
+    $.ajax({
+        type: "post",
+        cache: false,
+        url: base_url + "Welcome/cities_by_state",
+        data: {
+            state_name: id
+        },
+        beforeSend: function () { },
+        success: function (returndata) {
+            $('.city_field').show();
+            $('#city').html(returndata);
+        }
+    });
+}
+
+function viewProfile() {
+    $.alert({
+        title: '',
+        content: "Please login to view professional's profile",
+    });
+}
+
+function selectcategory(val) {
+    $("#search-box").val(val);
+    $("#suggesstion-box").hide();
+}
+
+function removeAdd() {
+    $('#location').val('');
+    $('#search_lon').val('');
+    $('#search_lat').val('');
+}
+
+// for posting Comment
+function postComment(postjobID) {
+    if ($('#comment_' + postjobID).val() == "") {
+        $('#err_comment_' + postjobID).fadeIn().html('Please enter your comment first').css('color', 'red');
+        setTimeout(function () {
+            $("#err_comment_" + postjobID).html("");
+        }, 3000);
+        $("#comment_" + postjobID).css('border-color', 'red');
+        setTimeout(function () {
+            $("#comment_" + postjobID).css('border-color', '#80bdff');
+        }, 3000);
+        return false;
+    } else {
         var user_id = $('#userID').val();
-        var postjob_id = postId;
-        var comment_id = commentid;
-        //$('.fa-heart-o').css('color','#000 !important');
+        var postjob_id = postjobID;
+        var comment_id = $('#comment_id').val();
+        var comment = $('#comment_' + postjobID).val();
         $.ajax({
-            url: "<?= base_url() ?>user/dashboard/likeuserrply",
+            url: "<?= base_url() ?>user/dashboard/postComment",
             type: "POST",
             data: {
                 user_id: user_id,
                 postjob_id: postjob_id,
-                comment_id: comment_id
-            },
-            success: function (data) {
-                location.reload();
-            }
-        })
-    }
-
-    // for disliking Comment
-    function dislikepostjob(postjobID) {
-        var user_id = $('#userID').val();
-        var postjob_id = postjobID;
-        $('.fa-heart').addClass('fa-heart-o');
-        $.ajax({
-            url: "<?= base_url() ?>user/dashboard/dislikepostjob",
-            type: "POST",
-            data: {
-                user_id: user_id,
-                postjob_id: postjob_id
-            },
-            success: function (data) {
-                console.log(data);
-                location.reload();
-            }
-        })
-    }
-
-    // for disliking Comment
-    function dislikeuserrply(postId, commentid) {
-        var user_id = $('#userID').val();
-        var postjob_id = postId;
-        var comment_id = commentid;
-        //$('.fa-heart').addClass('fa-heart-o');
-        $.ajax({
-            url: "<?= base_url() ?>user/dashboard/dislikeuserrply",
-            type: "POST",
-            data: {
-                user_id: user_id,
-                postjob_id: postjob_id,
-                comment_id: comment_id
-            },
-            success: function (data) {
-                console.log(data);
-                location.reload();
-            }
-        })
-    }
-
-    function jobDelete(id) {
-        var p_id = id;
-        $.confirm({
-            title: 'Confirm!',
-            content: confirmTextDelete,
-            buttons: {
-                confirm: function () {
-                    $.ajax({
-                        url: "<?= base_url() ?>user/dashboard/delete_job",
-                        method: "POST",
-                        data: {
-                            id: p_id
-                        },
-                        beforeSend: function () {
-                            $("#loader_" + id).removeClass('d-none');
-                        },
-                        success: function (data) {
-                            console.log(data);
-                            if (data == '1') {
-                                location.reload(true);
-                            } else {
-                                location.reload(true);
-                            }
-                        }
-
-                    })
-                },
-                cancel: function () {
-                    location.reload();
-                },
-            }
-        });
-    }
-
-    function postData() {
-        //console.log($('.emojionearea-editor'));
-        if ($('.emojionearea-editor').text() != '') {
-            $('.emojionearea-editor').text($('.emojionearea-editor').text());
-        }
-    }
-
-    function getFeedData(id) {
-        var latitude = $('#search_lat').val();
-        var longitude = $('#search_lon').val()
-        $.ajax({
-            url: "<?= base_url() ?>user/dashboard/get_feed_data",
-            method: "POST",
-            data: {
-                id: id,
-                latitude: latitude,
-                longitude: longitude
-            },
-            beforeSend: function () {
-                $("#loader").removeClass('d-none');
+                comment_id: comment_id,
+                comment: comment
             },
             success: function (data) {
                 //console.log(data);
-                $("#loader").addClass('d-none');
-                // if (data == '1') {
-                //     location.reload(true);
-                // } else {
-                //     location.reload(true);
-                // }
-                $('.PostContainer').html(data);
-            }
-        });
-    }
-
-    function searchPost() {
-        var year = $('#year').val();
-        var postedBy = $('#postedBy').val();
-        var privacy = $('#privacy').val();
-        $.ajax({
-            url: "<?= base_url() ?>user/dashboard/search_post",
-            method: "POST",
-            data: {
-                year: year,
-                postedBy: postedBy,
-                privacy: privacy
-            },
-            beforeSend: function () {
-                $("#loader").removeClass('d-none');
-            },
-            success: function (data) {
-                //console.log(data);
-                $('#filterModal').css('display', 'none');
-                $('#filterModal').removeClass('show');
-                $('.modal-backdrop').remove();
-                $('body').removeClass('modal-open');
+                $('.success_msg').text(data);
+                $('#comment').val('');
                 setTimeout(() => {
-                    $("#loader").addClass('d-none');
+                    location.reload();
                 }, 3000);
-                $('.PostContainer').html(data);
             }
         })
     }
+}
 
-    function onclickShare(id) {
-        $('#shareMenu_' + id).toggle();
-    }
+//show/hide reply box
+function replylink(postId, commentid) {
+    $('#replyBox_' + commentid).toggleClass('showreplyBox');
+    //$('#replyBox_' + commentid).removeClass('hidereplyBox');
+}
 
-    function getcategoryval(id){
-        $('#cat_value').val(id);
+//for user comment's reply
+function postUserComment(postId, commentid) {
+    if ($('#users_rply_' + commentid).val() == "") {
+        $("#users_rply_" + commentid).css('border-color', 'red');
+        $('#users_rply_' + commentid).attr("placeholder", "Please type your reply here");
+        setTimeout(function () {
+            $("#users_rply_" + commentid).css('border-color', '#80bdff');
+        }, 3000);
+        return false;
+    } else {
+        var user_id = $('#userID').val();
+        var postjob_id = postId;
+        var comment_id = commentid;
+        var comment = $('#users_rply_' + commentid).val();
+        $.ajax({
+            url: "<?= base_url() ?>user/dashboard/postUserReply",
+            type: "POST",
+            data: {
+                user_id: user_id,
+                postjob_id: postjob_id,
+                comment_id: comment_id,
+                comment: comment
+            },
+            success: function (data) {
+                //console.log(data);
+                $('.success_msg').text(data);
+                $('#comment').val('');
+                setTimeout(() => {
+                    location.reload();
+                }, 3000);
+            }
+        })
     }
-    $('.closemediaupload').click(function () {
-        $('.upload-container').hide();
-    });
-    $('#postBoximgup').click(function () {
-        $('#imageUpload').show();
-        $('#videoUpload').hide();
-    });
-    $('#iconimgupload').click(function () {
-        $('#imageUpload').show();
-        $('#videoUpload').hide();
-    });
-    $('#postBoxvidup').click(function () {
-        $('#videoUpload').show();
-        $('#imageUpload').hide();
-    });
-    $('#iconvideoupload').click(function () {
-        $('#videoUpload').show();
-        $('#imageUpload').hide();
-    });
-    $('.loginURL').click(function () {
-        window.location.href = '<?= base_url() ?>logout';
+}
+
+// for liking Comment
+function likepostjob(postjobID) {
+    var user_id = $('#userID').val();
+    var postjob_id = postjobID;
+    $('.fa-heart-o').css('color', '#000 !important');
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/likepostjob",
+        type: "POST",
+        data: {
+            user_id: user_id,
+            postjob_id: postjob_id
+        },
+        success: function (data) {
+            location.reload();
+        }
     })
+}
+
+// for liking user each Comment
+function likeuserrply(postId, commentid) {
+    var user_id = $('#userID').val();
+    var postjob_id = postId;
+    var comment_id = commentid;
+    //$('.fa-heart-o').css('color','#000 !important');
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/likeuserrply",
+        type: "POST",
+        data: {
+            user_id: user_id,
+            postjob_id: postjob_id,
+            comment_id: comment_id
+        },
+        success: function (data) {
+            location.reload();
+        }
+    })
+}
+
+// for disliking Comment
+function dislikepostjob(postjobID) {
+    var user_id = $('#userID').val();
+    var postjob_id = postjobID;
+    $('.fa-heart').addClass('fa-heart-o');
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/dislikepostjob",
+        type: "POST",
+        data: {
+            user_id: user_id,
+            postjob_id: postjob_id
+        },
+        success: function (data) {
+            console.log(data);
+            location.reload();
+        }
+    })
+}
+
+// for disliking Comment
+function dislikeuserrply(postId, commentid) {
+    var user_id = $('#userID').val();
+    var postjob_id = postId;
+    var comment_id = commentid;
+    //$('.fa-heart').addClass('fa-heart-o');
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/dislikeuserrply",
+        type: "POST",
+        data: {
+            user_id: user_id,
+            postjob_id: postjob_id,
+            comment_id: comment_id
+        },
+        success: function (data) {
+            console.log(data);
+            location.reload();
+        }
+    })
+}
+
+function jobDelete(id) {
+    var p_id = id;
+    $.confirm({
+        title: 'Confirm!',
+        content: confirmTextDelete,
+        buttons: {
+            confirm: function () {
+                $.ajax({
+                    url: "<?= base_url() ?>user/dashboard/delete_job",
+                    method: "POST",
+                    data: {
+                        id: p_id
+                    },
+                    beforeSend: function () {
+                        $("#loader_" + id).removeClass('d-none');
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        if (data == '1') {
+                            location.reload(true);
+                        } else {
+                            location.reload(true);
+                        }
+                    }
+
+                })
+            },
+            cancel: function () {
+                location.reload();
+            },
+        }
+    });
+}
+
+function savePost(p_id, status) {
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/savePost",
+        method: "POST",
+        data: {p_id: p_id},
+        beforeSend: function () {
+            ///$("#loader_" + id).removeClass('d-none');
+        },
+        success: function (data) {
+            //console.log(data);
+            if (data == '1') {
+                location.reload(true);
+            } else {
+                location.reload(true);
+            }
+        }
+    })
+}
+
+function postData() {
+    //console.log($('.emojionearea-editor'));
+    if ($('.emojionearea-editor').text() != '') {
+        $('.emojionearea-editor').text($('.emojionearea-editor').text());
+    }
+}
+
+function getFeedData(id) {
+    var latitude = $('#search_lat').val();
+    var longitude = $('#search_lon').val()
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/get_feed_data",
+        method: "POST",
+        data: {
+            id: id,
+            latitude: latitude,
+            longitude: longitude
+        },
+        beforeSend: function () {
+            $("#loader").removeClass('d-none');
+        },
+        success: function (data) {
+            //console.log(data);
+            $("#loader").addClass('d-none');
+            // if (data == '1') {
+            //     location.reload(true);
+            // } else {
+            //     location.reload(true);
+            // }
+            $('.PostContainer').html(data);
+        }
+    });
+}
+
+function searchPost() {
+    var year = $('#year').val();
+    var postedBy = $('#postedBy').val();
+    var privacy = $('#privacy').val();
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/search_post",
+        method: "POST",
+        data: {
+            year: year,
+            postedBy: postedBy,
+            privacy: privacy
+        },
+        beforeSend: function () {
+            $("#loader").removeClass('d-none');
+        },
+        success: function (data) {
+            //console.log(data);
+            $('#filterModal').css('display', 'none');
+            $('#filterModal').removeClass('show');
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            setTimeout(() => {
+                $("#loader").addClass('d-none');
+            }, 3000);
+            $('.PostContainer').html(data);
+        }
+    })
+}
+
+function onclickShare(id) {
+    $('#shareMenu_' + id).toggle();
+}
+
+function getcategoryval(id){
+    $('#cat_value').val(id);
+    $('#cat_valmod').val(id);
+}
+$('.closemediaupload').click(function () {
+    $('.upload-container').hide();
+});
+$('#postBoximgup').click(function () {
+    $('#imageUpload').show();
+    $('#videoUpload').hide();
+});
+$('#iconimgupload').click(function () {
+    $('#imageUpload').show();
+    $('#videoUpload').hide();
+});
+$('#postBoxvidup').click(function () {
+    $('#videoUpload').show();
+    $('#imageUpload').hide();
+});
+$('#iconvideoupload').click(function () {
+    $('#videoUpload').show();
+    $('#imageUpload').hide();
+});
+$('.loginURL').click(function () {
+    window.location.href = '<?= base_url() ?>logout';
+})
 </script>

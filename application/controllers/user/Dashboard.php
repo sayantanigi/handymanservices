@@ -719,7 +719,12 @@ class Dashboard extends CI_Controller {
 		} else {
 			$this->session->set_flashdata('message', 'Something went wrong. Please try again later!');
 		}
-		redirect(base_url('professionals_detail/' . base64_encode($_POST['user_id'])));
+        if($_POST['userType'] == '1') {
+            redirect(base_url('customer_detail/' . base64_encode($_POST['user_id'])));
+        } else {
+            redirect(base_url('professionals_detail/' . base64_encode($_POST['user_id'])));
+        }
+
 	}
 	function education_list() {
 		$data['education_list'] = $this->Crud_model->GetData('user_education', '', "user_id='".$_SESSION['afrebay']['userId']."' order by id DESC");
@@ -1107,7 +1112,8 @@ class Dashboard extends CI_Controller {
 		$p_id = $this->input->post('id');
 		$delete_prod = $this->db->query("DELETE FROM postjob WHERE id = '$p_id'");
 		if($delete_prod > 0){
-			echo '1';
+			$this->db->query("DELETE FROM postjob_image WHERE id = '".$p_id."'");
+            echo '1';
 		} else {
 			echo '2';
 		}
@@ -1775,5 +1781,18 @@ class Dashboard extends CI_Controller {
         } else {
             echo '<div class="col-12" style=" background: #fff; border-radius: 20px; "><div class="boxuppost">No post available</div></div>';
         }
+    }
+
+    public function savePost() {
+        $post_id = $_POST['p_id'];
+        $user_id =  $_SESSION['afrebay']['userId'];
+        $details_data = array(
+            'post_id' => $post_id,
+            'user_id' => $user_id,
+            'status' => '1',
+            'created_at'=> date('Y-m-d H:m:s')
+        );
+        //print_r($details_data); die();
+        $this->Crud_model->SaveData('users_save_post',$details_data);
     }
 }

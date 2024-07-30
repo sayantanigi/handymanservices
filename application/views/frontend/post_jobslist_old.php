@@ -90,7 +90,26 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                     </select>
                                 </div>
                             </div>
-                            <div class="widget">
+                            <div class="widget date_field">
+                                <h3 class="sb-title closed">Distance</h3>
+                                <div class="specialism_widget">
+                                    <div class="filter level-filter level-req">
+                                        <div id="rangeSlider" class="range-slider">
+                                            <div class="number-group">
+                                                <input class="number-input" type="number" value="<?= $min_price[0]['min_price']?>" min="0" max="<?= $max_price[0]['max_price']?>" />
+                                                <input class="number-input" type="number" value="<?= $max_price[0]['max_price']?>" min="0" max="<?= $max_price[0]['max_price']?>" />
+                                            </div>
+                                            <div class="range-group">
+                                                <input class="range-input" value="<?= $min_price[0]['min_price']?>" min="<?= $min_price[0]['min_price']?>" max="<?= $max_price[0]['max_price']?>" step="1" type="range" />
+                                                <input class="range-input" value="<?= $max_price[0]['max_price']?>" min="1" max="<?= $max_price[0]['max_price']?>" step="1" type="range" />
+                                            </div>
+                                            <input type="hidden" name="from_price" id="from_price" value="">
+                                            <input type="hidden" name="to_price" id="to_price" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="widget">
                                 <h3 class="sb-title closed">Last Activity</h3>
                                 <div class="specialism_widget">
                                     <div class="simple-checkbox">
@@ -102,7 +121,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                         <p><input type="radio" name="days" id="27" onclick="filter_job()" value="All"/><label for="27">All</label></p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </form>
                     </div>
                 </aside>

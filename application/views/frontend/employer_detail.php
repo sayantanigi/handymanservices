@@ -38,20 +38,8 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                                     echo $name = ucwords($userdata->firstname." ".$userdata->lastname);
                                                 } ?>
                                             </h3>
-                                            <!--<span><i class="la la-map-marker"></i><?= @$userdata->address; ?></span>
-                                            <span class="job-is ft">Full time</span>-->
-                                            <!-- <ul class="tags-jobs">
-                                                <li><i class="la la-file-text"></i> Applications <?= count($get_post); ?></li>
-                                                <li><i class="la la-calendar-o"></i>
-                                                    <?php $getdate = $this->Crud_model->get_single('postjob', "user_id='" . $userdata->userId . "'");
-                                                    if (!empty($getdate->appli_deadeline)) { ?>
-                                                    Post Date: <?= date('M d,Y', strtotime(@$getdate->appli_deadeline));
-                                                            } ?>
-                                                </li>
-                                                <li><i class="la la-eye"></i> Views <?= @$userdata->view_count ?></li>
-                                            </ul> -->
                                             <?php if(@$_SESSION['afrebay']['userId'] != $userdata->userId) { ?>
-                                            <div id="status-options">
+                                            <!-- <div id="status-options">
                                                 <?php if(!empty(@$_SESSION['afrebay']['userId'])) {
                                                 $checkMuteUser = $this->db->query("SELECT * FROM mute_user WHERE to_user_id = '".$userdata->userId."' AND from_user_id = '".$_SESSION['afrebay']['userId']."'")->row();
                                                 //print_r($checkMuteUser);
@@ -83,30 +71,16 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                                 <a href="https://www.instagram.com/?url=<?= base_url('customer_detail/' . base64_encode(@$userdata->userId)) ?>" target="_blank" class="fa fa-instagram"></a>
                                                 <a href="https://api.whatsapp.com/send?text=<?php echo $post_data->post_title; ?> <?= base_url('customer_detail/' . base64_encode(@$userdata->userId)) ?>" target="_blank" class="fa fa-whatsapp"></a>
                                                 <a href="https://telegram.me/share/url?url=<?= base_url('customer_detail/' . base64_encode(@$userdata->userId)) ?>&text=<?php echo $post_data->post_title; ?>" target="_blank" class="fa fa-telegram"></a>
-                                            </div>
+                                            </div> -->
                                             <?php } ?>
                                         </div>
                                     </div>
-                                    <!-- Job Head -->
-                                </div>
-                                <div class="col-lg-2 col-md-12 col-sm-12">
-                                    <!-- <div class="share-bar">
-                                        <div class="sharethis-inline-share-buttons"></div>
-                                    </div> -->
-                                    <!-- <div class="emply-btns">
-                                        <a class="seemap" id="ShowMap"><i class="la la-map-marker"></i> See On Map</a>
-                                        <?php if (!empty(@$userdata->address)) { ?>
-                                            <p style="display:none;" id="show_maping">
-                                                <iframe width="260" height="100px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.it/maps?q=<?= @$userdata->address ?>&output=embed"></iframe>
-                                            </p>
-                                        <?php } ?>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
                         <div class="job-wide-devider">
                             <div class="row">
-                                <div class="col-lg-8 col-md-12 col-sm-12 column">
+                                <div class="col-lg-12 col-md-12 col-sm-12 column">
                                     <div class="job-details">
                                         <h3>About
                                         <?php
@@ -119,7 +93,9 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                         </h3>
                                         <p><?= @$userdata->short_bio; ?></p>
                                     </div>
-                                    <?php if (!empty($get_post)) { ?>
+                                </div>
+                                <div class="col-lg-8 col-md-12 col-sm-12 column">
+                                <?php if (!empty($get_post)) { ?>
                                     <div class="recent-jobs">
                                         <h3>Jobs from
                                         <?php
@@ -185,22 +161,16 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                     <?php } ?>
                                 </div>
                                 <div class="col-lg-4 col-md-12 col-sm-12 column">
+                                    <?php
+                                    $uri = "$_SERVER[REQUEST_URI]";
+                                    $uri = explode('/', $uri);
+                                    $uri = end($uri);
+                                    if($_SESSION['afrebay']['userId'] != base64_decode($uri)){?>
                                     <div class="job-overview">
-                                        <h3>Company Information</h3>
-                                        <ul>
-                                            <li>
-                                                <i class="la la-file-text"></i>
-                                                <h3>Posted Jobs</h3>
-                                                <span><?= @$total_post; ?></span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <?php if($_SESSION['afrebay']['userId'] == $userdata->userId ){?>
-                                    <div class="quick-form-job">
-                                        <h3>Rate <?= "@".$_SESSION['afrebay']['username']?></h3>
+                                        <h3>Review <?= "@".$_SESSION['afrebay']['username']?></h3>
                                         <form method="post" action="<?= base_url('user/dashboard/save_employer_rating')?>">
-                                            <div class="row m-0">
-                                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom: 10px;">
                                                     <span class="star-rating star-5">
                                                         <input type="radio" name="rating" value="1"><i></i>
                                                         <input type="radio" name="rating" value="2"><i></i>
@@ -210,62 +180,56 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                                     </span>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12 Form_Subject">
-                                                    <input type="text" placeholder="Enter Subject" name="subject"
-                                                        required />
-                                                    <input type="hidden" value="<?= @$user_detail->userId ?>"
-                                                        name="user_id">
+                                                    <input type="text" placeholder="Enter Subject" name="subject" required style="border-radius: 10px;"/>
+                                                    <input type="hidden" value="<?= @base64_decode($uri) ?>" name="user_id">
+                                                    <input type="hidden" value="<?= @$_SESSION['afrebay']['userType'] ?>" name="userType">
                                                 </div>
-                                                <div class="col-lg-12 col-md-12 col-sm-12 Form_Textarea">
-                                                    <textarea placeholder="Enter review" name="review"></textarea>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 Form_Textarea" >
+                                                    <textarea placeholder="Enter review" name="review" style="border-radius: 10px;"></textarea>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12 Form_Btn">
-                                                    <button class="submit btn btn-info">Submit</button>
+                                                    <button class="submit btn btn-info" style="background: #2892ff;border-radius: 30px;min-height: 30px;min-width: 52px;">Submit</button>
                                                 </div>
                                             </div>
-                                            <!--  <span>You accepts our <a href="javascript:void(0)" title="">Terms and Conditions</a></span> -->
                                         </form>
                                     </div>
                                 <?php } ?>
                                 </div>
+                                <?php
+                                $getSavedPost = $this->db->query("SELECT * FROM users_save_post WHERE user_id = '".@$userdata->userId."'")->result_array();
+                                if (!empty($getSavedPost)) {
+                                    $i = 1;
+                                ?>
                                 <div class="col-lg-12 col-md-12 col-sm-12 column">
                                     <div class="Product_Details">
-                                        <?php if (!empty($prod_list)) { ?>
-                                            <h3 class="mt-5 mb-5">Products</h3>
-                                        <?php } ?>
+                                        <h3 class="mt-5 mb-5">Saved Post</h3>
                                         <div class="row">
-                                            <?php if (!empty($prod_list)) {
-                                                $i = 1;
-                                                foreach ($prod_list as $value) { ?>
-                                                    <div class="col-lg-4 col-md-6 col-sm-12 column">
-                                                        <div class="Product">
-                                                            <div class="Product_Img">
-                                                                <img src="<?php echo base_url() ?>uploads/products/<?php echo $value['prod_image'] ?>">
-                                                            </div>
-                                                            <div class="Product_Data">
-                                                                <p class="mt-2 mb-2"><span><?php echo $value['prod_name'] ?></span></p>
-                                                                <p><span>
-                                                                        <?php
-                                                                        $string = strip_tags($value['prod_description']);
-                                                                        if (strlen($string) > 200) {
-                                                                            $stringCut = substr($string, 0, 100);
-                                                                            $endPoint = strrpos($stringCut, ' ');
-                                                                            $string = $endPoint ? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-                                                                            $string .= '...';
-                                                                        }
-                                                                        echo $string;
-                                                                        ?>
-                                                                    </span>
-                                                                </p>
-                                                                <a href="<?php echo base_url() ?>productdetail/<?php echo base64_encode($value['id']) ?>" type="button" class="btn btn-info">Contact Seller</a>
-                                                            </div>
-                                                        </div>
+                                            <?php foreach ($getSavedPost as $value) {
+                                                $post_details = $this->db->query("SELECT * FROM postjob WHERE id = '".$value['post_id']."'")->row();
+                                                $post_detailsimg = $this->db->query("SELECT * FROM postjob_image WHERE job_id = '".$value['post_id']."'")->row();?>
+                                            <div class="col-lg-4 col-md-6 col-sm-12 column">
+                                                <div class="Product">
+                                                    <div class="Product_Img">
+                                                        <?php if(!empty($post_detailsimg)) { ?>
+                                                        <img src="<?php echo base_url() ?>uploads/postjob/<?php echo $post_detailsimg->job_image ?>">
+                                                        <?php } else { ?>
+                                                        <img src="<?php echo base_url() ?>uploads/no_bimage.png">
+                                                        <?php } ?>
                                                     </div>
-                                            <?php $i++;
-                                                }
-                                            } ?>
+                                                    <div class="Product_Data">
+                                                        <p class="mt-2 mb-2"><span><?php echo $post_details->post_title ?></span></p>
+                                                        <?php $userDetails = $this->db->query("SELECT * FROM users WHERE userId = '".$value['user_id']."'")->row();?>
+                                                        <p><span><?= $userDetails->username; ?></span>
+                                                        </p>
+                                                        <a href="<?php echo base_url() ?>workdetail/<?php echo base64_encode($value['id']) ?>" type="button" class="btn btn-info">View Post</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php $i++; } ?>
                                         </div>
                                     </div>
                                 </div>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
@@ -415,4 +379,5 @@ function unmuteUser(userid) {
 .job-thumb .active {opacity: 1; visibility: visible; margin: 75px 0 0 0;}
 .hidden {display: none;}
 #shareMenu {border: 1px solid #ccc; padding: 10px; position: absolute; background-color: white; margin-top: 120px; margin-left: 128px; z-index: 111;}
+.Employer_Details .Product_Details .Product .Product_Data .btn:hover {background: #2892ff !important;}
 </style>

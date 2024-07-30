@@ -15,7 +15,8 @@ if($data_request=='user') {
 ?>
 <div class="col-lg-9 display-table-cell v-align profileTabcontent my-4">
      <div class="user-dashboard Admin_Profile form-design <?php echo $container;  ?> ">
-        <h3 class="text-center h3 font-weight-bold text-dark my-3">Create your profile</h3>
+
+        <h3 class="text-center h3 font-weight-bold text-dark my-3">Update your profile</h3>
         <p class="text-center text-dark">You may modify your profile information at any moment in your profile section</p>
         <form class="form" action="<?php echo base_url('user/Dashboard/update_profile')?>" method="post" id="registrationForm" enctype="multipart/form-data">
         <input type="hidden" name="from_data_request" value="<?=$data_request;?>">
@@ -158,7 +159,11 @@ if($data_request=='user') {
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <div class="">
-                                        <button class="post-job-btn float-right mw-150" type="submit">Next</button>
+                                        <?php if($_SESSION['afrebay']['userType'] == '1') { ?>
+                                        <button class="post-job-btn float-right mw-150" type="submit">Save</button>
+                                        <?php } else { ?>
+                                        <button class="post-job-btn float-right mw-150" type="submit">Save and Next</button>
+                                        <?php } ?>
                                         <input type="hidden" name="utype" id="utype" value="<?= @$userinfo->userType?>">
                                     </div>
                                 </div>

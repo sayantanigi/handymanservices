@@ -82,6 +82,7 @@ class Users extends MY_Controller {
             $nestedData = array();
             $nestedData[] = $no;
             $nestedData[] = $type;
+            $nestedData[] = $row->username;
             $nestedData[] = $name;
             $nestedData[] = $row->email;
             //$nestedData[] = $row->mobile;

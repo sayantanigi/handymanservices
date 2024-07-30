@@ -35,107 +35,24 @@ function get_time_ago($time) {
 }
 ?>
 <style>
-    .postdetail {
-        padding: 7px 33px;
-        border-radius: 10px;
-        background: red;
-        color: #fff;
-        margin: 10px;
-        font-size: 20px;
-    }
+.postdetail {padding: 7px 33px;border-radius: 10px;background: red;color: #fff;margin: 10px;font-size: 20px;}
+.cstm_viewbid_btn {background: linear-gradient(180deg, rgba(249, 80, 30, 1) 0%, rgba(252, 119, 33, 1) 100%) !important;border: 0;border-radius: 35px;letter-spacing: 0;font-weight: 600;width: 100%;display: block;color: #fff;padding: 10px;text-align: center;}
+.Comment_Block {display: flex;flex-direction: row;align-items: flex-start;justify-content: flex-start;margin: 30px 0;}
+.Comment_Block .Comment_Img img {width: 60px;height: 60px;object-fit: cover;border-radius: 100%;}
+.Comment_Block .Comment_Data {width: 90%;display: flex;flex-direction: column;}
+.Comment_Block .Comment_Data p:nth-child(1) {margin: 0;font-weight: 600;color: #000 !important;font-size: 13px;line-height: 1.5;margin-bottom: 3px;}
+.Comment_Block .Comment_Data p:nth-child(2) {margin: 0; color: #666 !important; font-size: 13px; line-height: normal;}
+.Comment_Block .Comment_Data ul {margin: 0; display: flex; align-items: center; justify-content: flex-start; width: 150px; margin-top: 10px;}
+.hidereplyBox {display: none !important;}
+.showreplyBox {display: flex !important;}
 
-    .cstm_viewbid_btn {
-        background: linear-gradient(180deg, rgba(249, 80, 30, 1) 0%, rgba(252, 119, 33, 1) 100%) !important;
-        border: 0;
-        border-radius: 35px;
-        letter-spacing: 0;
-        font-weight: 600;
-        width: 100%;
-        display: block;
-        color: #fff;
-        padding: 10px;
-        text-align: center;
-    }
-
-    .Comment_Block {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: flex-start;
-        margin: 30px 0;
-    }
-
-    
-
-    .Comment_Block .Comment_Img img {
-        width: 60px;
-        height: 60px;
-        object-fit: cover;
-        border-radius: 100%;
-    }
-
-    .Comment_Block .Comment_Data {
-        width: 90%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .Comment_Block .Comment_Data p:nth-child(1) {
-        margin: 0;
-        font-weight: 600;
-        color: #000 !important;
-        font-size: 13px;
-        line-height: 1.5;
-            margin-bottom: 3px;
-    }
-
-    .Comment_Block .Comment_Data p:nth-child(2) {
-        margin: 0;
-        color: #666 !important;
-        font-size: 13px;
-        line-height: normal;
-    }
-
-    .Comment_Block .Comment_Data ul {
-        margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        width: 150px;
-        margin-top: 10px;
-    }
-
-    .hidereplyBox {
-        display: none !important;
-    }
-
-    .showreplyBox {
-        display: flex !important;
-    }
-
-    @media screen and (max-width: 425px) {
-        .Mobile_Padding {
-            padding: 0 !important;
-        }
-
-        .Mobile_Ul {
-            width: 100% !important;
-            justify-content: flex-start !important;
-        }
-
-        .Mobile_Like {
-            justify-content: center !important;
-        }
-        
-        
-        .hidereplyBox {
-            flex-direction: column !important;
-        }
-        .hidereplyBox textarea {
-            width: 100% !important;
-        }
-        
-    }
+@media screen and (max-width: 425px) {
+    .Mobile_Padding {padding: 0 !important;}
+    .Mobile_Ul {width: 100% !important; justify-content: flex-start !important;}
+    .Mobile_Like {justify-content: center !important;}
+    .hidereplyBox {flex-direction: column !important;}
+    .hidereplyBox textarea {width: 100% !important;}
+}
 </style>
 <section class="overlape">
     <div class="block no-padding bg-primary">
@@ -313,8 +230,6 @@ function get_time_ago($time) {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
-                                                
                                                 <div class="col-12">
                                                 <?php
                                                 $getpostComment = $this->db->query("SELECT * FROM postjob_comment WHERE postjob_id = '" . @$post_data->id . "'")->result_array();

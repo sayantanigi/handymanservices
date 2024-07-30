@@ -8,6 +8,129 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
 @$postid=base64_decode($subcategory_id);
 ?>
 <style>
+    .level-filter .range-slider {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+    }
+    .level-filter .range-slider .number-group {
+        height: 30px;
+        font-weight: 300;
+        font-size: 13px;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .level-filter .range-slider .number-group .number-input {
+        width: 36px;
+        height: 30px;
+        text-align: center;
+        color: #ffffff;
+        background-color: #2892ff;
+        border: 0;
+        border-radius: 5px;
+    }
+    .level-filter .range-slider .number-group .number-input:first-of-type {
+        margin-right: 7px;
+    }
+    .level-filter .range-slider .number-group .number-input:last-of-type {
+        margin-left: 7px;
+    }
+    .level-filter .range-slider .number-group .number-input::-webkit-outer-spin-button, .range-slider .number-group .number-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    .level-filter .range-slider .number-group .number-input:invalid, .range-slider .number-group .number-input:out-of-range {
+        border: 2px solid #2892ff;
+    }
+    .level-filter .range-slider .range-group {
+        position: relative;
+        flex: 0 0 100%;
+        height: 30px;
+    }
+    .level-filter .range-slider .range-group .range-input {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        margin-bottom: 0;
+        -webkit-appearance: none;
+        width: 100%;
+        border-bottom: 0;
+    }
+    .level-filter .range-slider .range-group .range-input:focus {
+        outline: 0;
+    }
+    .level-filter .range-slider .range-group .range-input::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 2px;
+        cursor: pointer;
+        -webkit-animation: 0.2s;
+        animation: 0.2s;
+        background: #2892ff;
+        border-radius: 1px;
+        box-shadow: none;
+        border: 0;
+    }
+    .level-filter .range-slider .range-group .range-input::-webkit-slider-thumb {
+        z-index: 2;
+        position: relative;
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #2892ff;
+        cursor: pointer;
+        -webkit-appearance: none;
+        margin-top: -7px;
+    }
+    .level-filter .range-slider .range-group .range-input::-moz-range-track {
+        width: 100%;
+        height: 2px;
+        cursor: pointer;
+        animation: 0.2s;
+        background: #2892ff;
+        border-radius: 1px;
+        box-shadow: none;
+        border: 0;
+    }
+    .level-filter .range-slider .range-group .range-input::-moz-range-thumb {
+        z-index: 2;
+        position: relative;
+        box-shadow: 0px 0px 0px #000;
+        border: 1px solid #2497e3;
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #2892ff;
+        cursor: pointer;
+    }
+    .level-filter .range-slider .range-group .range-input::-ms-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        animation: 0.2s;
+        background: transparent;
+        border-color: transparent;
+        color: transparent;
+    }
+    .level-filter .range-slider .range-group .range-input::-ms-fill-lower, .range-slider .range-group .range-input::-ms-fill-upper {
+        background: #2892ff;
+        border-radius: 1px;
+        box-shadow: none;
+        border: 0;
+    }
+    .level-filter .range-slider .range-group .range-input::-ms-thumb {
+        z-index: 2;
+        position: relative;
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: #2892ff;
+        cursor: pointer;
+    }
+    .level-filter .range-slider, .level-filter .filter {
+        margin: 0 auto 10px;
+        max-width: 100%;
+    }
     @media screen and (max-width: 425px) and (min-width: 375px) {
         .emply-resume-list {
             box-shadow: 0 0 10px #dddddd !important;
@@ -111,6 +234,25 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                         <option value="<?= $item->name ?>" <?php if(@$item->name == @$_POST['city']){ echo "selected"; } ?>><?= ucfirst($item->name)?></option>
                                         <?php } }?>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="widget date_field">
+                                <h3 class="sb-title open">Distance</h3>
+                                <div class="specialism_widget">
+                                    <div class="filter level-filter level-req">
+                                        <div id="rangeSlider" class="range-slider">
+                                            <div class="number-group">
+                                                <input class="number-input" type="number" value="5" min="0" max="5" />
+                                                <input class="number-input" type="number" value="10" min="0" max="10" />
+                                            </div>
+                                            <div class="range-group">
+                                                <input class="range-input" value="5" min="5" max="10" step="1" type="range" />
+                                                <input class="range-input" value="10" min="5" max="10" step="1" type="range" />
+                                            </div>
+                                            <input type="hidden" name="from_price" id="from_price" value="">
+                                            <input type="hidden" name="to_price" id="to_price" value="">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- <div class="widget">
@@ -277,6 +419,44 @@ $(document).ready(function () {
 
     $('#city').on('change', function () {
         filter_data(1);
+    });
+
+    var parent = document.querySelector("#rangeSlider");
+    if(!parent) return;
+    var rangeS = parent.querySelectorAll("input[type=range]");
+    var numberS = parent.querySelectorAll("input[type=number]");
+
+    rangeS.forEach(function(el) {
+        el.oninput = function() {
+            var slide1 = parseFloat(rangeS[0].value);
+            var slide2 = parseFloat(rangeS[1].value);
+
+            if (slide1 > slide2) {
+                [slide1, slide2] = [slide2, slide1];
+            }
+
+            numberS[0].value = slide1;
+            numberS[1].value = slide2;
+            $('#from_price').val(numberS[0].value);
+            $('#to_price').val(numberS[1].value);
+            filter_data(1);
+        }
+    });
+
+    numberS.forEach(function(el) {
+        el.oninput = function() {
+            var number1 = parseFloat(numberS[0].value);
+            var number2 = parseFloat(numberS[1].value);
+
+            if (number1 > number2) {
+                var tmp = number1;
+                numberS[0].value = number2;
+                numberS[1].value = tmp;
+            }
+
+            rangeS[0].value = number1;
+            rangeS[1].value = number2;
+        }
     });
 });
 </script>

@@ -68,6 +68,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Type</th>
+                                    <th>Username</th>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Created Date</th>

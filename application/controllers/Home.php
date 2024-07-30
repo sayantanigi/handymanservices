@@ -21,7 +21,7 @@ class Home extends MY_Controller {
         } else {
             $data['get_post'] = $this->Crud_model->GetData('postjob', 'id, post_title, description, user_id, created_date', "status = 'Active' AND visibility = 1", '', '(id)desc', '');
         }*/
-        $data['get_post'] = $this->Crud_model->GetData('postjob', 'id, post_title, description, user_id, created_date', "status = 'Active' AND visibility IN(1,2)", '', '(id)desc', '');
+        $data['get_post'] = $this->Crud_model->GetData('postjob', 'id, post_title, description, user_id, category_id, created_date', "status = 'Active' AND visibility IN(1,2)", '', '(id)desc', '');
 		$data['countries']=$this->Crud_model->GetData('countries',"","");
 		$data['get_freelancerspost'] = $this->Crud_model->GetData('postjob', '', "is_delete='0'", '', '', '8');
 		$data['get_career'] = $this->Crud_model->GetData('career_tips', '', "status='Active'", '', '', '3');

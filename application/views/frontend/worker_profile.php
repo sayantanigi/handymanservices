@@ -33,11 +33,11 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
                             <div class="col-lg-6 col-md-4 col-sm-12 Worker_Head_Text">
                                 <div class="Worker_Head_Text_Data">
                                     <h3><?php if(!empty($user_detail->firstname)){ echo $name = $user_detail->firstname.' '.$user_detail->lastname;} else { echo $name = $user_detail->username; }?></h3>
-                                    <p>Member Since, <?= date('Y',strtotime(@$user_detail->created))?></p>
+                                    <!-- <p>Member Since, <?= date('Y',strtotime(@$user_detail->created))?></p> -->
                                     <!-- <p><i class="la la-map-marker"></i><?= @$user_detail->address?></p> -->
                                 </div>
                                 <?php if(@$_SESSION['afrebay']['userId'] != $user_detail->userId) { ?>
-                                <div id="status-options">
+                                <!-- <div id="status-options">
                                     <?php if(!empty(@$_SESSION['afrebay']['userId'])) {
                                     $checkMuteUser = $this->db->query("SELECT * FROM mute_user WHERE to_user_id = '".$user_detail->userId."' AND from_user_id = '".$_SESSION['afrebay']['userId']."'")->row();
                                     //print_r($checkMuteUser);
@@ -69,7 +69,7 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
                                     <a href="https://www.instagram.com/?url=<?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa-brands fa-instagram"></a>
                                     <a href="https://api.whatsapp.com/send?text=<?php echo $post_data->post_title; ?> <?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>" target="_blank" class="fa-brands fa-whatsapp"></a>
                                     <a href="https://telegram.me/share/url?url=<?= base_url('professionals_detail/' . base64_encode(@$user_detail->userId)) ?>&text=<?php echo $post_data->post_title; ?>" target="_blank" class="fa-brands fa-telegram"></a>
-                                </div>
+                                </div> -->
                                 <?php } ?>
                             </div>
                         </div>
@@ -83,9 +83,13 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
                     </ul>
                     <div class="cand-details-sec">
                         <div class="row">
+                            <?php if($_SESSION['afrebay']['userId'] == @$user_detail->userId) { ?>
+                            <div class="col-lg-12 column">
+                            <?php } else { ?>
                             <div class="col-lg-8 column">
+                            <?php } ?>
                                 <div class="cand-details" id="about">
-                                    <h2>About This Professional</h2>
+                                    <h2>About</h2>
                                     <p>
                                         <?= @$user_detail->short_bio;?>
                                     </p>
@@ -117,8 +121,6 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
                                             <source src="<?= base_url('uploads/users/work_sample/'.$sample->work_sample); ?>" type="video/mp4">
                                             Your browser does not support the video tag.
                                             </video>
-                                            <?php } else { ?>
-                                            <p>Unsupported file type</p>
                                             <?php } } ?>
                                         </div>
                                         <?php }?>
@@ -135,7 +137,7 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
                                 </div>
                             </div>
                             <div class="col-lg-4 column">
-                                <div class="job-overview">
+                                <!-- <div class="job-overview">
                                     <h3 class="text-uppercase">Candidate Overview</h3>
                                     <ul>
                                         <li>
@@ -143,17 +145,21 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
                                             <h3>Gender</h3>
                                             <span><?= @$user_detail->gender?></span>
                                         </li>
-                                        <!-- <li>
+                                        <li>
                                             <i class="la la-shield"></i>
                                             <h3>Experience</h3>
                                             <span><?= @$user_detail->experience?></span>
-                                        </li> -->
+                                        </li>
                                     </ul>
-                                </div>
+                                </div> -->
                                 <!-- Job Overview -->
-                                <?php if(!empty($_SESSION['afrebay']['userId'])&& $_SESSION['afrebay']['userType']==2){?>
+                                <?php
+                                $uri = "$_SERVER[REQUEST_URI]";
+                                $uri = explode('/', $uri);
+                                $uri = end($uri);
+                                if($_SESSION['afrebay']['userId'] != base64_decode($uri)){?>
                                 <div class="quick-form-job">
-                                    <h3>Rate This Professional</h3>
+                                    <h3>Review</h3>
                                     <form method="post" action="<?= base_url('user/dashboard/save_employer_rating')?>">
                                         <div class="row m-0">
                                             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -166,16 +172,15 @@ if (!empty($user_detail->backgroundPic) && file_exists('uploads/users/background
                                                 </span>
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-12 Form_Subject">
-                                                <input type="text" placeholder="Enter Subject" name="subject"
-                                                    required />
-                                                <input type="hidden" value="<?= @$user_detail->userId ?>"
-                                                    name="user_id">
+                                                <input type="text" placeholder="Enter Subject" name="subject" required />
+                                                <input type="hidden" value="<?= @$user_detail->userId ?>" name="user_id">
+                                                <input type="hidden" value="<?= @$user_detail->userId ?>" name="user_id">
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-12 Form_Textarea">
                                                 <textarea placeholder="Enter review" name="review"></textarea>
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-12 Form_Btn">
-                                                <button class="submit btn btn-info">Submit</button>
+                                                <button class="submit btn btn-info" style="background: #007bff !important;">Submit</button>
                                             </div>
                                         </div>
                                         <!--  <span>You accepts our <a href="javascript:void(0)" title="">Terms and Conditions</a></span> -->
