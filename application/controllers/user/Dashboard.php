@@ -206,11 +206,12 @@ class Dashboard extends CI_Controller {
             }
             else{
                 $this->session->set_flashdata('message', 'Profile Updated Successfull !');
-                if($_SESSION['afrebay']['userType'] == '2') {
-                    redirect(base_url('homepage'));
-                } else {
-                    redirect(base_url('business_details'));
-                }
+                // if($_SESSION['afrebay']['userType'] == '2') {
+                //     redirect(base_url('homepage'));
+                // } else {
+                //     redirect(base_url('business_details'));
+                // }
+                redirect(base_url('homepage'));
             }
         }
 	}

@@ -36,7 +36,7 @@ function btn_register() {
     var phoneRegex = /^\d{10}$/;
     var password = $('#password').val();
 	var conf_password = $('#conf_password').val();
-    var user_type = $('#user_type').val();
+    //var user_type = $('#user_type').val();
     var location = $('#location').val();
 	var latitude = $('#search_lat').val();
 	var longitude = $('#search_lon').val();
@@ -115,12 +115,12 @@ function btn_register() {
 		setTimeout(function(){$("#err_check_pass").html("");},3000);
 		return false;
 	}
-    if(user_type == '') {
-		$('#err_usertype').fadeIn().html('Please select user type').css({'color':'red','margin-bottom':'5px'});
-		setTimeout(function(){$("#err_usertype").html("");},3000);
-		$("#user_type").focus();
-		return false;
-	}
+    // if(user_type == '') {
+	// 	$('#err_usertype').fadeIn().html('Please select user type').css({'color':'red','margin-bottom':'5px'});
+	// 	setTimeout(function(){$("#err_usertype").html("");},3000);
+	// 	$("#user_type").focus();
+	// 	return false;
+	// }
 
     if ($("#agreecheck").is(":checked") == false) {
         $('.erroragree').text('Please agree to the terms and conditions.');
@@ -144,7 +144,7 @@ function btn_register() {
                     $.ajax({
                         url: base_url+'save',
                         type: 'POST',
-                        data: {first_name: first_name, last_name: last_name, username: username, email:email, password:password, user_type:user_type, location:location, latitude:latitude, longitude:longitude},
+                        data: {first_name: first_name, last_name: last_name, username: username, email:email, password:password, location:location, latitude:latitude, longitude:longitude},
                         dataType:'json',
                         beforeSend : function(){
                             $("#rSignUp").text("Please Wait...");

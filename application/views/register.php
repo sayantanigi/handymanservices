@@ -103,7 +103,7 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12 col-md-6 col-sm-6" id="err_check_pass" style="tex-align:center; margin-bottom: 5px;"></div>
-                                                <div class="col-lg-12 email mb-3">
+                                                <!-- <div class="col-lg-12 email mb-3">
                                                     <div class="error text-left" id="err_usertype"></div>
                                                     <div class="cfield cfield_top">
                                                         <div class="cfield_Input">
@@ -114,7 +114,7 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                                             </select>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="col-lg-12 col-md-12 col-sm-12 SignUp_Btn">
                                                     <button type="button" class="btn logbtn w-100" id="rSignUp" onclick="return btn_register();">Continue</button>
                                                     <input type="hidden" name="location" id="location" value="<?= @$loc ?>" placeholder="Set Location" />

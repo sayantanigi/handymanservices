@@ -26,9 +26,9 @@ if($data_request=='user') {
                         <div class="profiletab position-relative d-flex">
                             <div class="tabBox d-flex w-auto">
                                 <a href="<?= base_url()?>profile" class="tabnav active">My Profile</a>
-                                <?php if($_SESSION['afrebay']['userType'] == '1') { ?>
+                                <?php //if($_SESSION['afrebay']['userType'] == '1') { ?>
                                 <a href="<?= base_url()?>business_details" class="tabnav">Business Details</a>
-                                <?php } ?>
+                                <?php //} ?>
                             </div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@ if($data_request=='user') {
                                         <?php if($_SESSION['afrebay']['userType'] == '1') { ?>
                                         <button class="post-job-btn float-right mw-150" type="submit">Save</button>
                                         <?php } else { ?>
-                                        <button class="post-job-btn float-right mw-150" type="submit">Save and Next</button>
+                                        <button class="post-job-btn float-right mw-150" type="submit">Save</button>
                                         <?php } ?>
                                         <input type="hidden" name="utype" id="utype" value="<?= @$userinfo->userType?>">
                                     </div>

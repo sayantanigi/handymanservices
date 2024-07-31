@@ -36,7 +36,8 @@ class Login extends CI_Controller {
 				'email' => @$email,
                 'mobile' => @$mobile,
 				'password' => base64_encode($_POST['password']),
-				'userType' => $_POST['user_type'],
+				// 'userType' => $_POST['user_type'],
+                'userType' => "2",
 				'address' => $_POST['location'],
 				'latitude' => $_POST['latitude'],
 				'longitude' => $_POST['longitude'],
@@ -47,22 +48,22 @@ class Login extends CI_Controller {
             //print_r($data); die();
 			$result = $this->Mymodel->insert('users',$data);
 			$insert_id = $this->db->insert_id();
-			if($_POST['user_type'] == '1') {
-				$sitemap_date = array(
-					'link'=>'/'.'professionals_detail/'.base64_encode($insert_id),
-					'changefreq' => 'daily',
-					'priority' => '0.80',
-					'lastmod'=> date('c', time()),
-				);
-			} else {
-				$sitemap_date = array(
-					'link'=>'/'.'customer_detail/'.base64_encode($insert_id),
-					'changefreq' => 'daily',
-					'priority' => '0.64',
-					'lastmod'=> date('c', time()),
-				);
-			}
-			$this->Mymodel->insert('sitemap',$sitemap_date);
+			// if($_POST['user_type'] == '1') {
+			// 	$sitemap_date = array(
+			// 		'link'=>'/'.'professionals_detail/'.base64_encode($insert_id),
+			// 		'changefreq' => 'daily',
+			// 		'priority' => '0.80',
+			// 		'lastmod'=> date('c', time()),
+			// 	);
+			// } else {
+			// 	$sitemap_date = array(
+			// 		'link'=>'/'.'customer_detail/'.base64_encode($insert_id),
+			// 		'changefreq' => 'daily',
+			// 		'priority' => '0.64',
+			// 		'lastmod'=> date('c', time()),
+			// 	);
+			// }
+			// $this->Mymodel->insert('sitemap',$sitemap_date);
 			$get_setting=$this->Crud_model->get_single('setting');
 			if(!empty($insert_id)) {
 				$data=array(
