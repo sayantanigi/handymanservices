@@ -446,7 +446,7 @@ class Welcome extends CI_Controller {
 		if(!empty($cat_name)) {
 			$get_catname = $this->db->query("SELECT * FROM category WHERE category_name LIKE '%".$cat_name."%'")->result_array();
 			if (!empty($get_catname)) {
-				$html = "<ul id='country-list' style='background: white;border-radius: 25px;height: 220px;overflow-y: scroll;'>";
+				$html = "<ul id='country-list' style='background: white; height: auto; overflow-y: scroll; box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);'>";
 				foreach ($get_catname as $row_data) {
 					$catName = $row_data['category_name'];
 					$catID = $row_data['id'];

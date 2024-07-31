@@ -58,6 +58,8 @@ $description = explode('.', $get_career->description) ?>
 #completeSub:hover #completeSubtext{visibility:visible}
 #frame #sidepanel #profile .wrap p{font-size:14px!important}@media screen and (max-width:425px){.btn-extars{flex-direction:column!important;align-items:flex-start!important}}
 .categories_style {font-size: 14px; padding: 0; font-weight: 500; color: #000; letter-spacing: .2px; margin-right: 15px; height: 30px; border-radius: 100px; padding-left: 10px; padding-right: 10px; border: 1px solid #efefef; }
+.Header_Menu_Nav .active hr {margin-bottom: -20px !important; height: 2px !important; background: #2892ff !important;}
+/* .Header_Menu_Nav hr {margin: 0 !important;} */
 </style>
 <script>
 function completeSub() {
@@ -128,11 +130,11 @@ $(function () {
                 <div class="responsivemenu" style="padding-left: 30px; padding-right: 30px;"></div>
             </div>
         </div>
-        <header class="stick-top forsticky bg-white">
+        <header class="stick-top forsticky bg-white" style="padding: 4px 0;">
             <div class="menu-sec">
                 <div class="container-fluid Header_Menu_Nav">
                     <div class="d-flex align-items-center">
-                        <div class="logo mr-5">
+                        <div class="logo mr-2">
                             <?php if (!empty(@$_SESSION['afrebay']['userId'])) { ?>
                             <a href="<?= base_url(); ?>homepage" title="">
                                 <img class="hidesticky" src="<?= base_url(); ?>uploads/logo/<?= $get_setting->logo ?>" alt="" />
@@ -157,16 +159,9 @@ $(function () {
                                 <?php
                                 if (!empty(@$_SESSION['afrebay']['userId'])) { ?>
                                 <li class="">
-                                    <a href="<?= base_url('homepage') ?>" title="Home" class="<?php if ($uri == 'homepage') {
-                                            echo "active";
-                                        } else {
-                                            echo "";
-                                        } ?>">
-                                        <i class="fa-solid fa-house"></i></i><?php if ($uri == 'homepage') {
-                                            echo " Home";
-                                        } else {
-                                            echo "";
-                                        } ?>
+                                    <a href="<?= base_url('homepage') ?>" title="Home" class="<?php if ($uri == 'homepage') { echo "active"; } else { echo ""; } ?>" style="background: none; ">
+                                        <i class="fa-solid fa-house"></i></i><?php if ($uri == 'homepage') { echo ""; } else { echo ""; } ?>
+                                        <?php if ($uri == 'homepage') { echo "<hr>"; } else { echo ""; } ?>
                                     </a>
                                 </li>
                                 <?php } ?>
@@ -174,8 +169,9 @@ $(function () {
                                 <?php
                                 if (!empty(@$_SESSION['afrebay']['userId'])) {
                                     if (is_numeric(@$_SESSION['afrebay']['userId'])) { ?>
-                                    <a href="<?= base_url('chat') ?>" title="Messages" class="<?php if ($uri == 'chat') { echo "active"; } else { echo ""; } ?>">
-                                        <i class="fa-solid fa-comment-dots"></i><?php if ($uri == 'chat') { echo " Messages"; } else { echo ""; } ?>
+                                    <a href="<?= base_url('chat') ?>" title="Messages" class="<?php if ($uri == 'chat') { echo "active"; } else { echo ""; } ?>" style="background: none;">
+                                        <i class="fa-solid fa-comment-dots"></i><?php if ($uri == 'chat') { echo ""; } else { echo ""; } ?>
+                                        <?php if ($uri == 'chat') { echo "<hr>"; } else { echo ""; } ?>
                                     </a>
                                     <?php } else { ?>
                                     <a href="javasctipt:void(0)" title="" onclick="forguestAlert()"><i class="fa-solid fa-comment-dots"></i></a>
@@ -183,7 +179,7 @@ $(function () {
                                 </li>
                             </ul>
                         </nav>
-                        <div class="d-flex align-items-center" style="margin-left: 5rem !important;">
+                        <div class="d-flex align-items-center" style="margin-left: 70px !important;">
                             <?php if (!empty(@$_SESSION['afrebay']['userId'])) { ?>
                             <form method="post" action="<?= base_url('search-work') ?>">
                                 <div style="align-items: center !important; flex-direction: column; margin-right: 20px;">
@@ -200,11 +196,20 @@ $(function () {
                                     </div>
                                 </div>
                             </form>
-                            <select name="" id="" class="categories_style">
+                            <select name="category" id="category" class="categories_style" style="border-radius: 10px; padding-top: 10px; padding-bottom: 10px; height: 40px;" onchange="getcategoryval(this.value);">
+                                <option value="">All Category</option>
+                                <?php
+                                $getCategory = $this->db->query("SELECT * FROM category WHERE status = 'Active'")->result_array();
+                                if(!empty($getCategory)) {
+                                foreach($getCategory as $item) { ?>
+                                <option value="<?= $item['id'] ?>"><?= ucfirst($item['category_name'])?></option>
+                                <?php } }?>
+                            </select>
+                            <select name="" id="" class="categories_style" style=" border-radius: 10px; padding-top: 10px; padding-bottom: 10px; height: 40px; ">
                                 <option value="">Global</option>
                                 <option value="">Local</option>
                             </select>
-                            <a style="border-radius: 30px; font-size: 13px; padding: 8px 15px; background: #2892ff; color: #fff;" href="javascript:void(0)" class="filterbtn" data-toggle="modal" data-target="#filterModal">Filter <i class="fa-regular fa-sliders ml-1"></i></a>
+                            <a style="font-size: 13px; padding: 8px 15px; background: #2892ff; color: #fff; border-radius: 10px; padding-top: 10px; padding-bottom: 10px;" href="javascript:void(0)" class="filterbtn" data-toggle="modal" data-target="#filterModal">Filter <i class="fa-regular fa-sliders ml-1"></i></a>
                             <?php } ?>
                         </div>
                     </div>

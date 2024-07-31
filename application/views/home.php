@@ -72,6 +72,15 @@ function get_time_ago($time) {
                                             <input type="hidden" id="search_lat" name="s_lat" value="<?= @$lat ?>">
                                             <input type="hidden" id="search_lon" name="s_lon" value="<?= @$lon ?>">
                                             <input type="hidden" id="cat_value" name="cat_value" value="">
+                                            <select name="category" id="category" class="categories_style" onchange="getcategoryval(this.value);" required style="position: absolute; margin-left: 26rem;">
+                                                <option value="">Select Category</option>
+                                                <?php
+                                                $getCategory = $this->db->query("SELECT * FROM category WHERE status = 'Active'")->result_array();
+                                                if(!empty($getCategory)) {
+                                                foreach($getCategory as $item) { ?>
+                                                <option value="<?= $item['id'] ?>"><?= ucfirst($item['category_name'])?></option>
+                                                <?php } }?>
+                                            </select>
                                         </form>
                                     </div>
                                     <div class="uploadOptionPost">
@@ -79,15 +88,6 @@ function get_time_ago($time) {
                                             <label id="postBoximgup"><img src="<?php base_url(); ?>assets/images/photo-icon.png"> Image</label>
                                             <label id="postBoxvidup"><img src="<?php base_url(); ?>assets/images/video-icon.png"> Video</label>
                                         </div>
-                                        <select name="category" id="category" class="categories_style" onchange="getcategoryval(this.value);">
-                                            <option value="">Select Category</option>
-                                            <?php
-                                            $getCategory = $this->db->query("SELECT * FROM category WHERE status = 'Active'")->result_array();
-                                            if(!empty($getCategory)) {
-                                            foreach($getCategory as $item) { ?>
-                                            <option value="<?= $item['id'] ?>"><?= ucfirst($item['category_name'])?></option>
-                                            <?php } }?>
-                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -211,9 +211,7 @@ function get_time_ago($time) {
                                             <ul
                                                 style="margin: 0; display: flex; align-items: center; justify-content: flex-end; flex-direction: row; width: 250px; float: right;">
                                                 <li class="mb-0" onclick="onclickShare(<?= $row->id ?>)">
-                                                    <a href="javascript:void(0)" class="shareBtn"> <i
-                                                            class="fa-regular fa-share-nodes"
-                                                            aria-hidden="true"></i> Share</a>
+                                                    <a href="javascript:void(0)" class="shareBtn1"> <i class="fa-solid fa-share"></i> Share</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -429,7 +427,7 @@ function get_time_ago($time) {
                                             echo "Customer";
                                         } ?> -->
                                     </p>
-                                    <div class="profileInfo d-flex justify-content-between text-center">
+                                    <div class="profileInfo d-flex justify-content-between text-center" style="display: none !important">
                                         <div>
                                             <h3>
                                                 <?php
@@ -734,7 +732,7 @@ function get_time_ago($time) {
                         </div>
                     </div>
                     <div style="background: #F6F6F6; border-radius: 10px; margin-bottom: 15px;">
-                        <select name="category" id="category" class="categories_style" style="width: 100%; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; height: 40px;" onchange="getcategoryval(this.value);">
+                        <select name="category" id="category" class="categories_style" style="width: 100%; border-radius: 10px; padding-top: 10px; padding-bottom: 10px; height: 40px;" onchange="getcategoryval(this.value);" required>
                             <option value="">Select Category</option>
                             <?php
                             $getCategory = $this->db->query("SELECT * FROM category WHERE status = 'Active'")->result_array();
@@ -797,8 +795,8 @@ function get_time_ago($time) {
     #city,#state{display:block}
     .jconfirm-content-pane{text-align:center;font-size:18px}
     .jconfirm-buttons{margin-right:140px;display:inline-block}
-    #country-list{float:left;list-style:none;margin-top:60px;padding:0;width:98%;position:absolute;z-index:1}
-    #country-list li{padding:10px 30px;background:#fff;margin:0!important;border-radius:10px;border-bottom:1px solid #eee}
+    #country-list{float:left;list-style:none;margin-top:57px;padding:0;width:100%;position:absolute;z-index:1}
+    #country-list li{padding:10px 30px;background:#fff;margin:0!important;border-radius:0;border-bottom:1px solid #eee}
     #country-list li:hover{background:#ece3d2;cursor:pointer}
     ::-webkit-scrollbar{width:10px;background-color:transparent}
     ::-webkit-scrollbar-track{background:0 0}
