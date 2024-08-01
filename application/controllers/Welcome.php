@@ -13,7 +13,7 @@ class Welcome extends CI_Controller {
 		$this->load->view('footer');
 	}
 	function searchjob() {
-		$category_id = $this->input->post('category_id');
+        $category_id = $this->input->post('category_id');
 		$country = $this->input->post('country');
 		$state = $this->input->post('state');
 		$city = $this->input->post('city');
@@ -36,7 +36,7 @@ class Welcome extends CI_Controller {
 	function fetch_data() {
 		sleep(1);
 		$category_id = $this->input->post('category_id');
-		$title = $this->input->post('title_keyword');
+		$title = $this->input->post('search_box');
 		$post_id = $this->input->post('post_id');
 		$days = $this->input->post('days');
 		$subcategory_id = $this->input->post('subcategory_id');

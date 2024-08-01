@@ -1333,16 +1333,9 @@ class Dashboard extends CI_Controller {
                                     <img style="width: 70px; height: 70px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="">
                                 <?php } ?>
                                 <div class="TextData" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 15px;">
-                                    <h3 style="font-size: 20px; font-weight: 600; margin: 0; color: #000;">
-                                        <?php
-                                        if (!empty($get_user->companyname)) {
-                                            echo $get_user->companyname;
-                                        } else {
-                                            echo $get_user->firstname . " " . $get_user->lastname;
-                                        }
-                                        ?>
+                                    <h3 style="font-size: 20px; font-weight: 600; margin: 0; color: #000;"><?= "@".$get_user->username?>
                                     </h3>
-                                    <p style="margin: 0; font-size: 13px; color: #b1b1b1;">Posted - <?php echo $this->get_time_ago(strtotime($row->created_date)) ?></p>
+                                    <p style="margin: 0; font-size: 13px; color: #b1b1b1;">Posted <?php echo $this->get_time_ago(strtotime($row->created_date)) ?></p>
                                 </div>
                             </div>
                             <?php if(@$_SESSION['afrebay']['userId'] === @$row->user_id) { ?>
@@ -1360,7 +1353,10 @@ class Dashboard extends CI_Controller {
                             <?php } ?>
                         </div>
                         <p class="CommentData" style="margin-top: 15px;margin-bottom:8px;font-size: 14px;color: #000;line-height: 25px;"><?= ucfirst($row->post_title) ?></p>
-                        <p class="CommentData" style="margin-top: 8px;margin-bottom: 8px;font-size: 14px;color: #000;line-height: 18px;"><?= ucfirst($row->description) ?></p>
+                        <?php if(!empty($row->category_id)) {
+                            $get_category = $this->db->query("SELECT * FROM category WHERE id = '".$row->category_id."'")->row();
+                        } ?>
+                        <p class="CommentData" style="margin-top: 8px;margin-bottom: 8px;font-size: 14px;color: #2892ff;line-height: 18px;"> <?= "#".ucfirst(str_replace(' ', '', $get_category->category_name)) ?></p>
                         <div class="imageData">
                             <?php
                             $getImage = $this->db->query("SELECT * FROM postjob_image WHERE job_id = '".$row->id."'")->result_array();
@@ -1416,8 +1412,8 @@ class Dashboard extends CI_Controller {
                                 </a>
                             </div>
                             <ul style="margin: 0; display: flex; align-items: center; justify-content: flex-end; flex-direction: row; width: 250px; float: right;">
-                                <li class="mb-0">
-                                    <a href="javascript:void(0)" class="shareBtn"> <i class="fa-regular fa-share-nodes" aria-hidden="true"></i> Share</a>
+                                <li class="mb-0" onclick="onclickShare(<?= $row->id ?>)">
+                                    <a href="javascript:void(0)" class="shareBtn1"> <i class="fa-solid fa-share"></i> Share</a>
                                 </li>
                             </ul>
                         </div>
@@ -1444,16 +1440,8 @@ class Dashboard extends CI_Controller {
                             </div>
                             <div class="User_Comment_Data" style="width: 92%; display: flex; flex-direction: column;">
                                 <div class="replyPost">
-                                    <p style="margin: 0; font-weight: 600; color: #000 !important;">
-                                        <?php
-                                        if (!empty($userData->companyname)) {
-                                            echo $userData->companyname;
-                                        } else {
-                                            echo $userData->firstname . " " . $userData->lastname;
-                                        }
-                                        ?> .
+                                    <p style="margin: 0; font-weight: 600; color: #000 !important;"> <?= "@".$userData->username;?> .
                                         <span style=" color: #6a6a6a; font-weight: 400;"><?php echo $this->get_time_ago(strtotime($each['created_at'])) ?></span>
-
                                     </p>
                                     <p style="margin-bottom: 0; "><?= $each['comment']; ?></p>
                                 </div>
@@ -1487,14 +1475,7 @@ class Dashboard extends CI_Controller {
                                     foreach ($commentRply as $rply) {
                                         $userDataRply = $this->db->query("SELECT * FROM users WHERE userId = '" . $rply['user_id'] . "'")->row(); ?>
                                         <div class="replyPost mt-2" style="margin-left: 30px;">
-                                            <p style="font-weight: 600;color: #000 !important;">
-                                                <?php
-                                                if (!empty($userDataRply->companyname)) {
-                                                    echo $userDataRply->companyname;
-                                                } else {
-                                                    echo $userDataRply->firstname . " " . $userDataRply->lastname;
-                                                }
-                                                ?> .
+                                            <p style="font-weight: 600;color: #000 !important;"><?= "@".$userDataRply->username;?> .
                                                 <span style="font-size: 13px; color: #6a6a6a; font-weight: 400;"><?php echo $this->get_time_ago(strtotime($rply['created_at'])) ?></span>
                                             </p>
                                             <p><?= $rply['comment']; ?></p>
@@ -1515,7 +1496,7 @@ class Dashboard extends CI_Controller {
                     <div class="boxdownpost">
                         <div class="d-flex">
                             <div class="commnetUser">
-                                <img src="https://techg.igiapp.com/handymanservices/uploads/no_pimage.png">
+                                <img src="<?= base_url(); ?>uploads/no_pimage.png">
                             </div>
                             <div class="Comment_Mobile position-relative flex-fill w-100">
                                 <textarea class="postComment mt-0 form-control f1 emoji_act" type="text" placeholder="Enter your comments" name="comment_<?= $row->id ?>" id="comment_<?= $row->id ?>"></textarea>
@@ -1577,16 +1558,8 @@ class Dashboard extends CI_Controller {
                                     <img style="width: 70px; height: 70px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="">
                                 <?php } ?>
                                 <div class="TextData" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 15px;">
-                                    <h3 style="font-size: 20px; font-weight: 600; margin: 0; color: #000;">
-                                        <?php
-                                        if (!empty($get_user->companyname)) {
-                                            echo $get_user->companyname;
-                                        } else {
-                                            echo $get_user->firstname . " " . $get_user->lastname;
-                                        }
-                                        ?>
-                                    </h3>
-                                    <p style="margin: 0; font-size: 13px; color: #b1b1b1;">Posted - <?php echo $this->get_time_ago(strtotime($row->created_date)) ?></p>
+                                    <h3 style="font-size: 20px; font-weight: 600; margin: 0; color: #000;"><?= "@".$get_user->username?>
+                                    <p style="margin: 0; font-size: 13px; color: #b1b1b1;">Posted <?php echo $this->get_time_ago(strtotime($row->created_date)) ?></p>
                                 </div>
                             </div>
                             <?php if(@$_SESSION['afrebay']['userId'] === @$row->user_id) { ?>
@@ -1604,7 +1577,10 @@ class Dashboard extends CI_Controller {
                             <?php } ?>
                         </div>
                         <p class="CommentData" style="margin-top: 15px;margin-bottom:8px;font-size: 14px;color: #000;line-height: 25px;"><?= ucfirst($row->post_title) ?></p>
-                        <p class="CommentData" style="margin-top: 8px;margin-bottom: 8px;font-size: 14px;color: #000;line-height: 18px;"><?= ucfirst($row->description) ?></p>
+                        <?php if(!empty($row->category_id)) {
+                                            $get_category = $this->db->query("SELECT * FROM category WHERE id = '".$row->category_id."'")->row();
+                                        } ?>
+                                        <p class="CommentData" style="margin-top: 8px;margin-bottom: 8px;font-size: 14px;color: #2892ff;line-height: 18px;"> <?= "#".ucfirst(str_replace(' ', '', $get_category->category_name)) ?></p>
                         <div class="imageData">
                             <?php
                             $getImage = $this->db->query("SELECT * FROM postjob_image WHERE job_id = '".$row->id."'")->result_array();
@@ -1660,8 +1636,8 @@ class Dashboard extends CI_Controller {
                                 </a>
                             </div>
                             <ul style="margin: 0; display: flex; align-items: center; justify-content: flex-end; flex-direction: row; width: 250px; float: right;">
-                                <li class="mb-0">
-                                    <a href="javascript:void(0)" class="shareBtn"> <i class="fa-regular fa-share-nodes" aria-hidden="true"></i> Share</a>
+                                <li class="mb-0" onclick="onclickShare(<?= $row->id ?>)">
+                                    <a href="javascript:void(0)" class="shareBtn1"> <i class="fa-solid fa-share"></i> Share</a>
                                 </li>
                             </ul>
                         </div>
@@ -1688,16 +1664,8 @@ class Dashboard extends CI_Controller {
                             </div>
                             <div class="User_Comment_Data" style="width: 92%; display: flex; flex-direction: column;">
                                 <div class="replyPost">
-                                    <p style="margin: 0; font-weight: 600; color: #000 !important;">
-                                        <?php
-                                        if (!empty($userData->companyname)) {
-                                            echo $userData->companyname;
-                                        } else {
-                                            echo $userData->firstname . " " . $userData->lastname;
-                                        }
-                                        ?> .
+                                    <p style="margin: 0; font-weight: 600; color: #000 !important;"><?= "@".$userData->username;?> .
                                         <span style=" color: #6a6a6a; font-weight: 400;"><?php echo $this->get_time_ago(strtotime($each['created_at'])) ?></span>
-
                                     </p>
                                     <p style="margin-bottom: 0; "><?= $each['comment']; ?></p>
                                 </div>
@@ -1731,14 +1699,7 @@ class Dashboard extends CI_Controller {
                                     foreach ($commentRply as $rply) {
                                         $userDataRply = $this->db->query("SELECT * FROM users WHERE userId = '" . $rply['user_id'] . "'")->row(); ?>
                                         <div class="replyPost mt-2" style="margin-left: 30px;">
-                                            <p style="font-weight: 600;color: #000 !important;">
-                                                <?php
-                                                if (!empty($userDataRply->companyname)) {
-                                                    echo $userDataRply->companyname;
-                                                } else {
-                                                    echo $userDataRply->firstname . " " . $userDataRply->lastname;
-                                                }
-                                                ?> .
+                                            <p style="font-weight: 600;color: #000 !important;"><?= "@".$userDataRply->username;?> .
                                                 <span style="font-size: 13px; color: #6a6a6a; font-weight: 400;"><?php echo $this->get_time_ago(strtotime($rply['created_at'])) ?></span>
                                             </p>
                                             <p><?= $rply['comment']; ?></p>
@@ -1759,7 +1720,7 @@ class Dashboard extends CI_Controller {
                     <div class="boxdownpost">
                         <div class="d-flex">
                             <div class="commnetUser">
-                                <img src="https://techg.igiapp.com/handymanservices/uploads/no_pimage.png">
+                                <img src="<?= base_url(); ?>uploads/no_pimage.png">
                             </div>
                             <div class="Comment_Mobile position-relative flex-fill w-100">
                                 <textarea class="postComment mt-0 form-control f1 emoji_act" type="text" placeholder="Enter your comments" name="comment_<?= $row->id ?>" id="comment_<?= $row->id ?>"></textarea>
@@ -1795,5 +1756,232 @@ class Dashboard extends CI_Controller {
         );
         //print_r($details_data); die();
         $this->Crud_model->SaveData('users_save_post',$details_data);
+    }
+
+    public function searchPostData() {
+        $search_box = $_POST['search_box'];
+        $category = $_POST['category'];
+        $distance = $_POST['distance'];
+        $lat = $_POST['search_lat'];
+        $lon = $_POST['search_lon'];
+        if($distance == '1') {
+            $query = "SELECT * FROM postjob WHERE visibility = '1' AND status = 'Active' AND is_delete = '0'";
+        } else {
+            $query = "SELECT *, (6367 * acos(cos(radians('".$lat."')) * cos(radians(`latitude`)) * cos(radians(`longitude`) - radians('".$lon."')) + sin(radians('".$lat."')) * sin(radians(`latitude`)))) AS distance FROM `postjob` Having `distance` < 10  AND visibility = '1' AND status = 'Active' AND is_delete = '0'";
+        }
+
+        if(isset($search_box) && !empty($search_box)) {
+            $query .= " AND post_title like '%".$search_box."%'";
+        }
+
+        if(isset($category) && !empty($category)) {
+            if($category == '0') {
+                $query .= " AND category_id != '0'";
+            } else {
+                $query .= " AND category_id = '".$category."'";
+            }
+        }
+        $get_post = $this->db->query($query)->result();
+        if (!empty($get_post)) {
+            foreach ($get_post as $row) {
+                $get_user = $this->db->query("SELECT * FROM users WHERE userId = '$row->user_id'")->row(); ?>
+                <div class="DataContainer postblockElement" >
+                    <div id="loader_<?= $row->id?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
+                        <img src="<?= base_url('uploads/loader.gif'); ?>" style="padding: 122px;">
+                    </div>
+                    <div class="boxuppost">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="InfoBlock" style="display: flex; flex-direction: row; height: 70px; align-items: center; justify-content: flex-start;">
+                                <?php if (!empty($get_user->profilePic) && file_exists('uploads/users/' . $get_user->profilePic)) { ?>
+                                    <img style="width:70px; height: 70px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/users/<?= $get_user->profilePic ?>" alt="">
+                                <?php } else { ?>
+                                    <img style="width: 70px; height: 70px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="">
+                                <?php } ?>
+                                <div class="TextData" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 15px;">
+                                    <h3 style="font-size: 20px; font-weight: 600; margin: 0; color: #000;"><?= "@".$get_user->username;?></h3>
+                                    <p style="margin: 0; font-size: 13px; color: #b1b1b1;">Posted <?php echo $this->get_time_ago(strtotime($row->created_date)) ?></p>
+                                </div>
+                            </div>
+                            <?php if(@$_SESSION['afrebay']['userId'] === @$row->user_id) { ?>
+                            <div>
+                                <div class="btn-group dropleft dropPost">
+                                    <a class="dotsdrop"  href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-regular fa-ellipsis-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu  dropdown-menu-lg-right">
+                                        <!-- <a class="dropdown-item" href="<?= base_url()?>update-postjob/<?= base64_encode($row->id)?>">Edit Post</a> -->
+                                        <a class="dropdown-item" href="javascript:void(0)" onclick="jobDelete(<?= $row->id ?>)">Delete Post</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php } ?>
+                        </div>
+                        <p class="CommentData" style="margin-top: 15px;margin-bottom:8px;font-size: 14px;color: #000;line-height: 25px;"><?= ucfirst($row->post_title) ?></p>
+                        <?php if(!empty($row->category_id)) {
+                                            $get_category = $this->db->query("SELECT * FROM category WHERE id = '".$row->category_id."'")->row();
+                                        } ?>
+                                        <p class="CommentData" style="margin-top: 8px;margin-bottom: 8px;font-size: 14px;color: #2892ff;line-height: 18px;"> <?= "#".ucfirst(str_replace(' ', '', $get_category->category_name)) ?></p>
+                        <div class="imageData">
+                            <?php
+                            $getImage = $this->db->query("SELECT * FROM postjob_image WHERE job_id = '".$row->id."'")->result_array();
+                            $max_display = 4;
+                            $total_image = count($getImage);
+                            //echo "<pre>"; print_r($getImage);
+                            for ($i = 0; $i < min($total_image, $max_display); $i++) { ?>
+                            <div class="box-image<?php if($total_image > 4) {echo $max_display;} else {echo $total_image;} ?>">
+                                <?php
+                                $extension = strtolower(pathinfo($getImage[$i]['job_image'], PATHINFO_EXTENSION));
+                                if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) { ?>
+                                <img src="<?php base_url()?>uploads/postjob/<?= $getImage[$i]['job_image']?>" class="postImageData">
+                                <?php if ($i===$max_display - 1 && $total_image > $max_display) {?>
+                                <div class="extra-images">+<?php echo $total_image - $max_display?></div>
+                                <?php } } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
+                                <video width="100%" controls>
+                                <source src="<?= base_url('uploads/postjob/'.$getImage[$i]['job_image']); ?>" type="video/mp4">
+                                Your browser does not support the video tag.
+                                </video>
+                                <?php } ?>
+                            </div>
+                            <?php } ?>
+                        </div>
+                        <input type="hidden" name="postjobID" id="postjobID" value="<?= $row->id ?>">
+                        <input type="hidden" name="userID" id="userID" value="<?= @$_SESSION['afrebay']['userId'] ?>">
+
+                        <div class="Rply_Comment_Block" style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+                            <div class="Active_Icon_Block" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; width: 50%; ">
+                                <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
+                                $chechis_like = $this->db->query("SELECT * FROM postjob_like WHERE postjob_id = '" . $row->id . "' AND user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND is_liked = 1")->num_rows();
+                                if ($chechis_like > 0) { ?>
+                                <a href="javascript:void(0)" class="Icon_1" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;" onclick="dislikepostjob(<?= $row->id ?>)">
+                                <span><i class="fa fa-heart" aria-hidden="true"></i></span>
+                                <?php } else { ?>
+                                <a href="javascript:void(0)" class="Icon_1" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;" onclick="likepostjob(<?= $row->id ?>)">
+                                <span><i class="fa-regular fa-heart"></i></span>
+                                <?php } } else  { ?>
+                                <a href="javascript:void(0)" class="Icon_1" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;" onclick="forguestAlert()">
+                                <span><i class="fa-regular fa-heart"></i></span>
+                                <?php } ?>
+                                    <?php $getLikeCount = $this->db->query("SELECT COUNT(id) as count FROM postjob_like WHERE postjob_id = '" . $row->id . "' AND is_liked = 1")->row(); ?>
+                                    <p style="margin: 0; margin-left: 5px; font-size: 14px; font-weight: 500; "><?= $getLikeCount->count ?> </p>
+                                </a>
+                                <a href="#" class="Icon_2" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; margin-left: 20px;">
+                                    <span><i class="fa-regular fa-comment-dots"></i></span>
+                                    <?php $getCommentCount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment WHERE postjob_id = '" . $row->id . "'")->row(); ?>
+                                    <p style="margin: 0; margin-left: 5px; font-size: 15px; font-weight: 500;"><?= $getCommentCount->count; ?> </p>
+                                </a>
+                                <a href="#" class="Icon_2" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start; margin-left: 20px;">
+                                    <span><i class="fa-regular fa-share-nodes"></i></span>
+
+                                    <p style="margin: 0; margin-left: 5px; font-size: 15px; font-weight: 500;">0</p>
+                                </a>
+                            </div>
+                            <ul style="margin: 0; display: flex; align-items: center; justify-content: flex-end; flex-direction: row; width: 250px; float: right;">
+                                <li class="mb-0" onclick="onclickShare(<?= $row->id ?>)">
+                                    <a href="javascript:void(0)" class="shareBtn1"> <i class="fa-solid fa-share"></i> Share</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Comment Btn -->
+                    <!-- Comment Data -->
+                    <?php
+                    $getpostComment = $this->db->query("SELECT * FROM postjob_comment WHERE postjob_id = '" . @$row->id . "'")->result_array();
+                    if (!empty($getpostComment)) {
+                        $i = 1;
+                        foreach ($getpostComment as $each) {
+                            $rplycount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment_like  WHERE postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
+                    ?>
+                    <div class="Comment_Block replyComment" style="display: flex; flex-direction: column; ">
+                        <div class="Comment_Block_Container" style="flex-direction: row; align-items: flex-start; justify-content: flex-start; display: flex; width: 100%;">
+                            <div class="Comment_Img" style="min-width: 50px;">
+                                <?php
+                                $userData = $this->db->query("SELECT * FROM users WHERE userId = '" . $each['user_id'] . "'")->row();
+                                if (!empty($userData->profilePic) && file_exists('uploads/users/' . $userData->profilePic)) { ?>
+                                    <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/users/<?= $userData->profilePic ?>" alt="User Profile">
+                                <?php } else { ?>
+                                    <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="User Profile">
+                                <?php } ?>
+                            </div>
+                            <div class="User_Comment_Data" style="width: 92%; display: flex; flex-direction: column;">
+                                <div class="replyPost">
+                                    <p style="margin: 0; font-weight: 600; color: #000 !important;"><?= "@".$userData->username;?> .
+                                        <span style=" color: #6a6a6a; font-weight: 400;"><?php echo $this->get_time_ago(strtotime($each['created_at'])) ?></span>
+                                    </p>
+                                    <p style="margin-bottom: 0; "><?= $each['comment']; ?></p>
+                                </div>
+                                <ul style="margin: 0; display: flex; align-items: center; justify-content: flex-start; margin-top: 10px;">
+                                    <li style="margin: 0 25px 0 0 !important; font-size: 14px; color: #000 !important; font-weight: 600;">
+                                        <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
+                                            $checkrplycount = $this->db->query("SELECT * FROM postjob_comment_like WHERE user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
+                                            if ($checkrplycount > 0) { ?>
+                                                <a style="color: #000 !important;" href="javascript:void(0)" onclick="dislikeuserrply(<?= $row->id ?>, <?= $each['id'] ?>)"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                            <?php } else { ?>
+                                                <a style="color: #000 !important;" href="javascript:void(0)" onclick="likeuserrply(<?= $row->id ?>, <?= $each['id'] ?>)"><i class="fa-regular fa-heart"></i></a>
+                                            <?php }
+                                        } else { ?>
+                                            <a style="color: #000 !important;" href="<?= base_url() ?>login"><i class="fa-regular fa-heart"></i></a>
+                                        <?php } ?>
+                                    </li>
+                                    <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
+                                        <li style="margin: 0 !important; font-size: 13px; color: #000 !important; font-weight: 600;">
+                                            <a style="color: #000 !important;" href="javascript:void(0)" onclick="replylink(<?= $row->id; ?>, <?= $each['id']; ?>)"><i class="fa-sharp fa-regular fa-reply-all"></i></a>
+                                        </li>
+                                    <?php } else { ?>
+                                        <li style="margin: 0 !important; font-size: 13px; color: #000 !important; font-weight: 600;">
+                                            <a style="color: #000 !important;" href="<?= base_url() ?>login"><i class="fa-sharp fa-regular fa-reply-all"></i></a>
+                                        </li>
+                                    <?php } ?>
+                                </ul>
+                                <!-- <div style="height: 148px; overflow-y: scroll;"> -->
+                                <?php
+                                $commentRply = $this->db->query("SELECT * FROM postjob_comment_rply WHERE comment_id = '" . $each['id'] . "'")->result_array();
+                                if (!empty($commentRply)) {
+                                    foreach ($commentRply as $rply) {
+                                        $userDataRply = $this->db->query("SELECT * FROM users WHERE userId = '" . $rply['user_id'] . "'")->row(); ?>
+                                        <div class="replyPost mt-2" style="margin-left: 30px;">
+                                            <p style="font-weight: 600;color: #000 !important;"><?= "@".$userDataRply->username;?> .
+                                                <span style="font-size: 13px; color: #6a6a6a; font-weight: 400;"><?php echo $this->get_time_ago(strtotime($rply['created_at'])) ?></span>
+                                            </p>
+                                            <p><?= $rply['comment']; ?></p>
+                                        </div>
+                                <?php }
+                                } ?>
+                                <!-- </div> -->
+                                <div class="replyBox mt-3" id="replyBox_<?= $each['id']; ?>">
+                                    <textarea required="" name="users_rply_<?= $each['id']; ?>" id="users_rply_<?= $each['id']; ?>" placeholder="Reply"></textarea>
+                                    <a href="javascript:void(0)" class="replySubmit" onclick="postUserComment(<?= $row->id; ?>, <?= $each['id']; ?>)">
+                                        Reply
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php $i++; } } ?>
+                    <div class="boxdownpost">
+                        <div class="d-flex">
+                            <div class="commnetUser">
+                                <img src="<?= base_url(); ?>uploads/no_pimage.png">
+                            </div>
+                            <div class="Comment_Mobile position-relative flex-fill w-100">
+                                <textarea class="postComment mt-0 form-control f1 emoji_act" type="text" placeholder="Enter your comments" name="comment_<?= $row->id ?>" id="comment_<?= $row->id ?>"></textarea>
+                                <div>
+                                    <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
+                                        <a href="javascript:void(0)" class="postCommentbtn" onclick="postComment(<?= $row->id ?>)">
+                                            <span >Comment</span>
+                                        </a>
+                                    <?php } else { ?>
+                                        <a href="<?= base_url() ?>login" class="postCommentbtn">
+                                            <span >Comment</span>
+                                        </a>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php }
+        } else {
+            echo '<div class="col-12" style=" background: #fff; border-radius: 20px; "><div class="boxuppost">No post available</div></div>';
+        }
     }
 }

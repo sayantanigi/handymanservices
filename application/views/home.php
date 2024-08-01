@@ -354,7 +354,7 @@ function get_time_ago($time) {
                                                     <div class="d-flex">
                                                         <div class="commnetUser">
                                                             <img
-                                                                src="<?php base_url()?>uploads/no_pimage.png">
+                                                                src="<?= base_url()?>uploads/no_pimage.png">
                                                         </div>
                                                         <div class="Comment_Mobile position-relative flex-fill w-100">
                                                             <textarea class="postComment mt-0 form-control f1 emoji_act"
@@ -838,11 +838,6 @@ function get_time_ago($time) {
 </style>
 <script>
 $(document).ready(function () {
-    // const shareBtn = $('#shareBtn');
-    // const shareMenu = $('#shareMenu');
-    // shareBtn.click(function() {
-    //     shareMenu.toggle();
-    // });
     var base_url = $("#base_url").val();
     var id = 'United States';
     $.ajax({
@@ -859,25 +854,31 @@ $(document).ready(function () {
             $('#city').html('<option value="">Select State First</option>');
         }
     });
+    // $("#search-box").keyup(function () {
+    //     var text = $("#search-box").val();
+    //     var base_url = $("#base_url").val();
+    //     $.ajax({
+    //         type: "POST",
+    //         url: base_url + "Welcome/get_category_list",
+    //         data: {
+    //             category_name: text
+    //         },
+    //         beforeSend: function () {
+    //             $("#search-box").css("background", "#FFF url(<?php base_url() ?>uploads/LoaderIcon.gif) no-repeat 165px");
+    //         },
+    //         success: function (data) {
+    //             //console.log(data);
+    //             $("#suggesstion-box").show();
+    //             $("#suggesstion-box").html(data);
+    //             $("#search-box").css("background", "#FFF");
+    //         }
+    //     });
+    // });
     $("#search-box").keyup(function () {
         var text = $("#search-box").val();
-        var base_url = $("#base_url").val();
-        $.ajax({
-            type: "POST",
-            url: base_url + "Welcome/get_category_list",
-            data: {
-                category_name: text
-            },
-            beforeSend: function () {
-                $("#search-box").css("background", "#FFF url(<?php base_url() ?>uploads/LoaderIcon.gif) no-repeat 165px");
-            },
-            success: function (data) {
-                //console.log(data);
-                $("#suggesstion-box").show();
-                $("#suggesstion-box").html(data);
-                $("#search-box").css("background", "#FFF");
-            }
-        });
+        $("#suggesstion-box").show();
+        $("#suggesstion-box").html('<ul id="country-list" style="background: white; height: auto; overflow-y: scroll; box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);"><li onclick="selectcategory(\'' + text + '\')">'+text+'</li></ul>');
+        $("#search-box").css("background", "#FFF");
     });
     $(".emoji_act").emojioneArea({
         emojiPlaceholder: ":smile_cat:",
@@ -887,6 +888,7 @@ $(document).ready(function () {
         pickerPosition: "bottom"
     });
 })
+
 $("#generalForm").submit(function () {
     var post_title = $('#post_title').val();
     if (post_title == '') {
@@ -896,6 +898,7 @@ $("#generalForm").submit(function () {
         return false;
     }
 });
+
 $("#generalForm1").submit(function () {
     var post_title = $('.emojionearea-editor').text();
     if (post_title == '') {
@@ -953,7 +956,95 @@ function viewProfile() {
 function selectcategory(val) {
     $("#search-box").val(val);
     $("#suggesstion-box").hide();
+    var search_box = $('#search-box').val();
+    var base_url = $("#base_url").val();
+    var category = $('#category').val();
+    var distance = $('#distance').val();
+    var search_lat = $('#search_lat').val();
+    var search_lon = $('#search_lon').val();;
+    $.ajax({
+        type: "post",
+        cache: false,
+        url: base_url + "user/Dashboard/searchPostData",
+        data: { search_box: search_box, category: category, distance: distance,search_lat: search_lat, search_lon: search_lon },
+        beforeSend: function () {
+            $("#loader").removeClass('d-none');
+        },
+        success: function (data) {
+            setTimeout(() => {
+                $("#loader").addClass('d-none');
+            }, 3000);
+            $('.PostContainer').html(data);
+        }
+    })
 }
+
+function getcategorydata(val) {
+    var search_box = $('#search-box').val();
+    var base_url = $("#base_url").val();
+    var category = val;
+    var distance = $('#distance').val();
+    var search_lat = $('#search_lat').val();
+    var search_lon = $('#search_lon').val();;
+    $.ajax({
+        type: "post",
+        cache: false,
+        url: base_url + "user/Dashboard/searchPostData",
+        data: { search_box: search_box, category: category, distance: distance,search_lat: search_lat, search_lon: search_lon },
+        beforeSend: function () {
+            $("#loader").removeClass('d-none');
+        },
+        success: function (data) {
+            setTimeout(() => {
+                $("#loader").addClass('d-none');
+            }, 3000);
+            $('.PostContainer').html(data);
+        }
+    })
+}
+
+function getdistancedata(val) {
+    var search_box = $('#search-box').val();
+    var base_url = $("#base_url").val();
+    var category = $('#category').val();
+    var distance = val;
+    var search_lat = $('#search_lat').val();
+    var search_lon = $('#search_lon').val();;
+    $.ajax({
+        type: "post",
+        cache: false,
+        url: base_url + "user/Dashboard/searchPostData",
+        data: { search_box: search_box, category: category, distance: distance,search_lat: search_lat, search_lon: search_lon },
+        beforeSend: function () {
+            $("#loader").removeClass('d-none');
+        },
+        success: function (data) {
+            setTimeout(() => {
+                $("#loader").addClass('d-none');
+            }, 3000);
+            $('.PostContainer').html(data);
+        }
+    })
+}
+
+/*$('#search-box').keyup(function() {
+    $("#search-box").val();
+    $("#suggesstion-box").hide();
+    var search_box = $('#search-box').val();
+    var base_url = $("#base_url").val();
+    var category = $('#category').val();
+    var distance = $('#distance').val();
+    $.ajax({
+        type: "post",
+        cache: false,
+        url: base_url + "user/Dashboard/searchPostData",
+        data: { search_box: search_box, category: category, distance: distance },
+        beforeSend: function () { },
+        success: function (returndata) {
+            $('.search_result').html(returndata);
+        }
+    })
+})*/
 
 function removeAdd() {
     $('#location').val('');

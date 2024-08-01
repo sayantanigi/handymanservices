@@ -16385,11 +16385,7 @@ footer .bottom-line span {
   .emply-resume-list
   .shortlists
   a:nth-last-child(1):hover {
-  background: linear-gradient(
-    180deg,
-    rgba(252, 119, 33, 1) 0%,
-    rgba(249, 80, 30, 1) 100%
-  ) !important;
+    background: #2892ff !important;
 }
 .Employees_Search_List .Employees_Search_Result .Employee-Details p::before {
   content: "...";

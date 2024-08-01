@@ -186,7 +186,7 @@ $(function () {
                                     <div class="d-flex position-relative">
                                         <div class="flex-fill w-100">
                                             <div class="job-field frmSearch">
-                                                <input type="text" name="category_id" id="search-box" placeholder="Search " value="" />
+                                                <input type="text" name="search_title" id="search-box" placeholder="Search " value="" />
                                             </div>
                                             <div id="suggesstion-box"></div>
                                         </div>
@@ -196,8 +196,8 @@ $(function () {
                                     </div>
                                 </div>
                             </form>
-                            <select name="category" id="category" class="categories_style" style="border-radius: 10px; padding-top: 10px; padding-bottom: 10px; height: 40px;" onchange="getcategoryval(this.value);">
-                                <option value="">All Category</option>
+                            <select name="category" id="category" class="categories_style" style="border-radius: 10px; padding-top: 10px; padding-bottom: 10px; height: 40px;" onchange="getcategorydata(this.value);">
+                                <option value="0">All Category</option>
                                 <?php
                                 $getCategory = $this->db->query("SELECT * FROM category WHERE status = 'Active'")->result_array();
                                 if(!empty($getCategory)) {
@@ -205,9 +205,9 @@ $(function () {
                                 <option value="<?= $item['id'] ?>"><?= ucfirst($item['category_name'])?></option>
                                 <?php } }?>
                             </select>
-                            <select name="" id="" class="categories_style" style=" border-radius: 10px; padding-top: 10px; padding-bottom: 10px; height: 40px; ">
-                                <option value="">Global</option>
-                                <option value="">Local</option>
+                            <select name="distance" id="distance" class="categories_style" style=" border-radius: 10px; padding-top: 10px; padding-bottom: 10px; height: 40px;" onchange="getdistancedata(this.value);">
+                                <option value="1">Global</option>
+                                <option value="2">Local</option>
                             </select>
                             <a style="font-size: 13px; padding: 8px 15px; background: #2892ff; color: #fff; border-radius: 10px; padding-top: 10px; padding-bottom: 10px;" href="javascript:void(0)" class="filterbtn" data-toggle="modal" data-target="#filterModal">Filter <i class="fa-regular fa-sliders ml-1"></i></a>
                             <?php } ?>

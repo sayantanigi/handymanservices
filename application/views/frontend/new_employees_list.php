@@ -139,6 +139,8 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
             padding: 5px !important;
         }
     }
+    .Employees_Search_List .Employees_Search_Result .emply-resume-list .shortlists a.Emp_Comp i { color: #fff !important;}
+    .shortlists > a i {float: left !important;}
 </style>
 <section class="overlape">
     <div class="block no-padding">

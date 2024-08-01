@@ -1,37 +1,30 @@
-$('#first_name').keyup(function(){
-    $('#first_name').css({'color':'#000', 'border':'1px solid #2892ff'});
-    $("#first_name").focus();
-    return false;
-})
-$('#last_name').keyup(function(){
-    $('#last_name').css({'color':'#000', 'border':'1px solid #2892ff'});
-    $("#last_name").focus();
-    return false;
-})
-$('#username').keyup(function(){
-    $('#username').css({'color':'#000', 'border':'1px solid #2892ff'});
-    $("#username").focus();
-    return false;
-})
-$('#email').keyup(function(){
-    $('#email').css({'color':'#000', 'border':'1px solid #2892ff'});
-    $("#email").focus();
-    return false;
-})
-$('#username').keyup(function(){
-    if($('#username').val().length >= 8) {
-        $('#username').css({'color':'#000', 'border':'1px solid #2892ff'});
-        $("#username").focus();
-        return false;
-    }
-})
-$('#password').keyup(function(){
-    if($('#password').val().length >= 6) {
-        $('#password').css({'color':'#000', 'border':'1px solid #2892ff'});
-        $("#password").focus();
-        return false;
-    }
-})
+// function checkusername() {
+//     var base_url = $('#base_url').val();
+//     var username = $('#username').val();
+//     $.ajax({
+//         type: "POST",
+//         url: base_url+'user/Login/checkusername',
+//         data: {username: username},
+//         dataType:'json',
+//         beforeSend : function(){
+
+// 		},
+// 		success:function(returndata) {
+// 			console.log(returndata.result);
+//             if(returndata.result == 'success') {
+// 				$('#err_username').fadeIn().html(returndata.data).css({'color':'green','margin-bottom':'5px'});
+// 				setTimeout(function(){$("#err_username").html("");},3000);
+// 				return false;
+// 			} else {
+// 				$('#err_username').fadeIn().html(returndata.data).css({'color':'red','margin-bottom':'5px'});
+// 				setTimeout(function(){$("#err_username").html("");},3000);
+// 				$("#username").focus();
+// 				return false;
+// 			}
+// 		}
+//     })
+// }
+
 function btn_register() {
     var base_url = $('#base_url').val();
 	var first_name = $('#first_name').val();
@@ -49,85 +42,76 @@ function btn_register() {
 	var longitude = $('#search_lon').val();
 
 	if(first_name == '') {
-		$('#first_name').prop('placeholder','Enter First Name');
-        $('#first_name').css({'color':'red', 'border':'1px solid red'});
+		$('#err_firstname').fadeIn().html('Please enter First Name').css({'color':'red','margin-bottom':'5px'});
+		setTimeout(function(){$("#err_firstname").html("");},3000);
 		$("#first_name").focus();
 		return false;
 	}
 	if(last_name == '') {
-		$('#last_name').prop('placeholder','Enter Last Name');
-		$('#last_name').css({'color':'red', 'border':'1px solid red'});
+		$('#err_lastname').fadeIn().html('Please enter Last Name').css({'color':'red','margin-bottom':'5px'});
+		setTimeout(function(){$("#err_lastname").html("");},3000);
 		$("#last_name").focus();
 		return false;
 	}
     if(username == '') {
-        $('#username').prop('placeholder','Enter User Name');
-		$('#username').css({'color':'red', 'border':'1px solid red'});
+        $('#err_username').fadeIn().html('Please enter User Name').css({'color':'red','margin-bottom':'5px'});
+		setTimeout(function(){$("#err_username").html("");},3000);
 		$("#username").focus();
 		return false;
     }
-    if(username.length < 8) {
-        $('#err_username').html('Username should be at least 8 characters long');
-		$('#err_username').css({'color':'red'});
-        $('#username').css({'color':'red', 'border':'1px solid red'});
-        setTimeout(function(){$("#err_username").html("");},3000)
-		$("#err_username").focus();
-		return false;
-    }
     if(email == '') {
-		$('#email').prop('placeholder','Enter valid email or mobile number');
-		$('#email').css({'color':'red', 'border':'1px solid red'});
+		$('#err_email').fadeIn().html('Please enter email or phone number').css({'color':'red','margin-bottom':'5px'});
+		setTimeout(function(){$("#err_email").html("");},3000);
 		$("#email").focus();
+        $("#email").css('border','1px solid red');
 		return false;
 	} else {
         if(!isNaN(email)) {
             if(!phoneRegex.test(email)) {
                 $("#err_email").fadeIn().html("Please enter a valid phone number").css({'color':'red','margin-bottom':'5px'});
-                $('#email').css({'color':'red', 'border':'1px solid red'});
                 setTimeout(function(){$("#err_email").html("");},5000)
-                $("#err_email").focus();
+                $("#email").focus();
+                $("#email").css('border','1px solid red');
                 return false;
             }
         } else {
             if(!emailRegex.test(email)) {
                 $("#err_email").fadeIn().html("Please enter a valid email").css({'color':'red','margin-bottom':'5px'});
-                $('#email').css({'color':'red', 'border':'1px solid red'});
                 setTimeout(function(){$("#err_email").html("");},5000)
-                $("#err_email").focus();
+                $("#email").focus();
+                $("#email").css('border','1px solid red');
                 return false;
             }
         }
     }
+
 	if(password=='') {
-		$('#password').prop('placeholder','Enter password');
-		$('#password').css({'color':'red', 'border':'1px solid red'});
+		$('#err_password').fadeIn().html('Please enter password').css({'color':'red','margin-bottom':'5px'});
+		setTimeout(function(){$("#err_password").html("");},3000);
 		$("#password").focus();
+        $("#password").css('border','1px solid red');
 		return false;
 	}
-   	if(password.length < 6) {
-		$('#err_password').fadeIn().html('Password should be at least 6 characters long').css({'color':'red'});
-        $('#password').css({'color':'red', 'border':'1px solid red'});
+   	if(password.length<6) {
+		$('#err_password').fadeIn().html('please enter at least 6 character').css({'color':'red','margin-bottom':'5px'});
 		setTimeout(function(){$("#err_password").html("");},3000);
 		$("#password").focus();
 		return false;
 	}
 	if(conf_password=='') {
-		$('#conf_password').prop('placeholder','Enter confirm password');
-		$('#conf_password').css({'color':'red', 'border':'1px solid red'});
+		$('#err_confpassword').fadeIn().html('Please enter confirm password').css({'color':'red','margin-bottom':'5px'});
+		setTimeout(function(){$("#err_confpassword").html("");},3000);
 		$("#conf_password").focus();
 		return false;
 	}
    	if(conf_password.length<6) {
-		$('#err_confpassword').fadeIn().html('Confirm Password should be at least 6 characters long').css({'color':'red'});
-        $('#conf_password').css({'color':'red', 'border':'1px solid red'});
+		$('#err_confpassword').fadeIn().html('please enter at least 6 character').css({'color':'red','margin-bottom':'5px'});
 		setTimeout(function(){$("#err_confpassword").html("");},3000);
 		$("#conf_password").focus();
 		return false;
 	}
 	if (password != conf_password) {
-		$('#err_check_pass').fadeIn().html('Password Mismatch').css({'color':'red','margin': '0px'});
-        $('#password').css({'color':'red', 'border':'1px solid red'});
-        $('#conf_password').css({'color':'red', 'border':'1px solid red','margin': '0px'});
+		$('#err_check_pass').fadeIn().html('Password Mismatch').css({'color':'red','margin-bottom':'5px'});
 		setTimeout(function(){$("#err_check_pass").html("");},3000);
 		return false;
 	}

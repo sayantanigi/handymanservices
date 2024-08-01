@@ -263,7 +263,7 @@ class Post_job_model extends My_Model {
             $query .= ' LIMIT '.$start.', ' . $limit;
             $data = $this->db->query($query);
         }
-
+        //echo $this->db->last_query(); die();
         $output = '';
         if($data->num_rows() > 0) {
             foreach($data->result_array() as $row) {

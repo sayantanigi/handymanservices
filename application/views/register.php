@@ -58,7 +58,6 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                                             <input type="text" placeholder="First Name" name="first_name" id="first_name" onkeypress="only_alphabets(event)" class="form-control" />
                                                         </div>
                                                     </div>
-                                                    <div class="error text-left" id="err_firstname"></div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 last_name">
                                                     <div class="cfield cfield_top">
@@ -66,43 +65,42 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                                             <input type="text" placeholder="Last Name" name="last_name" id="last_name" onkeypress="only_alphabets(event)" class="form-control" />
                                                         </div>
                                                     </div>
-                                                    <div class="error text-left" id="err_lastname"></div>
                                                 </div>
                                                 <div class="col-lg-12 username">
                                                     <div class="cfield cfield_top">
                                                         <div class="cfield_Input">
+                                                            <div class="error text-left" id="err_username"></div>
                                                             <input type="text" placeholder="User Name" name="username" id="username" class="form-control"/>
                                                         </div>
                                                     </div>
-                                                    <div class="error text-left" id="err_username"></div>
                                                 </div>
                                                 <div class="col-lg-12 email">
-                                                    <div class="error text-left" id="err_email"></div>
                                                     <div class="cfield cfield_top">
                                                         <div class="cfield_Input">
+                                                            <div class="error text-left" id="err_email"></div>
                                                             <input type="text" placeholder="Email Address or Phone Number" name="email" id="email" class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12 pass">
-                                                    <div class="error text-left" id="err_password"></div>
                                                     <div class="cfield cfield_top">
                                                         <div class="cfield_Input">
+                                                            <div class="error text-left" id="err_password"></div>
                                                             <input type="password" placeholder="Password" name="password" id="password" class="form-control" />
                                                             <span class="iconkey"><i class="la la-key" onclick="checkPass()"></i></span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12 c_pass">
-                                                    <div class="error text-left" id="err_confpassword"></div>
                                                     <div class="cfield cfield_top">
                                                         <div class="cfield_Input">
-                                                            <input type="password" placeholder="Confirm Password" name="conf_password" id="conf_password" class="form-control" />
+                                                            <div class="error text-left" id="err_confpassword"></div>
+                                                            <input type="password" placeholder="Confirm Password" name="conf_password" id="conf_password" class="form-control" style="margin: 0px;"/>
                                                             <span class="iconkey"> <i class="la la-key" onclick="checkConfPass()"></i></span>
                                                         </div>
+                                                        <div class="error text-left" id="err_check_pass"></div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-12 col-md-6 col-sm-6" id="err_check_pass" style="tex-align:center; margin-bottom: 5px;"></div>
                                                 <!-- <div class="col-lg-12 email mb-3">
                                                     <div class="error text-left" id="err_usertype"></div>
                                                     <div class="cfield cfield_top">
@@ -116,7 +114,7 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                                     </div>
                                                 </div> -->
                                                 <div class="col-lg-12 col-md-12 col-sm-12 SignUp_Btn">
-                                                    <button type="button" class="btn logbtn w-100" id="rSignUp" onclick="return btn_register();">Continue</button>
+                                                    <button type="button" class="btn logbtn w-100 mt-4" id="rSignUp" onclick="return btn_register();">Continue</button>
                                                     <input type="hidden" name="location" id="location" value="<?= @$loc ?>" placeholder="Set Location" />
                                                     <input type="hidden" id="search_lat" name="s_lat" value="<?= @$lat ?>">
                                                     <input type="hidden" id="search_lon" name="s_lon" value="<?= @$lon ?>">
