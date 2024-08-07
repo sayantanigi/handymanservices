@@ -601,20 +601,17 @@ function get_time_ago($time) {
 <!-- Button trigger modal -->
 
 <!-- Modal -->
-<div class="modal fade postMOdal" id="filterModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
-    aria-labelledby="postModalLabel" aria-hidden="true">
+<div class="modal fade postMOdal" id="filterModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title w-100 font-weight-bold text-dark text-center" id="staticBackdropLabel">Post
-                    Filters</h5>
+                <h5 class="modal-title w-100 font-weight-bold text-dark text-center" id="staticBackdropLabel">Post Filters</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body filterContent">
-                <h5 class="mb-0 font-weight-bold h6 text-dark text-center">Use filters to find posts on your timeline.
-                </h5>
+                <h5 class="mb-0 font-weight-bold h6 text-dark text-center">Use filters to find posts on your timeline. </h5>
                 <p style="font-size:14px;" class="text-center">This will no affect how others see your timeline.</p>
                 <form>
                     <div class="row mb-3 align-items-center justify-content-center">
@@ -627,7 +624,7 @@ function get_time_ago($time) {
                                 $startYear = 2000;
                                 echo $endYear = date('Y');
                                 for ($year = $endYear; $year >= $startYear; $year--) { ?>
-                                    <option value="<?= $year; ?>"><?= $year; ?></option>
+                                <option value="<?= $year; ?>"><?= $year; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -659,11 +656,10 @@ function get_time_ago($time) {
                             <button class="btn bg-primary w-100" type="button" onclick="searchPost()">Done</button>
                         </div>
                     </div>
+                </form>
             </div>
-            </form>
         </div>
     </div>
-</div>
 </div>
 
 <div class="modal fade postMOdal" id="postModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
