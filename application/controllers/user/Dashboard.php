@@ -529,15 +529,21 @@ class Dashboard extends CI_Controller {
 		$get_data = $this->Users_model->getChat();
 		$updatastatus = $this->db->query("UPDATE chat SET status = '1' WHERE (userfrom_id ='".$usert_id."' AND userto_id ='".$userdId."') OR (userto_id ='".$usert_id."' AND userfrom_id ='".$userdId."')");
 		$get_chatuser = $this->Crud_model->get_single('users', "userId='" . $_POST['usert_id'] . "'");
-		if (!empty($get_chatuser->firstname)) {
-			$name = $get_chatuser->firstname . ' ' . $get_chatuser->lastname;
-		} else {
-			$name = $get_chatuser->companyname;
-		}
+		// if (!empty($get_chatuser->firstname)) {
+		// 	$name = $get_chatuser->firstname . ' ' . $get_chatuser->lastname;
+		// } else {
+		// 	$name = $get_chatuser->companyname;
+		// }
+
+        if(@$get_chatuser->companyname){
+            $name = $get_chatuser->companyname;
+        }else{
+            $name = $get_chatuser->firstname . ' ' . $get_chatuser->lastname;
+        }
 		if (@$get_chatuser->profilePic && file_exists('uploads/users/' . @$get_chatuser->profilePic)) {
 			$userpic = '<img src="' . base_url('uploads/users/' . @$get_chatuser->profilePic) . '" alt="" />';
 		} else {
-			$userpic = '<img src="' . base_url('uploads/users/user.png') . '" alt="" />';
+			$userpic = '<img src="' . base_url('uploads/no_pimage.png') . '" alt="" />';
 		}
 		$html_data = '<div class="contact-profile">' . $userpic . '<p>' . ucfirst($name) . '</p><div class="social-media"><a href="#"><i class="fa fa-phone" aria-hidden="true"></i></a><a href="javascript:void(0);" onclick="openVideoCallWindow('.@$userdId.');"><i class="fa fa-video-camera" aria-hidden="true"></i></a><a href="#"><i class="fa fa-cog" aria-hidden="true"></i></a></div></div><div class="messages"><ul>';
 		if (!empty($get_data)) {
@@ -545,12 +551,12 @@ class Dashboard extends CI_Controller {
 				if (@$key->profilePic && file_exists('uploads/users/' . @$key->profilePic)) {
 					$from_pic = '<img src="' . base_url('uploads/users/' . @$key->profilePic) . '" alt="" />';
 				} else {
-					$from_pic = '<img src="' . base_url('uploads/users/user.png') . '" alt="" />';
+					$from_pic = '<img src="' . base_url('uploads/no_pimage.png') . '" alt="" />';
 				}
 				if (@$key->profilePic && file_exists('uploads/users/' . @$key->profilePic)) {
 					$to_pic = '<img src="' . base_url('uploads/users/' . @$key->profilePic) . '" alt="" />';
 				} else {
-					$to_pic = '<img src="' . base_url('uploads/users/user.png') . '" alt="" />';
+					$to_pic = '<img src="' . base_url('uploads/no_pimage.png') . '" alt="" />';
 				}
 				if ($key->userfrom_id == $_SESSION['afrebay']['userId'] && $key->userto_id == $_POST['usert_id']) {
 					$sent = '<li class="sent">' . $from_pic . '<p>' . $key->message . '</p><div style="font-size: 10px;">'.$key->created_date.'</li>';
@@ -1321,9 +1327,9 @@ class Dashboard extends CI_Controller {
             foreach ($get_post as $row) {
                 $get_user = $this->db->query("SELECT * FROM users WHERE userId = '$row->user_id'")->row(); ?>
                 <div class="DataContainer postblockElement" >
-                    <div id="loader_<?= $row->id?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
+                    <!-- <div id="loader_<?= $row->id?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
                         <img src="<?= base_url('uploads/loader.gif'); ?>" style="padding: 122px;">
-                    </div>
+                    </div> -->
                     <div class="boxuppost">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="InfoBlock" style="display: flex; flex-direction: row; height: 70px; align-items: center; justify-content: flex-start;">
@@ -1546,9 +1552,9 @@ class Dashboard extends CI_Controller {
             foreach ($get_post as $row) {
                 $get_user = $this->db->query("SELECT * FROM users WHERE userId = '$row->user_id'")->row(); ?>
                 <div class="DataContainer postblockElement" >
-                    <div id="loader_<?= $row->id?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
+                    <!-- <div id="loader_<?= $row->id?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
                         <img src="<?= base_url('uploads/loader.gif'); ?>" style="padding: 122px;">
-                    </div>
+                    </div> -->
                     <div class="boxuppost">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="InfoBlock" style="display: flex; flex-direction: row; height: 70px; align-items: center; justify-content: flex-start;">
@@ -1786,9 +1792,9 @@ class Dashboard extends CI_Controller {
             foreach ($get_post as $row) {
                 $get_user = $this->db->query("SELECT * FROM users WHERE userId = '$row->user_id'")->row(); ?>
                 <div class="DataContainer postblockElement" >
-                    <div id="loader_<?= $row->id?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
+                    <!-- <div id="loader_<?= $row->id?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
                         <img src="<?= base_url('uploads/loader.gif'); ?>" style="padding: 122px;">
-                    </div>
+                    </div> -->
                     <div class="boxuppost">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="InfoBlock" style="display: flex; flex-direction: row; height: 70px; align-items: center; justify-content: flex-start;">

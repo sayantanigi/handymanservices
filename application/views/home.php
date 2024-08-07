@@ -96,9 +96,9 @@ function get_time_ago($time) {
                     <div class="tab-content posttabcontent" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-local" role="tabpanel" aria-labelledby="pills-local-tab">
                             <div id="loader" style="position: absolute; width: 96%; z-index: 1; background: #00000054; border-radius: 20px;" class="d-none">
-                                <div style="border-radius: 20px; height: 765px; text-align: center; position: relative; top: 10pc;">
+                                <!-- <div style="border-radius: 20px; height: 765px; text-align: center; position: relative; top: 10pc;">
                                     <img src="<?= base_url('assets/images/loader.gif'); ?>" style=" width: 200px; ">
-                                </div>
+                                </div> -->
                             </div>
                             <div class="PostContainer boxPost">
                             <!-- Single Post -->
@@ -107,9 +107,9 @@ function get_time_ago($time) {
                                 foreach ($get_post as $row) {
                                 $get_user = $this->db->query("SELECT * FROM users WHERE userId = '$row->user_id'")->row(); ?>
                                 <div class="DataContainer postblockElement">
-                                    <div id="loader_<?= $row->id ?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
+                                    <!-- <div id="loader_<?= $row->id ?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
                                         <img src="<?= base_url('assets/images/loader.gif'); ?>" style="padding: 122px;">
-                                    </div>
+                                    </div> -->
                                     <div class="boxuppost">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="InfoBlock" style="display: flex; flex-direction: row; height: 70px; align-items: center; justify-content: flex-start;">

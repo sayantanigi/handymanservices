@@ -36,8 +36,9 @@ $url = end($actual_link1);
                             <div class="row">
                                 <div class="col-lg-12">
                                     <a href="<?= base_url('about-us')?>" title="About us">About Us</a>
-                                    <a href="<?= base_url('customer')?>" title="Explore Customers">Explore Customers</a>
-                                    <a href="<?= base_url('professionals')?>" title="Explore Professionals">Explore Professionals</a>
+                                    <a href="<?= base_url('contact-us')?>" title="Contact us">Contact Us</a>
+                                    <!-- <a href="<?= base_url('customer')?>" title="Explore Customers">Explore Customers</a>
+                                    <a href="<?= base_url('professionals')?>" title="Explore Professionals">Explore Professionals</a> -->
                                     <a href="<?= base_url('findwork')?>" title="Explore Job Openings">Explore Job Openings</a>
                                 </div>
                             </div>
@@ -50,11 +51,10 @@ $url = end($actual_link1);
                         <div class="link_widgets">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <a href="<?= base_url('contact-us')?>" title="Contact us">Contact Us</a>
+
                                     <a href="<?= base_url('career-tips')?>" title="Blog">Blog</a>
                                     <a href="<?= base_url('privacy-policy')?>" title="Privacy Policy">Privacy Policy</a>
-                                    <a href="<?= base_url('term-and-conditions')?>" title="Term & Condition">Terms &
-                                        Conditions </a>
+                                    <a href="<?= base_url('term-and-conditions')?>" title="Term & Condition">Terms & Conditions </a>
                                 </div>
                             </div>
                         </div>

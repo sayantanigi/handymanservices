@@ -77,9 +77,9 @@ $(function () {
 </head>
 
 <body>
-    <div class="page-loading">
+    <!-- <div class="page-loading">
         <img src="<?= base_url(); ?>assets/images/loader.gif" alt="" />
-    </div>
+    </div> -->
     <div class="theme-layout" id="scrollup">
         <div class="responsive-header" style="background: #ffffff;">
             <div class="responsive-menubar" style="display: flex; align-items: center; justify-content: space-between;">
