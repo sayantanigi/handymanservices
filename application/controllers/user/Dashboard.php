@@ -699,9 +699,9 @@ class Dashboard extends CI_Controller {
 	}
 	function update_password() {
 		$get_user = $this->Crud_model->get_single('users', "userId='" . $_SESSION['afrebay']['userId'] . "'");
-		if ($get_user->password == md5($_POST['cur_password'])) {
+		if ($get_user->password == base64_encode($_POST['cur_password'])) {
 			$data = array(
-				'password' => md5($_POST['new_password']),
+				'password' => base64_encode($_POST['new_password']),
 			);
 			$this->Crud_model->SaveData('users', $data, "userId='" . $_SESSION['afrebay']['userId'] . "'");
 			$this->session->set_flashdata('message', 'Password Reset Successfully !');

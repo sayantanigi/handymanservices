@@ -1,4 +1,5 @@
 <?php
+$get_setting = $this->Crud_model->get_single('setting');
 if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->image)) {
     $banner_img = base_url("uploads/banner/" . $get_banner->image);
 } else {
@@ -22,15 +23,16 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
             <div class="container">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-lg-6 regcontent">
-                        <h1 class="mb-3 text-dark">Craft Your Success <br> Join <span class="text-primary"> 411web3 </span> Network</h1>
-                        <p class="text-dark">Transform Your Handyman Career: Post Your Work, Discover Job Opportunities, and Connect with Skilled Professionals</p>
+                        <img class="Logo_Style" src="<?= base_url(); ?>uploads/logo/<?= $get_setting->flogo ?>">
+                        <?= htmlspecialchars_decode($get_setting->register_body_header); ?>
+                        <?= htmlspecialchars_decode($get_setting->register_body_content); ?>
                     </div>
                     <div class="col-lg-5">
                         <div class="logForm">
                             <div>
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <h3 class="h3 font-weight-bold text-dark text-center">Start Your <br> Handyman Journey</h3>
+                                        <?= htmlspecialchars_decode($get_setting->register_form_header); ?>
                                     </div>
                                     <div class="col-lg-12">
                                         <div id="register-messages" class="text-success-msg f-20">
@@ -114,7 +116,7 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                                     </div>
                                                 </div> -->
                                                 <div class="col-lg-12 col-md-12 col-sm-12 SignUp_Btn">
-                                                    <button type="button" class="btn logbtn w-100 mt-4" id="rSignUp" onclick="return btn_register();">Continue</button>
+                                                    <button type="button" class="btn logbtn w-100 mt-4 Gradient_Back_Color" id="rSignUp" onclick="return btn_register();">Continue</button>
                                                     <input type="hidden" name="location" id="location" value="<?= @$loc ?>" placeholder="Set Location" />
                                                     <input type="hidden" id="search_lat" name="s_lat" value="<?= @$lat ?>">
                                                     <input type="hidden" id="search_lon" name="s_lon" value="<?= @$lon ?>">
@@ -144,6 +146,9 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
 #loader {
     display: none;
     width: 40px;
+}
+header {
+    display: none !important;
 }
 </style>
 <script src="<?= base_url('assets/js/jquery.min.js') ?>" type="text/javascript"></script>

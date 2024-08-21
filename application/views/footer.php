@@ -31,7 +31,7 @@ $url = end($actual_link1);
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-12 column">
                     <div class="widget">
-                        <h3 class="footer-title">Quick Links</h3>
+                        <h3 class="footer-title Primary_Text_Color">Quick Links</h3>
                         <div class="link_widgets">
                             <div class="row">
                                 <div class="col-lg-12">
@@ -47,7 +47,7 @@ $url = end($actual_link1);
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-12 column">
                     <div class="widget">
-                        <h3 class="footer-title">Support Link</h3>
+                        <h3 class="footer-title Primary_Text_Color">Support Link</h3>
                         <div class="link_widgets">
                             <div class="row">
                                 <div class="col-lg-12">
@@ -62,7 +62,7 @@ $url = end($actual_link1);
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-12 column">
                     <div class="about_widget">
-                        <h3 class="footer-title">Contact Us</h3>
+                        <h3 class="footer-title Primary_Text_Color">Contact Us</h3>
                         <div class="link_widgets">
                             <div class="row">
                                 <div class="col-lg-12">

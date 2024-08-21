@@ -66,7 +66,7 @@ function get_time_ago($time) {
                                     <div class="postType">
                                         <form method="post" action="<?php echo base_url('Welcome/save_postjob') ?>" enctype="multipart/form-data" style="padding: 0 !important;" id="generalForm">
                                             <textarea name="post_title" id="post_title" class="typePost emoji_act" placeholder="Post your task"></textarea>
-                                            <button class="submitpost" type="submit">Post</button>
+                                            <button class="submitpost Gradient_Back_Color" type="submit">Post</button>
                                             <input type="hidden" name="user_id" value="<?php echo @$_SESSION['afrebay']['userId'] ?>">
                                             <input type="hidden" name="location" id="location" value="<?= @$loc ?>" placeholder="Set Location" />
                                             <input type="hidden" id="search_lat" name="s_lat" value="<?= @$lat ?>">
@@ -120,7 +120,7 @@ function get_time_ago($time) {
                                                 <?php } ?>
                                                 <div class="TextData" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 15px;">
                                                     <a href="<?php if($get_user->userType == '1') {echo base_url('professionals_detail/'.base64_encode($get_user->userId)); } else{ echo base_url('customer_detail/'.base64_encode($get_user->userId)); }?>">
-                                                        <h3 style="font-size: 20px; font-weight: 600; margin: 0; color: #000;"><?php echo "@".$get_user->username; ?></h3>
+                                                        <h3 style="font-size: 20px; font-weight: 600; margin: 0;" class="Primary_Text_Color"><?php echo "@".$get_user->username; ?></h3>
                                                     </a>
                                                     <p style="margin: 0; font-size: 13px; color: #b1b1b1;">Posted <?php echo get_time_ago(strtotime($row->created_date)) ?> </p>
                                                 </div>
@@ -335,7 +335,7 @@ function get_time_ago($time) {
                                                                     <!-- </div> -->
                                                                     <div class="replyBox mt-3" id="replyBox_<?= $each['id']; ?>">
                                                                         <textarea required="" name="users_rply_<?= $each['id']; ?>" id="users_rply_<?= $each['id']; ?>" placeholder="Reply"></textarea>
-                                                                        <a href="javascript:void(0)" class="replySubmit" onclick="postUserComment(<?= $row->id; ?>, <?= $each['id']; ?>)"> Reply </a>
+                                                                        <a href="javascript:void(0)" class="replySubmit Gradient_Back_Color" onclick="postUserComment(<?= $row->id; ?>, <?= $each['id']; ?>)"> Reply </a>
                                                                         <div class="uploadOptionPost">
                                                                             <div data-toggle="modal" style="margin-top: 20px;">
                                                                                 <label id="postBoximgup"><img src="assets/images/photo-icon.png"> Image</label>
@@ -363,13 +363,13 @@ function get_time_ago($time) {
                                                                 id="comment_<?= $row->id ?>"></textarea>
                                                             <div>
                                                                 <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
-                                                                    <a href="javascript:void(0)" class="postCommentbtn"
+                                                                    <a href="javascript:void(0)" class="postCommentbtn Gradient_Back_Color"
                                                                         onclick="postComment(<?= $row->id ?>)">
-                                                                        <span>Comment</span>
+                                                                        <span style="color: #fff;">Comment</span>
                                                                     </a>
                                                                 <?php } else { ?>
-                                                                    <a href="<?= base_url() ?>login" class="postCommentbtn">
-                                                                        <span>Comment</span>
+                                                                    <a href="<?= base_url() ?>login" class="postCommentbtn Gradient_Back_Color">
+                                                                        <span style="color: #fff;">Comment</span>
                                                                     </a>
                                                                 <?php } ?>
                                                             </div>
@@ -417,7 +417,7 @@ function get_time_ago($time) {
                                         <img src="<?= $userBackgroundImage ?>">
                                     </div>
                                     <div class="profileImg"><img src="<?= $userProfileImage; ?>"></div>
-                                    <h2 style="text-transform: lowercase;"><?= "@".$userData->username; ?>
+                                    <h2 style="text-transform: lowercase;" class="Primary_Text_Color"><?= "@".$userData->username; ?>
                                     </h2>
                                     <p class="text-center memberinfo">
                                         <?= 'Member Since ' . date('M Y', strtotime($userData->created)) ?> .
@@ -491,10 +491,10 @@ function get_time_ago($time) {
                                     $uid = $_SESSION['afrebay']['userType'];
                                     if (@$_SESSION['afrebay']['userType'] == '1') { ?>
                                         <a href="<?php echo base_url("professionals_detail/" . base64_encode($_SESSION['afrebay']['userId'])) ?>"
-                                            title="" class="profileBtn">My Profile</a>
+                                            title="" class="profileBtn Gradient_Back_Color" style="color: #fff;">My Profile</a>
                                     <?php } else { ?>
                                         <a href="<?php echo base_url("customer_detail/" . base64_encode($_SESSION['afrebay']['userId'])) ?>"
-                                            title="" class="profileBtn">My Profile</a>
+                                            title="" class="profileBtn Gradient_Back_Color" style="color: #fff;">My Profile</a>
                                     <?php } ?>
                                 </div>
                             <?php } ?>
@@ -601,17 +601,20 @@ function get_time_ago($time) {
 <!-- Button trigger modal -->
 
 <!-- Modal -->
-<div class="modal fade postMOdal" id="filterModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+<div class="modal fade postMOdal" id="filterModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="postModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title w-100 font-weight-bold text-dark text-center" id="staticBackdropLabel">Post Filters</h5>
+                <h5 class="modal-title w-100 font-weight-bold text-dark text-center" id="staticBackdropLabel">Post
+                    Filters</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body filterContent">
-                <h5 class="mb-0 font-weight-bold h6 text-dark text-center">Use filters to find posts on your timeline. </h5>
+                <h5 class="mb-0 font-weight-bold h6 text-dark text-center">Use filters to find posts on your timeline.
+                </h5>
                 <p style="font-size:14px;" class="text-center">This will no affect how others see your timeline.</p>
                 <form>
                     <div class="row mb-3 align-items-center justify-content-center">
@@ -624,7 +627,7 @@ function get_time_ago($time) {
                                 $startYear = 2000;
                                 echo $endYear = date('Y');
                                 for ($year = $endYear; $year >= $startYear; $year--) { ?>
-                                <option value="<?= $year; ?>"><?= $year; ?></option>
+                                    <option value="<?= $year; ?>"><?= $year; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -656,10 +659,11 @@ function get_time_ago($time) {
                             <button class="btn bg-primary w-100" type="button" onclick="searchPost()">Done</button>
                         </div>
                     </div>
-                </form>
             </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 
 <div class="modal fade postMOdal" id="postModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
@@ -683,7 +687,7 @@ function get_time_ago($time) {
                             </div>
                             <h3 class="mb-0 ml-2 h6 font-weight-bold text-dark"><?= "@".$getUser_details->username; ?></h3>
                         </div>
-                        <div class="d-flex selectPost align-items-center">
+                        <div class="d-flex selectPost align-items-center Gradient_Back_Color">
                             <div><i class="fa-solid fa-earth-americas"></i></div>
                             <select name="visibility" id="visibility">
                                 <option value="1">Public</option>
@@ -743,7 +747,7 @@ function get_time_ago($time) {
                         <input type="hidden" name="s_lat" id="search_lat_guest" value="<?= @$lat ?>">
                         <input type="hidden" name="s_lon" id="search_lon_guest" value="<?= @$lon ?>">
                         <input type="hidden" name="cat_valmod" id="cat_valmod" value="">
-                        <button class="w-100 postbtn" type="submit">Post</button>
+                        <button class="w-100 postbtn Gradient_Back_Color" type="submit">Post</button>
                     </div>
                 </form>
             </div>

@@ -9,7 +9,7 @@ if(empty($_SESSION['afrebay_admin']['id'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Handyman Services | <?php if(!empty($title)){ echo ucfirst($title);} else{ echo "Dashboard";}?></title>
+    <title><?= $get_setting->website_name; ?> | <?php if(!empty($title)){ echo ucfirst($title);} else{ echo "Dashboard";}?></title>
     <link rel="shortcut icon" href="<?=base_url(); ?>uploads/logo/<?= $get_setting->favicon?>">
     <link rel="stylesheet" href="<?=base_url(); ?>dist/assets/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?=base_url(); ?>dist/assets/plugins/fontawesome/css/fontawesome.min.css">
@@ -22,9 +22,16 @@ if(empty($_SESSION['afrebay_admin']['id'])) {
     <link rel="stylesheet" href="<?= base_url();?>dist/admin_assets/select2/select2.css">
     <!-- end server side table -->
     <style>
-        .user-img img{background: #2892ff !important;}
-        .sidebar-logo{background: #2892ff !important;}
+        /* .user-img img{background: #2892ff !important;} */
+        .sidebar-logo{
+            background: #ffffff !important;
+            border-bottom: 1px solid #ddd;
+        }
         .sidebar-logo {padding: 7px 20px 7px !important;}
+        .header.fixed-header {
+            background: #ffffff !important;
+            box-shadow: 0 0 10px #d3d3d3;
+        }
     </style>
 </head>
 <body>
@@ -43,7 +50,7 @@ if(empty($_SESSION['afrebay_admin']['id'])) {
             </a>
             <ul class="nav user-menu">
                 <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="dropdown-toggle user-link  nav-link" data-toggle="dropdown">
+                    <a href="javascript:void(0)" class="dropdown-toggle user-link nav-link" data-toggle="dropdown">
                         <span class="user-img">
                             <img class="rounded-circle" src="<?=base_url(); ?>uploads/logo/<?= $get_setting->logo?>" width="40" alt="Admin">
                         </span>

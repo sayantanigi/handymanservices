@@ -3,8 +3,8 @@
 		<div class="row justify-content-center">
 			<div class="col-lg-9 display-table-cell v-align profileTabcontent my-4">
 			     <div class="user-dashboard Admin_Profile form-design <?php echo $container;  ?> ">
-			        <h3 class="text-center h3 font-weight-bold text-dark my-3">Create your profile</h3>
-			        <p class="text-center text-dark">You may modify your profile information at any moment in your profile section</p>
+			        <h3 class="text-center h3 font-weight-bold Primary_Text_Color my-3">Update your business details</h3>
+			        <p class="text-center text-dark">You may modify your business information at any moment in your profile section</p>
 			        <form class="form" action="<?php echo base_url('user/Dashboard/update_businessDetails')?>" method="post" id="registrationForm" enctype="multipart/form-data">
 			        <input type="hidden" name="from_data_request" value="<?=$data_request;?>">
 			            <div class="row row-sm">
@@ -13,9 +13,10 @@
 			                        <div class="profiletab position-relative d-flex">
 			                            <div class="tabBox d-flex w-auto">
                                             <a href="<?= base_url()?>profile" class="tabnav">My Profile</a>
-                                            <?php if($_SESSION['afrebay']['userType'] == '1') { ?>
+                                            <!-- <?php if($_SESSION['afrebay']['userType'] == '1') { ?>
                                             <a href="<?= base_url()?>business_details" class="tabnav active">Business Details</a>
-                                            <?php } ?>
+                                            <?php } ?> -->
+                                            <a href="<?= base_url()?>business_details" class="tabnav active">Business Details</a>
 			                            </div>
 			                        </div>
 			                    </div>
@@ -109,9 +110,9 @@
                                         </div>
 			                        </div>
 			                        <div class="text-center px-3">
-			                        	<button class="post-job-btn float-right mw-150" type="submit">Finish</button>
+			                        	<button class="post-job-btn float-right mw-150 Gradient_Back_Color" style="border: none !important;" type="submit">Finish</button>
                                         <input type="hidden" name="id" value="<?=$userinfo->userId  ?>">
-			                        	<a href="<?= base_url()?>homepage" class="post-job-btn float-right mr-3 mw-150 btn-secondary">Leave and complete later</a>
+			                        	<a href="<?= base_url()?>homepage" class="post-job-btn float-right mr-3 mw-150 btn-secondary Gradient_Back_Color" style="border: none !important; color: #fff !important;">Leave and complete later</a>
 			                        </div>
 			                    </div>
 			                </div>

@@ -849,9 +849,8 @@ button.bg-danger:hover {
 
 .btn-primary {
 
-	background-color: #2892ff;
-
-	border: 1px solid #2892ff;
+	background: linear-gradient(145deg, rgba(32, 67, 135, 1) 0%, rgba(97, 128, 190, 1) 25%, rgba(128, 224, 149, 1) 70%, rgba(165, 236, 129, 1) 100%) !important;
+	border: none !important;
 
 }
 
@@ -865,10 +864,8 @@ button.bg-danger:hover {
 
 .open>.dropdown-toggle.btn-primary {
 
-	background-color: #2892ff;
-
-	border: 1px solid #2892ff;
-
+	background: linear-gradient(145deg, rgba(32, 67, 135, 1) 0%, rgba(97, 128, 190, 1) 25%, rgba(128, 224, 149, 1) 70%, rgba(165, 236, 129, 1) 100%) !important;
+	border: none !important;
 }
 
 .btn-primary.active.focus,
@@ -2668,7 +2665,7 @@ button.bg-danger:hover {
     -o-object-fit: cover;
     object-fit: contain;
     border: 1px solid #eee;
-    background: #2892ff !important;
+    background: #fff !important;
 
 }
 
@@ -4664,7 +4661,7 @@ small.help-block {
 
 	height: 50vh;
 
-	background-color: #2892ff;
+	background: linear-gradient(145deg, rgba(32, 67, 135, 1) 0%, rgba(97, 128, 190, 1) 25%, rgba(128, 224, 149, 1) 70%, rgba(165, 236, 129, 1) 100%) !important;
 
 	border-radius: 0 0 2.5rem 2.5rem;
 
@@ -6123,3 +6120,4 @@ table.dataTable thead .sorting_asc {
 	position: unset;
   }
 }
+.cke_notification_warning {display: none !important;}

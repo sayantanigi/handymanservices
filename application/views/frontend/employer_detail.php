@@ -82,7 +82,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12 column">
                                     <div class="job-details">
-                                        <h3>About
+                                        <h3 class="Primary_Text_Color">About
                                         <?php
                                         $companyname = $userdata->companyname;
                                         if (!empty($companyname)) {
@@ -97,7 +97,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                 <div class="col-lg-8 col-md-12 col-sm-12 column">
                                 <?php if (!empty($get_post)) { ?>
                                     <div class="recent-jobs">
-                                        <h3>Jobs from
+                                        <h3 class="Primary_Text_Color">Jobs from
                                         <?php
                                         $companyname = $userdata->companyname;
                                         if (!empty($companyname)) {
@@ -167,7 +167,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                     $uri = end($uri);
                                     if($_SESSION['afrebay']['userId'] != base64_decode($uri)){?>
                                     <div class="job-overview">
-                                        <h3>Review <?= "@".$_SESSION['afrebay']['username']?></h3>
+                                        <h3 class="Primary_Text_Color">Review <?= "@".$_SESSION['afrebay']['username']?></h3>
                                         <form method="post" action="<?= base_url('user/dashboard/save_employer_rating')?>">
                                             <div class="row">
                                                 <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom: 10px;">
@@ -188,7 +188,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                                     <textarea placeholder="Enter review" name="review" style="border-radius: 10px;"></textarea>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12 Form_Btn">
-                                                    <button class="submit btn btn-info" style="background: #2892ff;border-radius: 30px;min-height: 30px;min-width: 52px;">Submit</button>
+                                                    <button class="submit btn btn-info Gradient_Back_Color" style="background: #2892ff;border-radius: 30px;min-height: 30px;min-width: 52px;">Submit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -202,7 +202,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                 ?>
                                 <div class="col-lg-12 col-md-12 col-sm-12 column">
                                     <div class="Product_Details">
-                                        <h3 class="mt-5 mb-5">Saved Post</h3>
+                                        <h3 class="mt-5 mb-5 Primary_Text_Color">Saved Post</h3>
                                         <div class="row">
                                             <?php foreach ($getSavedPost as $value) {
                                                 $post_details = $this->db->query("SELECT * FROM postjob WHERE id = '".$value['post_id']."'")->row();
@@ -221,7 +221,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                                         <?php $userDetails = $this->db->query("SELECT * FROM users WHERE userId = '".$value['user_id']."'")->row();?>
                                                         <p><span><?= $userDetails->username; ?></span>
                                                         </p>
-                                                        <a href="<?php echo base_url() ?>workdetail/<?php echo base64_encode($value['id']) ?>" type="button" class="btn btn-info">View Post</a>
+                                                        <a href="<?php echo base_url() ?>workdetail/<?php echo base64_encode($value['post_id']) ?>" type="button" class="btn btn-info Gradient_Back_Color">View Post</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -379,5 +379,4 @@ function unmuteUser(userid) {
 .job-thumb .active {opacity: 1; visibility: visible; margin: 75px 0 0 0;}
 .hidden {display: none;}
 #shareMenu {border: 1px solid #ccc; padding: 10px; position: absolute; background-color: white; margin-top: 120px; margin-left: 128px; z-index: 111;}
-.Employer_Details .Product_Details .Product .Product_Data .btn:hover {background: #2892ff !important;}
 </style>

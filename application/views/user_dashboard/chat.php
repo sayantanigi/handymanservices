@@ -429,7 +429,7 @@
 
     .ui-tabs .ui-tabs-nav li.ui-tabs-active {
         width: 46% !important;
-        background: #000 !important;
+        background: linear-gradient(145deg, rgba(32,67,135,1) 0%, rgba(65,204,121,1) 40%, rgba(128,224,149,1) 70%, rgba(165,236,129,1) 100%) !important;
         border: none !important;
         color: #fff !important;
         border-radius: 10px !important;

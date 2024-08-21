@@ -166,9 +166,9 @@ function get_time_ago($time) {
                                                 </div>
                                                 <div>
                                                     <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
-                                                        <a href="javascript:void(0)" class="postCommentbtn" onclick="postComment()">Comment</a>
+                                                        <a href="javascript:void(0)" class="postCommentbtn Gradient_Back_Color" onclick="postComment()">Comment</a>
                                                     <?php } else { ?>
-                                                        <a href="<?= base_url() ?>login" class="postCommentbtn">
+                                                        <a href="<?= base_url() ?>login" class="postCommentbtn Gradient_Back_Color">
                                                             Comment
                                                         </a>
                                                     <?php } ?>
@@ -215,7 +215,7 @@ function get_time_ago($time) {
                                                                     <?php } ?>
                                                                 </li> -->
                                                                 <li style="margin: 0 !important; font-weight: 600; font-size: 15px; color: #000 !important;" id="shareBtn">
-                                                                    <a class="shareBtn text-white" href="javacript:void(0)"> <i class="fa-regular fa-share-nodes" aria-hidden="true"></i> Share</a>
+                                                                    <a class="shareBtn Primary_Text_Color" style="background: none;" href="javacript:void(0)"> <i class="fa-regular fa-share-nodes" aria-hidden="true"></i> Share</a>
                                                                 </li>
                                                                 <div id="shareMenu" class="hidden">
                                                                     <a href="https://www.facebook.com/sharer/sharer.php?u=<?= base_url('workdetail/' . base64_encode($post_data->id)) ?>" target="_blank"><i class="fa-brands fa-facebook"></i></a>
@@ -319,7 +319,7 @@ function get_time_ago($time) {
                                                             } ?>
                                                             <div style="display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; margin-top: 10px;" class="hidereplyBox replyBox " id="replyBox_<?= $i; ?>">
                                                                 <textarea required="" name="users_rply_<?= $i; ?>" id="users_rply_<?= $i; ?>" placeholder="Reply"></textarea>
-                                                                <a href="javascript:void(0)" onclick="postUserComment(<?= $each['id']; ?>, <?= $i; ?>)" class="replySubmit">
+                                                                <a href="javascript:void(0)" onclick="postUserComment(<?= $each['id']; ?>, <?= $i; ?>)" class="replySubmit Gradient_Back_Color">
                                                                     Reply
                                                                 </a>
                                                             </div>
@@ -405,9 +405,9 @@ function get_time_ago($time) {
                                         <div class="ml-2" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
                                             <h3 style="margin-bottom: 5px; font-size: 18px; color: #fff !important; letter-spacing: 0 !important; font-weight: 600;">
                                                 <?php if (!empty($userData->companyname)) {
-                                                    echo $userData->companyname;
+                                                    echo ucwords($userData->companyname);
                                                 } else {
-                                                    echo $userData->firstname . ' ' . $userData->lastname;
+                                                    echo ucwords($userData->firstname . ' ' . $userData->lastname);
                                                 } ?>
                                             </h3>
                                             <!-- <span style="font-weight: 500; color: #fff !important; font-size: 13px;"><i class="la la-map-marker"></i> <?= $userData->address ?></span> -->

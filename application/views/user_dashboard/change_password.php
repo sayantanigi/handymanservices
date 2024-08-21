@@ -1,5 +1,3 @@
-
-
 <?php $this->load->view('sidebar');?>
 <div class="col-lg-5 display-table-cell v-align form-design">
     <div class="user-dashboard User_Chng_Pass">

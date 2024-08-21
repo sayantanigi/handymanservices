@@ -24,6 +24,24 @@
 															<input type="text" class="form-control" placeholder="Website Name" name="website_name" value="<?php if(!empty($row->website_name)){echo $row->website_name; }?>" required>
 														</div>
 													</div>
+                                                    <div class="col-md-12">
+														<div class="form-group">
+															<label>Registration form header <span style="font-size: 13px; font-weight: 600; color:red;">  (Click on source from the editor while changing the content)</span></label>
+															<textarea placeholder="Registration form header" name="register_form_header" id="register_form_header" class="form-control" style="resize:none;" rows="4" cols="4" required><?php if(!empty($row->register_form_header)) { echo $row->register_form_header;} ?></textarea>
+														</div>
+													</div>
+                                                    <div class="col-md-12">
+														<div class="form-group">
+															<label>Registration body header <span style="font-size: 13px; font-weight: 600; color:red;">  (Click on source from the editor while changing the content)</span></label>
+															<textarea placeholder="Registration body header" name="register_body_header" id="register_body_header" class="form-control" style="resize:none;" rows="4" cols="4" required><?php if(!empty($row->register_body_header)) { echo $row->register_body_header;} ?></textarea>
+														</div>
+													</div>
+                                                    <div class="col-md-12">
+														<div class="form-group">
+															<label>Registration body content <span style="font-size: 13px; font-weight: 600; color:red;">  (Click on source from the editor while changing the content)</span></label>
+															<textarea placeholder="Registration body content" name="register_body_content" id="register_body_content" class="form-control" style="resize:none;" rows="4" cols="4" required><?php if(!empty($row->register_body_content)) { echo $row->register_body_content;} ?></textarea>
+														</div>
+													</div>
 													<div class="col-md-6">
 														<div class="form-group">
 															<label>Phone Number</label>
@@ -44,7 +62,7 @@
 													</div>
 													<div class="col-md-12">
 														<div class="form-group">
-															<label>Address</label>
+															<label>Address <span style="font-size: 13px; font-weight: 600; color:red;">  (Click on source from the editor while changing the content)</span></label>
 															<textarea placeholder="Address" name="address" id="address" class="form-control" style="resize:none;" rows="4" cols="4" required><?php if(!empty($row->address)) { echo $row->address;} ?></textarea>
 														</div>
 													</div>
@@ -162,5 +180,16 @@ input:checked + .slider:before {-webkit-transform: translateX(26px); -ms-transfo
 </style>
 <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 <script>
-	CKEDITOR.replace('address');
+	CKEDITOR.replace('address', {
+        allowedContent:true,
+    });
+    CKEDITOR.replace('register_form_header', {
+        allowedContent:true,
+    });
+    CKEDITOR.replace('register_body_header', {
+        allowedContent:true,
+    });
+    CKEDITOR.replace('register_body_content', {
+        allowedContent:true,
+    });
 </script>

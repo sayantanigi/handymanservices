@@ -81,6 +81,9 @@ class Setting extends MY_Controller {
           	'email' => $this->input->post('email'),
           	'copyright' => $this->input->post('copyright'),
           	'address' => $this->input->post('address'),
+            'register_form_header' => htmlspecialchars($this->input->post('register_form_header')),
+            'register_body_header' => htmlspecialchars($this->input->post('register_body_header')),
+            'register_body_content' => htmlspecialchars($this->input->post('register_body_content')),
             'fabout' => $this->input->post('fabout'),
           	'alternate_email' => $this->input->post('alternate_email'),
 			'fb_link' => $this->input->post('fb_link'),
@@ -93,7 +96,7 @@ class Setting extends MY_Controller {
       	);
         //print_r($data); die;
     	$id=$this->input->post('id');
-    	$this->Crud_model->SaveData("setting",$data,"id='".$id."'");
+    	$this->Crud_model->SaveData("setting", $data ,"id='".$id."'");
     	$this->session->set_flashdata('message', 'Settings has been updated successfully');
     	redirect(admin_url('setting'));
 	}
