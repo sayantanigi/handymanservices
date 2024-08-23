@@ -1,5 +1,5 @@
 
-var geocodingClient = mapboxSdk({accessToken: 'pk.eyJ1IjoibWVkaWFhZGdyb3VwIiwiYSI6ImNrdDV4bTBsaDBjeGQydm5yYTA2Y3N2dGgifQ.NlUz5RoCsa4hZvVwY3GxCg'});
+var geocodingClient = mapboxSdk({ accessToken: 'pk.eyJ1IjoibWVkaWFhZGdyb3VwIiwiYSI6ImNrdDV4bTBsaDBjeGQydm5yYTA2Y3N2dGgifQ.NlUz5RoCsa4hZvVwY3GxCg' });
 
 function autocompleteSuggestionMapBoxAPI(inputParams, callback) {
     geocodingClient.geocoding.forwardGeocode({
@@ -8,11 +8,11 @@ function autocompleteSuggestionMapBoxAPI(inputParams, callback) {
         autocomplete: true,
         limit: 5,
     })
-    .send()
-    .then(response => {
-        const match = response.body;
-        callback(match);
-    });
+        .send()
+        .then(response => {
+            const match = response.body;
+            callback(match);
+        });
 }
 
 function autocompleteInputBox(inp) {
@@ -115,66 +115,57 @@ function autocompleteInputBox(inp) {
 
 autocompleteInputBox(document.getElementById("location"));
 
-function reset_location()
-{
+function reset_location() {
 
     $('#location').val('');
 
 }
 
 
-function only_number(event)
-{
+function only_number(event) {
     var x = event.which || event.keyCode;
     //console.log(x);
-    if((x >= 48 ) && (x <= 57 ) || x == 8 | x == 9 || x == 13 )
-    {
+    if ((x >= 48) && (x <= 57) || x == 8 | x == 9 || x == 13) {
         return;
-    }else{
+    } else {
         event.preventDefault();
     }
 }
 
-function only_alphabets(event)
-{
+function only_alphabets(event) {
     var x = event.which || event.keyCode;
     //console.log(x);
-    if((x >= 65 ) && (x <= 90 ) || (x >= 97 ) && (x <= 122 ) ||(x==32))
-    {
+    if ((x >= 65) && (x <= 90) || (x >= 97) && (x <= 122) || (x == 32)) {
         return;
-    }else{
+    } else {
         event.preventDefault();
     }
 }
 
-function only_specialAlphabets(event)
-{
+function only_specialAlphabets(event) {
     var x = event.which || event.keyCode;
     //console.log(x);
-    if((x >= 65 ) && (x <= 90 ) || (x >= 97 ) && (x <= 122 ) || (x==32)  || (x==45)  || (x==39))
-    {
+    if ((x >= 65) && (x <= 90) || (x >= 97) && (x <= 122) || (x == 32) || (x == 45) || (x == 39)) {
         return;
-    }else{
+    } else {
         event.preventDefault();
     }
 }
 
-function get_subcategory(val)
-{
+function get_subcategory(val) {
 
     var base_url = $("#base_url").val();
 
     var id = val;
     $.ajax({
-        type:"post",
-        cache:false,
-        url:base_url+"Welcome/get_subcategory",
-        data:{
-            id:id
+        type: "post",
+        cache: false,
+        url: base_url + "Welcome/get_subcategory",
+        data: {
+            id: id
         },
-        beforeSend:function(){},
-        success:function(returndata)
-        {
+        beforeSend: function () { },
+        success: function (returndata) {
             // console.log(returndata); return false;
             $('#subcategory_id').html(returndata);
 
@@ -182,60 +173,52 @@ function get_subcategory(val)
     });
 }
 
-function change_password()
-{
+function change_password() {
     var base_url = $("#base_url").val();
-    var cur_password=$('#cur-password').val();
-    if(cur_password=="")
-    {
-        $("#err_current").fadeIn().html("Required").css('color','red');
-        setTimeout(function(){$("#err_current").html("&nbsp;");},3000);
+    var cur_password = $('#cur-password').val();
+    if (cur_password == "") {
+        $("#err_current").fadeIn().html("Required").css('color', 'red');
+        setTimeout(function () { $("#err_current").html("&nbsp;"); }, 3000);
         $("#cur-password").focus();
         return false;
     }
-    var new_password=$('#new-password').val();
-    if(new_password=='')
-    {
-        $("#err_new").fadeIn().html("Required").css('color','red');;
-        setTimeout(function(){$("#err_new").html("&nbsp;");},5000)
+    var new_password = $('#new-password').val();
+    if (new_password == '') {
+        $("#err_new").fadeIn().html("Required").css('color', 'red');;
+        setTimeout(function () { $("#err_new").html("&nbsp;"); }, 5000)
         $("#new-password").focus();
         return false;
     }
-    else if(new_password.length<6)
-    {
-        $("#err_new").fadeIn().html("please enter at least 6 character").css('color','red');;
-        setTimeout(function(){$("#err_new").html("&nbsp;");},5000)
+    else if (new_password.length < 6) {
+        $("#err_new").fadeIn().html("please enter at least 6 character").css('color', 'red');;
+        setTimeout(function () { $("#err_new").html("&nbsp;"); }, 5000)
         $("#new-password").focus();
         return false;
     }
-    var confirm_password=$('#conf-password').val();
-    if(confirm_password=='')
-    {
-        $("#err_confirm").fadeIn().html("Required").css('color','red');;
-        setTimeout(function(){$("#err_confirm").html("&nbsp;");},5000)
+    var confirm_password = $('#conf-password').val();
+    if (confirm_password == '') {
+        $("#err_confirm").fadeIn().html("Required").css('color', 'red');;
+        setTimeout(function () { $("#err_confirm").html("&nbsp;"); }, 5000)
         $("#conf-password").focus();
         return false;
     }
-    if(new_password!=confirm_password)
-    {
-        $('#matchPass1').html('password does not match').css('color','red');
+    if (new_password != confirm_password) {
+        $('#matchPass1').html('password does not match').css('color', 'red');
         return null
     }
 
 
     $.ajax({
-        url: base_url+'user/dashboard/update_password',
+        url: base_url + 'user/dashboard/update_password',
         type: 'POST',
-        data: {cur_password:cur_password,new_password:new_password,confirm_password:confirm_password},
-        success:function(data)
-        {
-            if(data==1)
-            {
+        data: { cur_password: cur_password, new_password: new_password, confirm_password: confirm_password },
+        success: function (data) {
+            if (data == 1) {
                 location.reload();
             }
-            else{
-                $("#err_current").fadeIn().html("current password doest not match").css('color','red');
-                setTimeout(function(){$("#err_current").html("&nbsp;");},3000);
+            else {
+                $("#err_current").fadeIn().html("current password doest not match").css('color', 'red');
+                setTimeout(function () { $("#err_current").html("&nbsp;"); }, 3000);
                 $("#cur-password").focus();
                 return false;
             }

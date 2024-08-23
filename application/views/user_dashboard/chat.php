@@ -76,8 +76,8 @@
                                                         $tab_heading = "All Customers";
                                                         $placeholder = "Search by Customer";
                                                     } else {
-                                                        $tab_heading = "All Professionals";
-                                                        $placeholder = "Search by Professional";
+                                                        $tab_heading = "All Users";
+                                                        $placeholder = "Search by User";
                                                     } ?>
                                                     <div id="contacts">
                                                         <div id="tabs">
@@ -94,7 +94,7 @@
                                                                     if (@$_SESSION['afrebay']['userType'] == '1') {
                                                                         $userList = $this->db->query("SELECT * FROM users WHERE userType = '2' AND status = '1' AND email_verified = '1'")->result();
                                                                     } else {
-                                                                        $userList = $this->db->query("SELECT * FROM users WHERE userType = '1' AND status = '1' AND email_verified = '1'")->result();
+                                                                        $userList = $this->db->query("SELECT * FROM users WHERE userType = '2' AND status = '1' AND email_verified = '1' AND userId != '".@$_SESSION['afrebay']['userId']."'")->result();
                                                                     }
                                                                     //echo "<pre>"; print_r($userList); die();
                                                                     if (!empty($userList)) {

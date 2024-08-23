@@ -336,13 +336,13 @@ function get_time_ago($time) {
                                                                     <div class="replyBox mt-3" id="replyBox_<?= $each['id']; ?>">
                                                                         <textarea required="" name="users_rply_<?= $each['id']; ?>" id="users_rply_<?= $each['id']; ?>" placeholder="Reply"></textarea>
                                                                         <a href="javascript:void(0)" class="replySubmit Gradient_Back_Color" onclick="postUserComment(<?= $row->id; ?>, <?= $each['id']; ?>)"> Reply </a>
-                                                                        <div class="uploadOptionPost">
+                                                                        <!-- <div class="uploadOptionPost">
                                                                             <div data-toggle="modal" style="margin-top: 20px;">
                                                                                 <label id="postBoximgup"><img src="assets/images/photo-icon.png"> Image</label>
                                                                                 <label id="postBoxvidup"><img src="assets/images/video-icon.png"> Video</label>
-                                                                                <!-- <input type="file" id="file-upload" name="postjobPic[]" multiple class="text-center center-block file-upload" /> -->
+                                                                                <input type="file" id="file-upload" name="postjobPic[]" multiple class="text-center center-block file-upload" />
                                                                             </div>
-                                                                        </div>
+                                                                        </div> -->
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -373,13 +373,13 @@ function get_time_ago($time) {
                                                                     </a>
                                                                 <?php } ?>
                                                             </div>
-                                                            <div class="uploadOptionPost" style="margin-top: 20px;">
+                                                            <!-- <div class="uploadOptionPost" style="margin-top: 20px;">
                                                                 <div data-toggle="modal">
                                                                     <label id="postBoximgup"><img src="assets/images/photo-icon.png"> Image</label>
                                                                     <label id="postBoxvidup"><img src="assets/images/video-icon.png"> Video</label>
-                                                                    <!-- <input type="file" id="file-upload" name="postjobPic[]" multiple class="text-center center-block file-upload" /> -->
+                                                                    <input type="file" id="file-upload" name="postjobPic[]" multiple class="text-center center-block file-upload" />
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                     </div>
                                                 </div>

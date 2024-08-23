@@ -118,12 +118,20 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                                         <?php
                                                         $getJobImage = $this->db->query("SELECT * FROM postjob_image WHERE job_id = '".$key->id."'")->row();
                                                         if(!empty($getJobImage->job_image) && file_exists('uploads/postjob/'.$getJobImage->job_image)) {
-                                                            $jobimage = base_url("uploads/postjob/".$getJobImage->job_image);
+                                                            $extension = strtolower(pathinfo($getJobImage->job_image, PATHINFO_EXTENSION));
+                                                            if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) { ?>
+                                                            <img src="<?= base_url("uploads/postjob/".$getJobImage->job_image) ?>" alt="Image">
+                                                            <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
+                                                            <video width="371" height="300" controls>
+                                                            <source src="<?= base_url('uploads/postjob/'.$getJobImage->job_image); ?>" type="video/mp4">
+                                                            Your browser does not support the video tag.
+                                                            </video>
+                                                        <?php }
                                                         } else {
                                                             $jobimage = base_url("uploads/no_bimage.png");
                                                         }
                                                         ?>
-                                                        <img src="<?= $jobimage; ?>" />
+                                                        <!-- <img src="<?= $jobimage; ?>" /> -->
                                                         <div class="CustomContainer">
                                                             <div class="job-title-sec">
                                                                 <h3 style="text-transform: uppercase;">
@@ -210,10 +218,21 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                             <div class="col-lg-4 col-md-6 col-sm-12 column">
                                                 <div class="Product">
                                                     <div class="Product_Img">
-                                                        <?php if(!empty($post_detailsimg)) { ?>
-                                                        <img src="<?php echo base_url() ?>uploads/postjob/<?php echo $post_detailsimg->job_image ?>">
-                                                        <?php } else { ?>
-                                                        <img src="<?php echo base_url() ?>uploads/no_bimage.png">
+                                                        <?php if(!empty($post_detailsimg)) {
+                                                            if(!empty($post_detailsimg->job_image) && file_exists('uploads/postjob/'.$post_detailsimg->job_image)) {
+                                                                $extension = strtolower(pathinfo($post_detailsimg->job_image, PATHINFO_EXTENSION));
+                                                                if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) { ?>
+                                                                <img src="<?php echo base_url() ?>uploads/postjob/<?php echo $post_detailsimg->job_image ?>">
+                                                                <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
+                                                                <video width="371" height="300" controls>
+                                                                <source src="<?= base_url('uploads/postjob/'.$post_detailsimg->job_image); ?>" type="video/mp4">
+                                                                Your browser does not support the video tag.
+                                                                </video>
+                                                                <?php }
+                                                            } else {
+                                                                $jobimage = base_url("uploads/no_bimage.png");
+                                                            } ?>
+                                                        <!-- <img src="<?php echo base_url() ?>uploads/no_bimage.png"> -->
                                                         <?php } ?>
                                                     </div>
                                                     <div class="Product_Data">

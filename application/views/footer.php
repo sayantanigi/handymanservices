@@ -83,7 +83,7 @@ $url = end($actual_link1);
         </div>
     </div>
     <div class="bottom-line">
-        <span>Copyright © <?php echo date('Y')?> Handyman Services. All rights reserved.</span>
+        <span>Copyright © <?php echo date('Y')?> <?= $get_setting->website_name?>. All rights reserved.</span>
         <a href="#scrollup" class="scrollup" title=""><i class="la la-arrow-up"></i></a>
     </div>
 </footer>
