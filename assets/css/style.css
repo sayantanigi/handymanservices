@@ -1851,7 +1851,7 @@ label::after {
   width: 100%;
   background: #ffffff;
   margin-top: 30px;
-  box-shadow: 0 0 10px #f87b42;
+  box-shadow: 0 0 10px #7fdd96;
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   -ms-border-radius: 8px;
@@ -14640,11 +14640,7 @@ h2 {
 }
 .blog-details a span,
 .Career .my-blog .blog-details a span {
-  background: linear-gradient(
-    180deg,
-    rgba(249, 80, 30, 1) 0%,
-    rgba(252, 119, 33, 1) 100%
-  ) !important;
+  background: linear-gradient(145deg, rgba(32, 67, 135, 1) 0%, rgba(97, 128, 190, 1) 25%, rgba(128, 224, 149, 1) 70%, rgba(165, 236, 129, 1) 100%) !important;
   border: 0;
   font-weight: 600;
   color: #fff;
@@ -14660,14 +14656,10 @@ h2 {
 }
 .Job .blog-details a span:hover,
 .Career .my-blog .blog-details a span:hover {
-  background: linear-gradient(
-    180deg,
-    rgba(252, 119, 33, 1) 0%,
-    rgba(249, 80, 30, 1) 100%
-  ) !important;
+  background: linear-gradient(145deg, rgba(32, 67, 135, 1) 0%, rgba(97, 128, 190, 1) 25%, rgba(128, 224, 149, 1) 70%, rgba(165, 236, 129, 1) 100%) !important;
 }
 .Career .blog-metas {
-  background: #f87b42 !important;
+  background: #7fdd96 !important;
   margin: 0;
   padding: 10px 0;
 }
