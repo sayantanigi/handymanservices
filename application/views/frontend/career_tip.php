@@ -1,6 +1,6 @@
-<?php 
- if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->image)){
-    $banner_img=base_url("uploads/banner/".$get_banner->image);
+<?php
+ if(!empty($get_career->image) && file_exists('uploads/career/'.$get_career->image)){
+    $banner_img=base_url("uploads/career/".$get_career->image);
 } else{
     $banner_img=base_url("assets/images/resource/mslider1.jpg");
 } ?>

@@ -29,13 +29,13 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                 <div class="col-lg-12">
                     <div class="about-us">
                         <div class="row">
-                            <div class="col-lg-7">
+                            <div class="col-lg-12">
                                 <h2><?= ucfirst($get_cms->title)?></h2>
                                 <p><?= $get_cms->description?></p>
                             </div>
-                            <div class="col-lg-5">
+                            <!-- <div class="col-lg-5">
                                 <img src="<?= base_url('assets/images/resource/About_Us.jpg')?>" alt="" />
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                     <?php if(!empty($user->profilePic) && file_exists('uploads/users/'.$user->profilePic)) { ?>
                                     <img src="<?= base_url('uploads/users/'.$user->profilePic)?>" alt="" />
                                     <?php } else { ?>
-                                    <img src="<?= base_url('uploads/users/user.png')?>" alt="" />
+                                    <img src="<?= base_url('uploads/no_pimage.png')?>" alt="" />
                                     <?php } ?>
                                     <h3>
                                     <?php if(!empty($user->firstname)) {
@@ -78,7 +78,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                     } ?>
                                     <span><?= ucfirst(@$user->skills);?></span>
                                     </h3>
-                                    <p><?= @$user->short_bio;?></p>
+                                    <p><?php if(!empty(@$user->short_bio)) { echo @$user->short_bio; } else { echo "&nbsp"; }?></p>
                                 </div>
                             </a>
                         </div>

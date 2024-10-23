@@ -168,7 +168,6 @@ class Post_job_model extends My_Model {
             $query = "SELECT * FROM postjob WHERE is_delete = '0'";
             if(isset($title) && !empty($title)) {
                 $query .= " AND post_title like '%".$title."%'";
-
             }
 
             if(isset($location) && !empty($location)) {
@@ -223,6 +222,8 @@ class Post_job_model extends My_Model {
             }
 
             if(isset($search_title)&& !empty($search_title)) {
+                $search_title = substr($search_title, 0, -1);
+                //$query .= " AND post_title like '%".$search_title."%'";
                 $query .= " AND post_title like '%".$search_title."%'";
             }
 
@@ -300,7 +301,11 @@ class Post_job_model extends My_Model {
                     $bidBtn = '<div class="shortlists"><a href="'.base_url('workdetail/'.base64_encode($row['id'])).'" title="">Bid Now <i class="la la-plus"></i></a></div>';
                 }
 
-                $output .= '<div class="emply-resume-list col-lg-6 col-md-6 col-sm-12"><div class="DataContainer">'.$profile_pic.'<div class="emply-resume-thumb">'.$jobimage.'</div><div class="emply-resume-info" style="min-height: 70px;"><h3><a style="width: 100% !important" href="'.base_url('workdetail/'.base64_encode($row['id'])).'" title="">'.$row['post_title'].'</a></h3><span>'.$get_category->category_name.'</span><span>'.$get_subcategory->sub_category_name.' </span><!--<p><i class="la la-map-marker"></i>'.$row["location"].'</p>--></div>'.$bidBtn.'</div></div> ';
+                $output .=
+                '<div class="emply-resume-list col-lg-12 col-md-12 col-sm-12"><div class="DataContainer Custom_Data_Container">'
+                .$jobimage.'<div class="emply-resume-info" style="margin: 0 !important; padding: 0 15px !important;"><h3><a style="width: 100% !important" href="'.base_url('workdetail/'.base64_encode($row['id'])).'" title="">'
+                .$row['post_title'].'</a></h3><span style="color: #41ab2a !important;">'
+                .$get_category->category_name.'</span></div>'.$bidBtn.'</div></div> ';
             }
         } else {
             $output .= '

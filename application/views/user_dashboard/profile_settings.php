@@ -158,11 +158,13 @@ if($data_request=='user') {
                             </div>
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <div class="">
+                                    <div class="" style="display: inline-block; float: inline-end;">
                                         <?php if($_SESSION['afrebay']['userType'] == '1') { ?>
-                                        <button class="post-job-btn float-right mw-150 Gradient_Back_Color" style="border: none !important;" type="submit">Save</button>
+                                        <img src="<?= base_url("uploads/grey_loader.gif")?>" id="save_profile_dataloader" style="width: 50px;">
+                                        <button class="post-job-btn float-right mw-150 Gradient_Back_Color" style="border: none !important;" type="submit" id="save_profile_data">Save</button>
                                         <?php } else { ?>
-                                        <button class="post-job-btn float-right mw-150 Gradient_Back_Color" style="border: none !important;" type="submit">Save</button>
+                                        <img src="<?= base_url("uploads/grey_loader.gif")?>" id="save_profile_dataloader" style="width: 50px;">
+                                        <button class="post-job-btn float-right mw-150 Gradient_Back_Color" style="border: none !important;" type="submit" id="save_profile_data">Save</button>
                                         <?php } ?>
                                         <input type="hidden" name="utype" id="utype" value="<?= @$userinfo->userType?>">
                                     </div>
@@ -208,6 +210,7 @@ if($data_request=='user') {
 .select2-selection--multiple {border: none !important;}
 .select2-container .select2-search--inline {width: 100% !important;}
 .select2-search__field {width: 100% !important;}
+#save_profile_dataloader {display: none;}
 </style>
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" />
@@ -263,6 +266,7 @@ $('#short_bio').keyup(function() {
         theCount.css('font-weight','normal');
     }
 });
+
 $("form").submit( function(e) {
     if($('#utype').val() == 1) {
         if($('#firstname').val() == ''){
@@ -338,4 +342,10 @@ $("form").submit( function(e) {
         }
     }
 });
+
+$("#save_profile_data").on('click', function(){
+    $("#save_profile_dataloader").show();
+    //$(".Gradient_Back_Color").prop('disabled', true);
+    return true;
+})
 </script>

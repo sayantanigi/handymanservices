@@ -61,11 +61,7 @@ function get_time_ago($time) {
             <div >
                 <div>
                     <div class="inner-header">
-                        <h3>
-                            <?php if (!empty($post_data->post_title)) {
-                                echo $post_data->post_title;
-                            } ?>
-                        </h3>
+                        <h3></h3>
                     </div>
                 </div>
             </div>

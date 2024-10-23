@@ -122,7 +122,7 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                                     <input type="hidden" id="search_lon" name="s_lon" value="<?= @$lon ?>">
                                                 </div>
                                                 <div class="col-lg-12 text-center mt-3">
-                                                    <small><input type="checkbox" id="agreecheck" style="opacity: 1; z-index: 50; margin-top: 8px;"> I agree to the <a href="#" class="text-primary">Privacy Policy</a>, <a href="#" class="text-primary">Cookie Policy</a> and <a href="#" class="text-primary">Member Agreement</a>.</small>
+                                                    <small><input type="checkbox" id="agreecheck" style="opacity: 1; z-index: 50; margin-top: 8px;"> I agree to the <a href="<?= base_url()?>privacy-policy" target="_blank" class="text-primary">Privacy Policy</a>, <a href="<?= base_url()?>cookies-policy" target="_blank" class="text-primary">Cookie Policy</a> and <a href="<?= base_url()?>member-agreement" target="_blank" class="text-primary">Member Agreement</a>.</small>
                                                     <p class="erroragree" style="margin: 0;width: 100%;text-align: center;color: red;font-size: 12px;"></p>
                                                 </div>
                                             </div>

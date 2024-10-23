@@ -38,7 +38,7 @@ $seg2 = $this->uri->segment(2);
                         <?php } ?>
                     </span>
                 </li>
-                <li <?php if ($seg2 == 'sub_category') { ?>class="active" <?php } ?>>
+                <!-- <li <?php if ($seg2 == 'sub_category') { ?>class="active" <?php } ?>>
                     <span class="adminMenu_class">
                         <a href="<?= admin_url('sub_category') ?>" class="adminMenu_class1">
                             <i class="fab fa-buffer"></i>
@@ -63,7 +63,7 @@ $seg2 = $this->uri->segment(2);
                             <i class="fa fa-question faicon_style" onclick="showTooltip('specialist')"></i>
                         <?php } ?>
                     </span>
-                </li>
+                </li> -->
                 <li <?php if ($seg2 == 'banner') { ?>class="active" <?php } ?>>
                     <span class="adminMenu_class">
                         <a href="<?= admin_url('banner') ?>" class="adminMenu_class1">
@@ -137,7 +137,7 @@ $seg2 = $this->uri->segment(2);
                         <?php } ?>
                     </span>
                 </li>
-                <li <?php if ($seg2 == 'reportedusers') { ?>class="active" <?php } ?>>
+                <!-- <li <?php if ($seg2 == 'reportedusers') { ?>class="active" <?php } ?>>
                     <span class="adminMenu_class">
                         <a href="<?= admin_url(); ?>reportedusers" class="adminMenu_class1">
                             <i class="fa fa-flag"></i>
@@ -175,7 +175,7 @@ $seg2 = $this->uri->segment(2);
                             <i class="fa fa-question faicon_style" onclick="showTooltip('company-logo')"></i>
                         <?php } ?>
                     </span>
-                </li>
+                </li> -->
                 <li <?php if ($seg2 == 'career') { ?>class="active" <?php } ?>>
                     <span class="adminMenu_class">
                         <a href="<?= admin_url(); ?>career" class="adminMenu_class1">
@@ -206,7 +206,7 @@ $seg2 = $this->uri->segment(2);
                     <span class="adminMenu_class">
                         <a href="<?= admin_url('tooltips') ?>" class="adminMenu_class1">
                             <i class="fa fa-info"></i>
-                            <span>Tooltips Management</span>
+                            <span>Tooltips</span>
                         </a>
                         <?php
                         $gettooltile = $this->db->query("SELECT * FROM manage_tooltips WHERE menu_name = 'tooltips'")->row();

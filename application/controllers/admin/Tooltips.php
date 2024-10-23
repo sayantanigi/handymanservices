@@ -24,6 +24,7 @@ class Tooltips extends CI_Controller {
         foreach ($get_tooltips as $row) {
             $btn = ''.'<span class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#viewModal" onclick="view_data('.$row->id.')" data-placement="right"><i class="far fa-eye mr-1"></i>View</span>';
             $btn .= '| '.'<span class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#editModal" onclick="getValue('.$row->id.')" data-placement="right"><i class="far fa-edit mr-1"></i> Edit</span>';
+            $btn .= ' |  '.'<span data-placement="right" class="btn btn-sm btn-danger mr-2" onclick="tooltipDelete(this,'.$row->id.')" style="margin-left: 8px;">Delete</span>';
             if(strlen($row->description) > 100) {
                 $desc = substr($row->description, 0, 60).'...';
             } else {
@@ -114,6 +115,12 @@ class Tooltips extends CI_Controller {
             $url=base_url().'uploads/tooltips/'.$file;
             $message='';
             echo "<script>window.parent.CKEDITOR.tools.callFunction('".$function_number."','".$url."','".$message."');</script>";
+        }
+    }
+
+    public function delete() {
+        if(isset($_POST['tid'])) {
+            $this->Crud_model->DeleteData('manage_tooltips',"id='".$_POST['tid']."'");
         }
     }
 }

@@ -42,8 +42,8 @@ class Login extends CI_Controller {
 				'latitude' => $_POST['latitude'],
 				'longitude' => $_POST['longitude'],
 				'created' => date('Y-m-d H:i:s'),
-				'status' => 1,
-				'email_verified' => 1
+				'status' => 0,
+				'email_verified' => 0
 			);
             //print_r($data); die();
 			$result = $this->Mymodel->insert('users',$data);
@@ -71,24 +71,24 @@ class Login extends CI_Controller {
 					'imagePath' => base_url().'uploads/logo/'.$get_setting->flogo,
 					//'fullname' => $fullname,
 				);
-				$message = "<body><div style='width:600px;margin: 0 auto;background: #fff; border: 1px solid #e6e6e6;'><div style='padding: 30px 30px 15px 30px;box-sizing: border-box;'><img src='cid:Logo' style='width:100px;float: right;margin-top: 0 auto;'><h3 style='padding-top:40px; line-height: 30px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Handyman Services</span></h3><p style='font-size:24px;'>Hello ".$_POST['first_name'].",</p><p style='font-size:24px;'>Thank you for registration on Handyman Services.</p><p style='font-size:24px;'>Please click the button below to verify your email address.</p><p style='text-align: center;'><a href='".base_url() . "email-verification/" . urlencode(base64_encode($insert_id))."' style='height: 50px; width: 300px; background: rgb(253,179,2); background: linear-gradient(0deg, rgba(253,179,2,1) 0%, rgba(244,77,9,1) 100%); text-align: center; font-size: 18px; color: #fff; border-radius: 12px; display: inline-block; line-height: 50px; text-decoration: none; text-transform: uppercase; font-weight: 600;'>ACTIVATE</a></p><p style='font-size:20px;'>Thank you!</p><p style='font-size:20px;list-style: none;'>Sincerly</p><p style='list-style: none;'><b>Handyman Services</b></p><p style='list-style:none;'><b>Visit us:</b> <span>$get_setting->address</span></p><p style='list-style:none'><b>Email us:</b> <span>$get_setting->email</span></p></div><table style='width: 100%;'><tr><td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Handyman Services. All rights reserved.</td></tr></table></div></body>";
+				$message = "<body><div style='width:600px;margin: 0 auto;background: #fff; border: 1px solid #e6e6e6;'><div style='padding: 30px 30px 15px 30px;box-sizing: border-box;'><img src='cid:Logo' style='width:100px;float: right;margin-top: 0 auto;'><h3 style='padding-top:40px; line-height: 30px;'>Greetings from <span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Side Quote</span></h3><p style='font-size:24px;'>Hello ".$_POST['first_name'].",</p><p style='font-size:24px;'>Thank you for registration on Side Quote.</p><p style='font-size:24px;'>Please click the button below to verify your email address.</p><p style='text-align: center;'><a href='".base_url() . "email-verification/" . urlencode(base64_encode($insert_id))."' style='height: 50px; width: 300px; background: rgb(253,179,2); background: linear-gradient(0deg, rgba(253,179,2,1) 0%, rgba(244,77,9,1) 100%); text-align: center; font-size: 18px; color: #fff; border-radius: 12px; display: inline-block; line-height: 50px; text-decoration: none; text-transform: uppercase; font-weight: 600;'>ACTIVATE</a></p><p style='font-size:20px;'>Thank you!</p><p style='font-size:20px;list-style: none;'>Sincerly</p><p style='list-style: none;'><b>Side Quote</b></p><p style='list-style:none;'><b>Visit us:</b> <span>$get_setting->address</span></p><p style='list-style:none'><b>Email us:</b> <span>$get_setting->email</span></p></div><table style='width: 100%;'><tr><td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Side Quote. All rights reserved.</td></tr></table></div></body>";
 				require 'vendor/autoload.php';
 				$mail = new PHPMailer(true);
 				try {
 					$mail->CharSet = 'UTF-8';
-					$mail->SetFrom('sayantan@goigi.in', 'Handyman Services');
+					$mail->SetFrom('support@sidequote.com', 'Side Quote');
 					$mail->AddAddress($_POST['email']);
 					$mail->IsHTML(true);
-					$mail->Subject = 'Verify Your Email Address From Handyman Services';
+					$mail->Subject = 'Verify Your Email Address From Side Quote';
 					$mail->AddEmbeddedImage('uploads/logo/'.$get_setting->flogo, 'Logo');
 					$mail->Body = $message;
 					$mail->IsSMTP();
 					$mail->SMTPAuth = true;
 					$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-					$mail->Host = "smtp-relay.brevo.com1";
+					$mail->Host = "mail.sidequote.com";
 					$mail->Port = 587; //587 465
-					$mail->Username = "sayantan@goigi.in1";
-					$mail->Password = "NWpyxa3UK2HDPSbs1";
+					$mail->Username = "support@sidequote.com";
+					$mail->Password = "pu0kA,}h_jGQ";
 					if(!$mail->send()) {
 						$data = array('result' => 'success', 'data' => "You account has been created. You can now login with your credential.");
 					} else {
@@ -230,7 +230,7 @@ class Login extends CI_Controller {
 				$mail = new PHPMailer(true);
 				try {
 					$mail->CharSet = 'UTF-8';
-					$mail->SetFrom('igikolkata2024@gmail.com', 'Handyman Services');
+					$mail->SetFrom('support@sidequote.com', 'Side Quote');
 					$mail->AddAddress($_POST['email']);
 					$mail->IsHTML(true);
 					$mail->Subject = "Forgot Password Confirmation message from Handyman Services";
@@ -239,10 +239,10 @@ class Login extends CI_Controller {
 					$mail->IsSMTP();
 					$mail->SMTPAuth = true;
 					$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-					$mail->Host = "smtp.gmail.com";
-					$mail->Port = 465; //587 465
-					$mail->Username = "igikolkata2024@gmail.com";
-					$mail->Password = "Goigi123";
+					$mail->Host = "mail.sidequote.com";
+					$mail->Port = 587; //587 465
+					$mail->Username = "support@sidequote.com";
+					$mail->Password = "pu0kA,}h_jGQ";
 					$mail->send();
 					$this->session->set_flashdata('message', 'Please check your inbox. We have sent you an email to reset your password.');
 				} catch (Exception $e) {

@@ -43,16 +43,16 @@
                 </a>
             </div>
             <div class="col-xl-6 col-sm-6 col-12">
-                <a href="<?= admin_url('our-services')?>">
+                <a href="<?= admin_url('career')?>">
                     <div class="card">
                         <div class="card-body">
                             <div class="dash-widget-header">
                                 <span class="dash-widget-icon bg-primary">
-                                    <i class="fa fa-cogs"></i>
+                                    <i class="fa fa-graduation-cap"></i>
                                 </span>
                                 <div class="dash-widget-info">
-                                    <h3><?= count($total_service)?></h3>
-                                    <h6 class="text-dark">Our Services</h6>
+                                    <h3><?= count($total_career)?></h3>
+                                    <h6 class="text-dark">Career Tips</h6>
                                 </div>
                             </div>
                         </div>
@@ -60,16 +60,16 @@
                 </a>
             </div>
             <div class="col-xl-6 col-sm-6 col-12">
-                <a href="<?= admin_url('payment')?>">
+                <a href="<?= admin_url('adsense')?>">
                     <div class="card">
                         <div class="card-body">
                             <div class="dash-widget-header">
                                 <span class="dash-widget-icon bg-primary">
-                                    <i class="fa fa-bookmark"></i>
+                                    <i class="fa fa-ad"></i>
                                 </span>
                                 <div class="dash-widget-info">
-                                    <h3><?= count($total_subscription)?></h3>
-                                    <h6 class="text-dark">Customer Subscriptions</h6>
+                                    <h3><?= count($total_adsense)?></h3>
+                                    <h6 class="text-dark">Ad Sense</h6>
                                 </div>
                             </div>
                         </div>

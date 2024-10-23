@@ -52,7 +52,7 @@ $url = end($actual_link1);
                             <div class="row">
                                 <div class="col-lg-12">
 
-                                    <a href="<?= base_url('career-tips')?>" title="Blog">Blog</a>
+                                    <a href="<?= base_url('career-tips')?>" title="Career Tips">Career Tips</a>
                                     <a href="<?= base_url('privacy-policy')?>" title="Privacy Policy">Privacy Policy</a>
                                     <a href="<?= base_url('term-and-conditions')?>" title="Term & Condition">Terms & Conditions </a>
                                 </div>

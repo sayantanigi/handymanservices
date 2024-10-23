@@ -128,6 +128,24 @@ class Home extends MY_Controller {
 		$this->load->view('frontend/privacy_policy', $data);
 		$this->load->view('footer');
 	}
+    public function cookies_policy() {
+		$data['get_cms'] = $this->Crud_model->get_single('manage_cms', "id='4'");
+		$data['get_banner'] = $this->Crud_model->get_single('banner', "page_name='Cookie policy'");
+		$data['title'] = 'Cookie policy';
+		$data['description'] = '';
+		$this->load->view('header', $data);
+		$this->load->view('frontend/cookies_policy', $data);
+		$this->load->view('footer');
+	}
+    public function member_agreement() {
+		$data['get_cms'] = $this->Crud_model->get_single('manage_cms', "id='5'");
+		$data['get_banner'] = $this->Crud_model->get_single('banner', "page_name='Member Agreement'");
+		$data['title'] = 'Member Agreement';
+		$data['description'] = '';
+		$this->load->view('header', $data);
+		$this->load->view('frontend/member_agreement', $data);
+		$this->load->view('footer');
+	}
 	public function term_and_conditions() {
 		$data['get_cms'] = $this->Crud_model->get_single('manage_cms', "id='1'");
 		$data['get_banner'] = $this->Crud_model->get_single('banner', "page_name='Terms and Conditions'");
@@ -199,7 +217,7 @@ class Home extends MY_Controller {
 	function our_jobs() {
 		$data['getcategory']=$this->Crud_model->GetData('category');
 		$data['getcountry']=$this->Crud_model->GetData('countries');
-		$data['get_banner'] = $this->Crud_model->get_single('banner', "page_name='Our Jobs'");
+		$data['get_banner'] = $this->Crud_model->get_single('banner', "page_name='Find Work'");
 		$data['title'] = 'Explore Job Openings';
 		$this->load->view('header', $data);
 		$this->load->view('frontend/post_jobslist', $data);
@@ -392,6 +410,7 @@ class Home extends MY_Controller {
 		echo json_encode($output);
 	}
 	function career_tipsList() {
+        $data['get_banner'] = $this->Crud_model->get_single('banner', "page_name='Career Tips'");
 		$data['getcareer'] = $this->Crud_model->GetData('career_tips', '', "status= 'Active'", '', '(id)desc');
 		$data['title'] = "Career Tips";
 		$this->load->view('header', $data);

@@ -27,6 +27,20 @@ function get_time_ago($time) {
     $years = floor($time_ago / 31536000); // Approximate value
     return $years . ' years ago';
 }
+
+function displayStars($rating) {
+    // Ensure the rating is between 0 and 5
+    $rating = max(0, min(5, $rating));
+    $fullStars = floor($rating);
+    $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0;
+    $emptyStars = 5 - $fullStars - $halfStar;
+
+    $stars = str_repeat('<i class="fas fa-star"></i>', $fullStars) .
+             str_repeat('<i class="fas fa-star-half-alt"></i>', $halfStar) .
+             str_repeat('<i class="far fa-star"></i>', $emptyStars);
+
+    return $stars;
+}
 ?>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="max-width: 990px !important;">
@@ -121,6 +135,12 @@ function get_time_ago($time) {
                                                 <div class="TextData" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 15px;">
                                                     <a href="<?php if($get_user->userType == '1') {echo base_url('professionals_detail/'.base64_encode($get_user->userId)); } else{ echo base_url('customer_detail/'.base64_encode($get_user->userId)); }?>">
                                                         <h3 style="font-size: 20px; font-weight: 600; margin: 0;" class="Primary_Text_Color"><?php echo "@".$get_user->username; ?></h3>
+                                                        <p style="line-height: 0px;margin: 0;font-size: 10px;margin-top: 5px;margin-bottom: 10px;">
+                                                            <?php
+                                                            $getAverageRatingSql = $this->db->query("SELECT ROUND(AVG(rating),1) as averageRating FROM `employer_rating` where `worker_id` = '" . @$get_user->userId . "'")->row();
+                                                            echo displayStars($getAverageRatingSql->averageRating);
+                                                            ?>
+                                                        </p>
                                                     </a>
                                                     <p style="margin: 0; font-size: 13px; color: #b1b1b1;">Posted <?php echo get_time_ago(strtotime($row->created_date)) ?> </p>
                                                 </div>
@@ -396,7 +416,7 @@ function get_time_ago($time) {
                         </div>
                     </div>
                     <div class="col-lg-3 mb-3 order-lg-1">
-                        <div class="add-sidebar sticky-top">
+                        <div class="add-sidebar1 sticky-top" style="top: 100px !important;">
                             <?php
                             if (is_numeric($_SESSION['afrebay']['userId'])) {
                                 $userData = $this->db->query("SELECT * FROM users WHERE userId = '" . @$_SESSION['afrebay']['userId'] . "'")->row();
@@ -419,6 +439,12 @@ function get_time_ago($time) {
                                     <div class="profileImg"><img src="<?= $userProfileImage; ?>"></div>
                                     <h2 style="text-transform: lowercase;" class="Primary_Text_Color"><?= "@".$userData->username; ?>
                                     </h2>
+                                    <p style="line-height: 0px;margin: 0;font-size: 10px;margin-top: 5px;margin-bottom: 10px; text-align: center;">
+                                        <?php
+                                        $getAverageRatingSql = $this->db->query("SELECT ROUND(AVG(rating),1) as averageRating FROM `employer_rating` where `worker_id` = '" . @$_SESSION['afrebay']['userId'] . "'")->row();
+                                        echo displayStars($getAverageRatingSql->averageRating);
+                                        ?>
+                                    </p>
                                     <p class="text-center memberinfo">
                                         <?= 'Member Since ' . date('M Y', strtotime($userData->created)) ?> .
                                         <!-- <?php if ($userData->userType === '1') {
@@ -573,7 +599,10 @@ function get_time_ago($time) {
                         </div>
                     </div>
                     <div class="col-lg-3 order-lg-3">
-                        <div class="add-sidebar sticky-top">
+                        <div class="card" style=" margin-top: 32px; background: #fff; padding: 20px; text-align: center; border-radius: 30px; margin-bottom: 18px; ">
+                            <a href="<?= base_url('career-tips')?>">Career Tips</a>
+                        </div>
+                        <div class="add-sidebar1 sticky-top" style="top: 100px !important;">
                             <?php
                             $getAdSense = $this->db->query("SELECT * FROM adsense WHERE status = 'Active'")->result_array();
                             if (!empty($getAdSense)) {

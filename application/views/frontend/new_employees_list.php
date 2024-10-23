@@ -1,11 +1,11 @@
 <?php
-if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->image)){
-    $banner_img=base_url("uploads/banner/".$get_banner->image);
-} else{
-    $banner_img=base_url("assets/images/resource/mslider1.jpg");
+if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->image)) {
+    $banner_img = base_url("uploads/banner/" . $get_banner->image);
+} else {
+    $banner_img = base_url("assets/images/resource/mslider1.jpg");
 }
-@$subcategory_id=$this->uri->segment(2);
-@$postid=base64_decode($subcategory_id);
+@$subcategory_id = $this->uri->segment(2);
+@$postid = base64_decode($subcategory_id);
 ?>
 <style>
     .level-filter .range-slider {
@@ -13,6 +13,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         flex-flow: row wrap;
         align-items: center;
     }
+
     .level-filter .range-slider .number-group {
         height: 30px;
         font-weight: 300;
@@ -22,6 +23,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         justify-content: space-between;
         width: 100%;
     }
+
     .level-filter .range-slider .number-group .number-input {
         width: 36px;
         height: 30px;
@@ -31,23 +33,31 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         border: 0;
         border-radius: 5px;
     }
+
     .level-filter .range-slider .number-group .number-input:first-of-type {
         margin-right: 7px;
     }
+
     .level-filter .range-slider .number-group .number-input:last-of-type {
         margin-left: 7px;
     }
-    .level-filter .range-slider .number-group .number-input::-webkit-outer-spin-button, .range-slider .number-group .number-input::-webkit-inner-spin-button {
+
+    .level-filter .range-slider .number-group .number-input::-webkit-outer-spin-button,
+    .range-slider .number-group .number-input::-webkit-inner-spin-button {
         -webkit-appearance: none;
     }
-    .level-filter .range-slider .number-group .number-input:invalid, .range-slider .number-group .number-input:out-of-range {
+
+    .level-filter .range-slider .number-group .number-input:invalid,
+    .range-slider .number-group .number-input:out-of-range {
         border: 2px solid #2892ff;
     }
+
     .level-filter .range-slider .range-group {
         position: relative;
         flex: 0 0 100%;
         height: 30px;
     }
+
     .level-filter .range-slider .range-group .range-input {
         position: absolute;
         left: 0;
@@ -57,9 +67,11 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         width: 100%;
         border-bottom: 0;
     }
+
     .level-filter .range-slider .range-group .range-input:focus {
         outline: 0;
     }
+
     .level-filter .range-slider .range-group .range-input::-webkit-slider-runnable-track {
         width: 100%;
         height: 2px;
@@ -71,6 +83,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         box-shadow: none;
         border: 0;
     }
+
     .level-filter .range-slider .range-group .range-input::-webkit-slider-thumb {
         z-index: 2;
         position: relative;
@@ -82,6 +95,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         -webkit-appearance: none;
         margin-top: -7px;
     }
+
     .level-filter .range-slider .range-group .range-input::-moz-range-track {
         width: 100%;
         height: 2px;
@@ -92,6 +106,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         box-shadow: none;
         border: 0;
     }
+
     .level-filter .range-slider .range-group .range-input::-moz-range-thumb {
         z-index: 2;
         position: relative;
@@ -103,6 +118,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         background: #2892ff;
         cursor: pointer;
     }
+
     .level-filter .range-slider .range-group .range-input::-ms-track {
         width: 100%;
         height: 5px;
@@ -112,12 +128,15 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         border-color: transparent;
         color: transparent;
     }
-    .level-filter .range-slider .range-group .range-input::-ms-fill-lower, .range-slider .range-group .range-input::-ms-fill-upper {
+
+    .level-filter .range-slider .range-group .range-input::-ms-fill-lower,
+    .range-slider .range-group .range-input::-ms-fill-upper {
         background: #2892ff;
         border-radius: 1px;
         box-shadow: none;
         border: 0;
     }
+
     .level-filter .range-slider .range-group .range-input::-ms-thumb {
         z-index: 2;
         position: relative;
@@ -127,10 +146,13 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         background: #2892ff;
         cursor: pointer;
     }
-    .level-filter .range-slider, .level-filter .filter {
+
+    .level-filter .range-slider,
+    .level-filter .filter {
         margin: 0 auto 10px;
         max-width: 100%;
     }
+
     @media screen and (max-width: 425px) and (min-width: 375px) {
         .emply-resume-list {
             box-shadow: 0 0 10px #dddddd !important;
@@ -139,8 +161,61 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
             padding: 5px !important;
         }
     }
-    .Employees_Search_List .Employees_Search_Result .emply-resume-list .shortlists a.Emp_Comp i { color: #fff !important;}
-    .shortlists > a i {float: left !important;}
+
+    .Employees_Search_List .Employees_Search_Result .emply-resume-list .shortlists a.Emp_Comp i {
+        color: #fff !important;
+    }
+
+    .shortlists>a i {
+        float: left !important;
+    }
+
+    .Custom_Data_Container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 !important;
+        margin-bottom: 15px !important;
+    }
+
+    .Custom_Data_Container img {
+        width: 120px;
+        height: 100px;
+        object-fit: cover;
+    }
+
+    .Custom_Data_Container .emply-resume-info {
+        display: flex !important;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .Custom_Data_Container .emply-resume-info h3 {
+        text-align: left !important;
+        font-weight: bold !important;
+    }
+
+    .Custom_Data_Container .emply-resume-info span {
+    background: #ffffff;
+    width: auto;
+    padding: 8px 12px;
+    border-radius: 100px;
+    font-weight: 600;
+    box-shadow: 0 0 10px #ddd;
+    }
+
+    .Custom_Data_Container .shortlists {
+        width: auto !important;
+        margin-right: 15px !important;
+    }
+
+    .Custom_Data_Container .shortlists a {
+        display: flex !important;
+    align-items: center;
+    justify-content: center;
+    }
 </style>
 <section class="overlape">
     <div class="block no-padding">
@@ -169,7 +244,8 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                             <div class="widget">
                                 <div class="search_widget_job">
                                     <div class="field_w_search">
-                                        <input type="text" id="title_keyword" name="title_keyword" placeholder="Search Keywords" value="" />
+                                        <input type="text" id="title_keyword" name="title_keyword"
+                                            placeholder="Search Keywords" value="" />
                                         <i class="la la-search"></i>
                                     </div>
                                     <!-- <div class="field_w_search">
@@ -184,9 +260,14 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                     <select class="chosen" name="category_id" id="category_id"
                                         onchange="getsubcategory(this.value);">
                                         <option value="">Select Category</option>
-                                        <?php if(!empty($getcategory)){ foreach($getcategory as $item){?>
-                                        <option value="<?= $item->id ?>" <?php if(@$item->category_name == @$_POST['category_id']){ echo "selected"; } ?>><?= ucfirst($item->category_name)?></option>
-                                        <?php } }?>
+                                        <?php if (!empty($getcategory)) {
+                                            foreach ($getcategory as $item) { ?>
+                                                <option value="<?= $item->id ?>" <?php if (@$item->category_name == @$_POST['category_id']) {
+                                                      echo "selected";
+                                                  } ?>>
+                                                    <?= ucfirst($item->category_name) ?></option>
+                                            <?php }
+                                        } ?>
                                     </select>
                                 </div>
                             </div>
@@ -208,22 +289,32 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                             <div class="widget">
                                 <h3 class="sb-title open">Country</h3>
                                 <div class="specialism_widget">
-                                    <select class="chosen_country" name="country" id="country" onchange="getState(this.value);">
+                                    <select class="chosen_country" name="country" id="country"
+                                        onchange="getState(this.value);">
                                         <option value="">Select Country</option>
-                                        <?php if(!empty($countries)){ foreach($countries as $item){?>
-                                        <option value="<?= $item->name ?>" <?php if(@$item->name == @$_POST['country']){ echo "selected"; } ?>><?= ucfirst($item->name)?></option>
-                                        <?php } }?>
+                                        <?php if (!empty($countries)) {
+                                            foreach ($countries as $item) { ?>
+                                                <option value="<?= $item->name ?>" <?php if (@$item->name == @$_POST['country']) {
+                                                      echo "selected";
+                                                  } ?>><?= ucfirst($item->name) ?></option>
+                                            <?php }
+                                        } ?>
                                     </select>
                                 </div>
                             </div>
                             <div class="widget state_field1">
                                 <h3 class="sb-title open">State</h3>
                                 <div class="specialism_widget">
-                                    <select class="chosen_state" name="state" id="state" onchange="getCity(this.value);">
+                                    <select class="chosen_state" name="state" id="state"
+                                        onchange="getCity(this.value);">
                                         <option value="">Select State</option>
-                                        <?php if(!empty($states)){ foreach($states as $item){?>
-                                        <option value="<?= $item->name ?>" <?php if(@$item->name == @$_POST['state']){ echo "selected"; } ?>><?= ucfirst($item->name)?></option>
-                                        <?php } }?>
+                                        <?php if (!empty($states)) {
+                                            foreach ($states as $item) { ?>
+                                                <option value="<?= $item->name ?>" <?php if (@$item->name == @$_POST['state']) {
+                                                      echo "selected";
+                                                  } ?>><?= ucfirst($item->name) ?></option>
+                                            <?php }
+                                        } ?>
                                     </select>
                                 </div>
                             </div>
@@ -232,9 +323,13 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                 <div class="specialism_widget">
                                     <select class="chosen_city" name="city" id="city">
                                         <option value="">Select City</option>
-                                        <?php if(!empty($cities)){ foreach($cities as $item){?>
-                                        <option value="<?= $item->name ?>" <?php if(@$item->name == @$_POST['city']){ echo "selected"; } ?>><?= ucfirst($item->name)?></option>
-                                        <?php } }?>
+                                        <?php if (!empty($cities)) {
+                                            foreach ($cities as $item) { ?>
+                                                <option value="<?= $item->name ?>" <?php if (@$item->name == @$_POST['city']) {
+                                                      echo "selected";
+                                                  } ?>><?= ucfirst($item->name) ?></option>
+                                            <?php }
+                                        } ?>
                                     </select>
                                 </div>
                             </div>
@@ -248,8 +343,10 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                                 <input class="number-input" type="number" value="10" min="0" max="10" />
                                             </div>
                                             <div class="range-group">
-                                                <input class="range-input" value="5" min="5" max="10" step="1" type="range" />
-                                                <input class="range-input" value="10" min="5" max="10" step="1" type="range" />
+                                                <input class="range-input" value="5" min="5" max="10" step="1"
+                                                    type="range" />
+                                                <input class="range-input" value="10" min="5" max="10" step="1"
+                                                    type="range" />
                                             </div>
                                             <input type="hidden" name="from_price" id="from_price" value="">
                                             <input type="hidden" name="to_price" id="to_price" value="">
@@ -271,21 +368,23 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                     </div>
                                 </div>
                             </div> -->
-                            <?php if(!empty($postid)){?>
-                            <input type="hidden" name="post_id" id="post_id" value="<?= @$postid?>">
-                            <?php } else{?>
-                            <input type="hidden" name="post_id" id="post_id" value="">
+                            <?php if (!empty($postid)) { ?>
+                                <input type="hidden" name="post_id" id="post_id" value="<?= @$postid ?>">
+                            <?php } else { ?>
+                                <input type="hidden" name="post_id" id="post_id" value="">
                             <?php } ?>
-                            <?php  if(isset($_POST['search_title']) &&!empty($_POST['search_title']) || isset($_POST['search_location']) &&!empty($_POST['search_location']) || isset($_POST['country']) &&!empty($_POST['country']) || isset($_POST['state']) &&!empty($_POST['state']) || isset($_POST['city']) &&!empty($_POST['city']) ){ ?>
-                            <input type="hidden" name="search_title" id="search_title" value="<?= @$_POST['search_title']?>">
-                            <input type="hidden" name="search_location" id="search_location" value="<?= @$_POST['search_location']?>">
-                            <input type="hidden" name="country" id="country" value="<?= @$_POST['country']?>">
-                            <input type="hidden" name="state" id="state" value="<?= @$_POST['state']?>">
-                            <input type="hidden" name="city" id="city" value="<?= @$_POST['city']?>">
-                            <?php } else{?>
-                            <input type="hidden" name="search_title" id="search_title" value="">
-                            <input type="hidden" name="search_location" id="search_location" value="">
-                            <?php  } ?>
+                            <?php if (isset($_POST['search_title']) && !empty($_POST['search_title']) || isset($_POST['search_location']) && !empty($_POST['search_location']) || isset($_POST['country']) && !empty($_POST['country']) || isset($_POST['state']) && !empty($_POST['state']) || isset($_POST['city']) && !empty($_POST['city'])) { ?>
+                                <input type="hidden" name="search_title" id="search_title"
+                                    value="<?= @$_POST['search_title'] ?>">
+                                <input type="hidden" name="search_location" id="search_location"
+                                    value="<?= @$_POST['search_location'] ?>">
+                                <input type="hidden" name="country" id="country" value="<?= @$_POST['country'] ?>">
+                                <input type="hidden" name="state" id="state" value="<?= @$_POST['state'] ?>">
+                                <input type="hidden" name="city" id="city" value="<?= @$_POST['city'] ?>">
+                            <?php } else { ?>
+                                <input type="hidden" name="search_title" id="search_title" value="">
+                                <input type="hidden" name="search_location" id="search_location" value="">
+                            <?php } ?>
                         </form>
                     </div>
                 </aside>
@@ -306,169 +405,169 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
 
 <link rel="stylesheet" href="https://unpkg.com/placeholder-loading/dist/css/placeholder-loading.min.css">
 <script>
-$(document).ready(function () {
-    filter_data(1);
+    $(document).ready(function () {
+        filter_data(1);
 
-    function filter_data(page) {
-        var base_url = $("#base_url").val();
-        var displayProduct = 5;
-        $('#post_list').html(createSkeleton(displayProduct));
-        function createSkeleton(limit) {
-            var skeletonHTML = '';
-            for (var i = 0; i < limit; i++) {
-                skeletonHTML += '<div class="ph-item">';
-                skeletonHTML += '<div class="ph-col-4">';
-                skeletonHTML += '<div class="ph-picture"></div>';
-                skeletonHTML += '</div>';
-                skeletonHTML += '<div>';
-                skeletonHTML += '<div class="ph-row">';
-                skeletonHTML += '<div class="ph-col-12 big"></div>';
-                skeletonHTML += '<div class="ph-col-12"></div>';
-                skeletonHTML += '<div class="ph-col-12"></div>';
-                skeletonHTML += '<div class="ph-col-12"></div>';
-                skeletonHTML += '<div class="ph-col-12"></div>';
-                skeletonHTML += '</div>';
-                skeletonHTML += '</div>';
-                skeletonHTML += '</div>';
+        function filter_data(page) {
+            var base_url = $("#base_url").val();
+            var displayProduct = 5;
+            $('#post_list').html(createSkeleton(displayProduct));
+            function createSkeleton(limit) {
+                var skeletonHTML = '';
+                for (var i = 0; i < limit; i++) {
+                    skeletonHTML += '<div class="ph-item">';
+                    skeletonHTML += '<div class="ph-col-4">';
+                    skeletonHTML += '<div class="ph-picture"></div>';
+                    skeletonHTML += '</div>';
+                    skeletonHTML += '<div>';
+                    skeletonHTML += '<div class="ph-row">';
+                    skeletonHTML += '<div class="ph-col-12 big"></div>';
+                    skeletonHTML += '<div class="ph-col-12"></div>';
+                    skeletonHTML += '<div class="ph-col-12"></div>';
+                    skeletonHTML += '<div class="ph-col-12"></div>';
+                    skeletonHTML += '<div class="ph-col-12"></div>';
+                    skeletonHTML += '</div>';
+                    skeletonHTML += '</div>';
+                    skeletonHTML += '</div>';
+                }
+                return skeletonHTML;
             }
-            return skeletonHTML;
+            var action = 'fetch_data';
+            var title_keyword = $('#title_keyword').val();
+            var category_id = $('#category_id').val();
+            var subcategory_id = get_filter('storage');
+            var days = $('input:radio[name=days]:checked').val();
+            var post_id = $('#post_id').val();
+            var location = $('#location').val();
+            var country = $('#country').val();
+            var state = $('#state').val();
+            var city = $('#city').val();
+            var search_title = $('#search_title').val();
+            var search_location = $('#search_location').val();
+            $.ajax({
+                url: base_url + "welcome/fetch_data/" + page,
+                method: "POST",
+                dataType: "JSON",
+                data: {
+                    action: action,
+                    title_keyword: title_keyword,
+                    category_id: category_id,
+                    post_id: post_id,
+                    subcategory_id: subcategory_id,
+                    days: days,
+                    location: location,
+                    country: country,
+                    state: state,
+                    city: city,
+                    search_title: search_title,
+                    search_location: search_location
+                },
+                success: function (data) {
+                    //console.log(data);
+                    $('#category_id').val(data.keyword);
+                    $('#location').val(data.keyword_location);
+                    $('#post_list').html(data.postlist);
+                    $('#pagination_link').html(data.pagination_link);
+                }
+            })
         }
-        var action = 'fetch_data';
-        var title_keyword = $('#title_keyword').val();
-        var category_id = $('#category_id').val();
-        var subcategory_id = get_filter('storage');
-        var days = $('input:radio[name=days]:checked').val();
-        var post_id = $('#post_id').val();
-        var location = $('#location').val();
-        var country = $('#country').val();
-        var state = $('#state').val();
-        var city = $('#city').val();
-        var search_title = $('#search_title').val();
-        var search_location = $('#search_location').val();
-        $.ajax({
-            url: base_url + "welcome/fetch_data/" + page,
-            method: "POST",
-            dataType: "JSON",
-            data: {
-                action: action,
-                title_keyword: title_keyword,
-                category_id: category_id,
-                post_id: post_id,
-                subcategory_id: subcategory_id,
-                days: days,
-                location: location,
-                country: country,
-                state: state,
-                city: city,
-                search_title: search_title,
-                search_location: search_location
-            },
-            success: function (data) {
-                //console.log(data);
-                $('#category_id').val(data.keyword);
-                $('#location').val(data.keyword_location);
-                $('#post_list').html(data.postlist);
-                $('#pagination_link').html(data.pagination_link);
-            }
-        })
-    }
 
-    function get_filter(class_name) {
-        var filter = [];
-        $('.' + class_name + ':checked').each(function () {
-            filter.push($(this).val());
+        function get_filter(class_name) {
+            var filter = [];
+            $('.' + class_name + ':checked').each(function () {
+                filter.push($(this).val());
+            });
+            return filter;
+        }
+
+        $(document).on('click', '.pagination li a', function (event) {
+            event.preventDefault();
+            var page = $(this).data('ci-pagination-page');
+            filter_data(page);
         });
-        return filter;
-    }
 
-    $(document).on('click', '.pagination li a', function (event) {
-        event.preventDefault();
-        var page = $(this).data('ci-pagination-page');
-        filter_data(page);
-    });
-
-    $('.common_selector').click(function () {
-        filter_data(1);
-    });
-
-    $('#title_keyword').keydown(function () {
-        filter_data(1);
-    });
-
-    $('#location').on('change', function () {
-        filter_data(1);
-    });
-
-    $('input:radio').click(function () {
-        filter_data(1);
-    });
-
-    $('#category_id').on('change', function () {
-        filter_data(1);
-    });
-
-    $('#subcategory_id').on('change', function () {
-        filter_data(1);
-    });
-
-    $('#country').on('change', function () {
-        filter_data(1);
-    });
-
-    $('#state').on('change', function () {
-        filter_data(1);
-    });
-
-    $('#city').on('change', function () {
-        filter_data(1);
-    });
-
-    var parent = document.querySelector("#rangeSlider");
-    if(!parent) return;
-    var rangeS = parent.querySelectorAll("input[type=range]");
-    var numberS = parent.querySelectorAll("input[type=number]");
-
-    rangeS.forEach(function(el) {
-        el.oninput = function() {
-            var slide1 = parseFloat(rangeS[0].value);
-            var slide2 = parseFloat(rangeS[1].value);
-
-            if (slide1 > slide2) {
-                [slide1, slide2] = [slide2, slide1];
-            }
-
-            numberS[0].value = slide1;
-            numberS[1].value = slide2;
-            $('#from_price').val(numberS[0].value);
-            $('#to_price').val(numberS[1].value);
+        $('.common_selector').click(function () {
             filter_data(1);
-        }
-    });
+        });
 
-    numberS.forEach(function(el) {
-        el.oninput = function() {
-            var number1 = parseFloat(numberS[0].value);
-            var number2 = parseFloat(numberS[1].value);
+        $('#title_keyword').keydown(function () {
+            filter_data(1);
+        });
 
-            if (number1 > number2) {
-                var tmp = number1;
-                numberS[0].value = number2;
-                numberS[1].value = tmp;
+        $('#location').on('change', function () {
+            filter_data(1);
+        });
+
+        $('input:radio').click(function () {
+            filter_data(1);
+        });
+
+        $('#category_id').on('change', function () {
+            filter_data(1);
+        });
+
+        $('#subcategory_id').on('change', function () {
+            filter_data(1);
+        });
+
+        $('#country').on('change', function () {
+            filter_data(1);
+        });
+
+        $('#state').on('change', function () {
+            filter_data(1);
+        });
+
+        $('#city').on('change', function () {
+            filter_data(1);
+        });
+
+        var parent = document.querySelector("#rangeSlider");
+        if (!parent) return;
+        var rangeS = parent.querySelectorAll("input[type=range]");
+        var numberS = parent.querySelectorAll("input[type=number]");
+
+        rangeS.forEach(function (el) {
+            el.oninput = function () {
+                var slide1 = parseFloat(rangeS[0].value);
+                var slide2 = parseFloat(rangeS[1].value);
+
+                if (slide1 > slide2) {
+                    [slide1, slide2] = [slide2, slide1];
+                }
+
+                numberS[0].value = slide1;
+                numberS[1].value = slide2;
+                $('#from_price').val(numberS[0].value);
+                $('#to_price').val(numberS[1].value);
+                filter_data(1);
             }
+        });
 
-            rangeS[0].value = number1;
-            rangeS[1].value = number2;
-        }
+        numberS.forEach(function (el) {
+            el.oninput = function () {
+                var number1 = parseFloat(numberS[0].value);
+                var number2 = parseFloat(numberS[1].value);
+
+                if (number1 > number2) {
+                    var tmp = number1;
+                    numberS[0].value = number2;
+                    numberS[1].value = tmp;
+                }
+
+                rangeS[0].value = number1;
+                rangeS[1].value = number2;
+            }
+        });
     });
-});
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script type="text/javascript" src="<?= base_url('assets/custom_js/postjob_list.js')?>"></script>
+<script type="text/javascript" src="<?= base_url('assets/custom_js/postjob_list.js') ?>"></script>
 
 <script>
     function MoreDetailsTxt(id) {
-    //$(".MoreTxt_"+id).toggle();
-    $(".MoreDetailsTxt_"+id).toggleClass('MoreDetailsTxtShow');
-}
+        //$(".MoreTxt_"+id).toggle();
+        $(".MoreDetailsTxt_" + id).toggleClass('MoreDetailsTxtShow');
+    }
 </script>

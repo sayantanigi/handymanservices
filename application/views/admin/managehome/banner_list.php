@@ -52,24 +52,18 @@
                             <div class="form-group">
                                 <label>Page Name</label>
                                 <select class="form-control" name="page_name" id="page_name">
-                                    <option value="">Select Page Name Page</option>
-                                    <option value="Home Top">Home Top Page</option>
-                                    <option value="Home Middle">Home Middle Page</option>
-                                    <option value="Professionals">Professionals Page</option>
-                                    <option value="Cutomers">Cutomers Page</option>
-                                    <option value="Our Jobs">Our Jobs Page</option>
-                                    <option value="Pricing">Pricing Page</option>
+                                    <option value="">Select Page Name</option>
                                     <option value="About Us Top">About Us Top Page</option>
                                     <option value="About Us Middle">About Us Middle Page</option>
                                     <option value="Contact Us">Contact Us Page</option>
+                                    <option value="Find Work">Find Work Page</option>
+                                    <option value="Chat">Message Page</option>
+                                    <option value="Search">Search Page</option>
                                     <option value="Privacy Policy">Privacy Policy Page</option>
-                                    <option value="Term and Conditions">Term and Conditions Page</option>
-                                    <option value="Sign Up">Sign Up Page</option>
-                                    <option value="Login">Login Page</option>
-                                    <option value="Post Jobs">Post Jobs Page</option>
-                                    <option value="Professionals Details">Professionals Details Page</option>
-                                    <option value="Cutomer Details">Cutomer Details Page</option>
-                                    <option value="Post Job Details">Post Job Details Page</option>
+                                    <option value="Terms and Conditions">Terms and Conditions Page</option>
+                                    <option value="Career Tips">Career Tips Page</option>
+                                    <option value="Cookie Policy">Cookie Policy Page</option>
+                                    <option value="Member Agreement">Member Agreement Page</option>
                                 </select>
                             </div>
                             <!-- <div class="form-group">
@@ -108,23 +102,17 @@
                                 <label>Page Name</label>
                                 <select class="form-control" name="edit_page_name" id="edit_page_name">
                                     <option value="">Select Page Name Page</option>
-                                    <option value="Home Top">Home Top Page</option>
-                                    <option value="Home Middle">Home Middle Page</option>
-                                    <option value="Professionals">Professionals Page</option>
-                                    <option value="Cutomers">Cutomers Page</option>
-                                    <option value="Our Jobs">Our Jobs Page</option>
-                                    <option value="Pricing">Pricing Page</option>
                                     <option value="About Us Top">About Us Top Page</option>
                                     <option value="About Us Middle">About Us Middle Page</option>
                                     <option value="Contact Us">Contact Us Page</option>
-                                    <option value="Privacy policy">Privacy policy Page</option>
-                                    <option value="Term and conditions">Term and conditions Page</option>
-                                    <option value="Sign Up">Sign Up Page</option>
-                                    <option value="Login">Login Page</option>
-                                    <option value="Post Jobs">Post Jobs Page</option>
-                                    <option value="Professionals Details">Professionals Details Page</option>
-                                    <option value="Cutomer Details">Cutomer Details Page</option>
-                                    <option value="Post Job Details">Post Job Details Page</option>
+                                    <option value="Find Work">Find Work Page</option>
+                                    <option value="Chat">Message Page</option>
+                                    <option value="Search">Search Page</option>
+                                    <option value="Privacy Policy">Privacy Policy Page</option>
+                                    <option value="Terms and Conditions">Terms and Conditions Page</option>
+                                    <option value="Career Tips">Career Tips Page</option>
+                                    <option value="Cookie Policy">Cookie Policy Page</option>
+                                    <option value="Member Agreement">Member Agreement Page</option>
                                 </select>
                             </div>
                             <!-- <div class="form-group">

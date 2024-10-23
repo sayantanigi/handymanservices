@@ -1,4 +1,17 @@
 <?php
+function displayStars($rating) {
+    // Ensure the rating is between 0 and 5
+    $rating = max(0, min(5, $rating));
+    $fullStars = floor($rating);
+    $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0;
+    $emptyStars = 5 - $fullStars - $halfStar;
+
+    $stars = str_repeat('<i class="fas fa-star"></i>', $fullStars) .
+             str_repeat('<i class="fas fa-star-half-alt"></i>', $halfStar) .
+             str_repeat('<i class="far fa-star"></i>', $emptyStars);
+
+    return $stars;
+}
 if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' . $get_banner->backgroundPic)) {
     $banner_img=base_url("uploads/users/background/".$userdata->backgroundPic);
 } else {
@@ -36,8 +49,15 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                                     echo $name = ucwords($companyname);
                                                 } else {
                                                     echo $name = ucwords($userdata->firstname." ".$userdata->lastname);
-                                                } ?>
+                                                }
+                                                ?>
                                             </h3>
+                                            <p>
+                                                <?php
+                                                $getAverageRatingSql = $this->db->query("SELECT ROUND(AVG(rating),1) as averageRating FROM `employer_rating` where `worker_id` = '" . @$userdata->userId . "'")->row();
+                                                echo displayStars($getAverageRatingSql->averageRating);
+                                                ?>
+                                            </p>
                                             <?php if(@$_SESSION['afrebay']['userId'] != $userdata->userId) { ?>
                                             <!-- <div id="status-options">
                                                 <?php if(!empty(@$_SESSION['afrebay']['userId'])) {
@@ -175,7 +195,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                     $uri = end($uri);
                                     if($_SESSION['afrebay']['userId'] != base64_decode($uri)){?>
                                     <div class="job-overview">
-                                        <h3 class="Primary_Text_Color">Review <?= "@".$_SESSION['afrebay']['username']?></h3>
+                                        <h3 class="Primary_Text_Color">Review <?= "@".$userdata->username?></h3>
                                         <form method="post" action="<?= base_url('user/dashboard/save_employer_rating')?>">
                                             <div class="row">
                                                 <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom: 10px;">
@@ -249,6 +269,43 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                     </div>
                                 </div>
                                 <?php } ?>
+                            </div>
+                        </div>
+                        <div class="job-wide-devider">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 column">
+                                    <div class="job-details">
+                                        <h3 class="Primary_Text_Color">Reviews </h3>
+                                        <div class="Comment_Block replyComment" style="border-top: none;">
+                                            <?php
+                                            $reviewData = $this->db->query("SELECT * FROM employer_rating WHERE worker_id = '".$userdata->userId."'")->result_array();
+                                            if(!empty($reviewData)) {
+                                                foreach ($reviewData as $data) { ?>
+                                            <div class="Comment_Block_Container" style="flex-direction: row; align-items: flex-start; justify-content: flex-start; display: flex; width: 100%; margin-bottom: 10px">
+                                                <div class="Comment_Img" style="min-width: 50px;">
+                                                    <?php
+                                                    $userData = $this->db->query("SELECT * FROM users WHERE userId = '" . $data['employer_id'] . "'")->row();
+                                                    if (!empty($userData->profilePic) && file_exists('uploads/users/' . $userData->profilePic)) { ?>
+                                                        <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/users/<?= $userData->profilePic ?>" alt="User Profile">
+                                                    <?php } else { ?>
+                                                        <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="User Profile">
+                                                    <?php } ?>
+                                                </div>
+                                                <div class="User_Comment_Data" style="width: 92%; display: flex; flex-direction: column;">
+                                                    <div class="replyPost">
+                                                        <p style="margin: 0; font-weight: 600; color: #000 !important;">
+                                                            <?= "@".$userData->username;?>
+                                                        </p>
+                                                        <p style="margin-bottom: 0; ">Subject: <?= $data['subject']; ?></p>
+                                                        <p style="margin-bottom: 0; ">Review: <?= $data['review']; ?></p>
+                                                        <p style="margin-bottom: 0; ">Rating: <?= displayStars($data['rating']); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php } } ?>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

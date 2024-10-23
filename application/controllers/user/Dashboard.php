@@ -491,6 +491,7 @@ class Dashboard extends CI_Controller {
 		$this->load->view('footer');
 	}
 	function chat() {
+        $data['get_banner'] = $this->Crud_model->get_single('banner', "page_name='Chat'");
 		$data['get_user'] = $this->Crud_model->get_single('users', "userId ='".$_SESSION['afrebay']['userId']."'");
 		//$cond = "job_bid.bidding_status IN ('Short Listed','Selected')";
 		//$data['get_jobbid'] = $this->Users_model->get_jobbidding($cond);
@@ -729,7 +730,8 @@ class Dashboard extends CI_Controller {
         if($_POST['userType'] == '1') {
             redirect(base_url('customer_detail/' . base64_encode($_POST['user_id'])));
         } else {
-            redirect(base_url('professionals_detail/' . base64_encode($_POST['user_id'])));
+            //redirect(base_url('professionals_detail/' . base64_encode($_POST['user_id'])));
+            redirect(base_url('customer_detail/' . base64_encode($_POST['user_id'])));
         }
 
 	}

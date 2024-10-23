@@ -42,17 +42,17 @@ class Login extends MY_Controller {
 		$this->form_validation->set_error_delimiters('<span class="text-danger">','</span>');
 	}
 	public function dashboard() {
-		$total_category=$this->Crud_model->GetData('category');
-		$total_user=$this->Crud_model->GetData('users');
-		$total_subscription=$this->Crud_model->GetData('employer_subscription');
-		$total_service=$this->Crud_model->GetData('our_service');
+		$total_user = $this->Crud_model->GetData('users');
+		$total_category = $this->Crud_model->GetData('category');
+		$total_adsense = $this->Crud_model->GetData('adsense');
+		$total_career = $this->Crud_model->GetData('career_tips');
 		$header = array('title' => 'Dashboard');
 		$data = array(
             'heading' => 'Dashboard',
             'total_category' => $total_category,
             'total_user' => $total_user,
-            'total_subscription' => $total_subscription,
-            'total_service' => $total_service,
+            'total_career' => $total_career,
+            'total_adsense' => $total_adsense,
         );
         $this->load->view('admin/header', $header);
         $this->load->view('admin/sidebar');
