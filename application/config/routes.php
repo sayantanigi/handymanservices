@@ -84,6 +84,7 @@ $route['career-tips'] = "home/career_tipsList";
 $route['career-tips/(:any)'] = "home/career_tip/$1";
 $route['logout'] = "user/login/logout";
 $route['business_details'] = "user/dashboard/business_details";
+$route['business_details/(:any)'] = "user/dashboard/business_details/$1";
 $route['profile'] = "user/dashboard/profile";
 $route['profile/(:any)'] = "user/dashboard/profile/$1";
 $route['subscription'] = "user/dashboard/subscription";

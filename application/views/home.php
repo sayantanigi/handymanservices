@@ -88,7 +88,7 @@ function displayStars($rating) {
                                             <input type="hidden" id="search_lat" name="s_lat" value="<?= @$lat ?>">
                                             <input type="hidden" id="search_lon" name="s_lon" value="<?= @$lon ?>">
                                             <input type="hidden" id="cat_value" name="cat_value" value="">
-                                            <select name="category" id="category" class="categories_style" onchange="getcategoryval(this.value);" required style="position: fixed; margin-left: 26rem;">
+                                            <select name="category" id="category" class="categories_style" onchange="getcategoryval(this.value);" required style="position: absolute; margin-left: 26rem;">
                                                 <option value="">Select Category</option>
                                                 <?php
                                                 $getCategory = $this->db->query("SELECT * FROM category WHERE status = 'Active'")->result_array();
@@ -117,15 +117,13 @@ function displayStars($rating) {
                                 </div> -->
                             </div>
                             <div class="PostContainer boxPost">
-                            <!-- Single Post -->
                             <?php
                             if (!empty($get_post)) {
                                 foreach ($get_post as $row) {
-                                $get_user = $this->db->query("SELECT * FROM users WHERE userId = '$row->user_id'")->row(); ?>
+                                $get_user = $this->db->query("SELECT * FROM users WHERE userId = '".$row->user_id."'")->row();
+                                $checknotinterespost = $this->db->query("SELECT * FROM not_interest_post WHERE user_id = '".@$_SESSION['afrebay']['userId']."' AND post_id = '".$row->id."'")->row();
+                                if(empty($checknotinterespost)) { ?>
                                 <div class="DataContainer postblockElement">
-                                    <!-- <div id="loader_<?= $row->id ?>" style="background: #21252954;position: absolute;width: 96%;text-align: center;margin-top: 0px;border-radius: 20px;" class="d-none">
-                                        <img src="<?= base_url('assets/images/loader.gif'); ?>" style="padding: 122px;">
-                                    </div> -->
                                     <div class="boxuppost">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="InfoBlock" style="display: flex; flex-direction: row; height: 70px; align-items: center; justify-content: flex-start;">
@@ -155,30 +153,50 @@ function displayStars($rating) {
                                             </div>
                                             <div>
                                                 <div class="btn-group dropleft dropPost">
-                                                    <a class="dotsdrop" href="#" role="button"
-                                                        data-toggle="dropdown" aria-expanded="false">
+                                                    <a class="dotsdrop" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                                                         <i class="fa-regular fa-ellipsis-vertical"></i>
                                                     </a>
-                                                    <div class="dropdown-menu  dropdown-menu-lg-right">
-                                                        <!-- <a class="dropdown-item" href="<?= base_url() ?>update-postjob/<?= base64_encode($row->id) ?>">Edit Post</a> -->
+                                                    <div class="dropdown-menu dropdown-menu-lg-right">
                                                         <?php if (@$_SESSION['afrebay']['userId'] === @$row->user_id) { ?>
                                                         <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="jobDelete(<?= $row->id ?>)"><img src="<?= base_url('assets/images/PostIcon7.png'); ?>">Delete Post</a>
-                                                        <?php } ?>
-                                                        <?php
+                                                        <?php } else {
                                                         $getsavepostData = $this->db->query("SELECT * FROM users_save_post WHERE post_id = '".$row->id."' AND user_id = '".$_SESSION['afrebay']['userId']."' AND status = '1'")->row();
                                                         if (!empty($getsavepostData)) { ?>
                                                         <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="unsavePost(<?= $row->id ?>)"><img src="<?= base_url('assets/images/bookmark.png'); ?>"> Unsave Post</a>
                                                         <?php } else { ?>
                                                         <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="savePost(<?= $row->id ?>)"><img src="<?= base_url('assets/images/PostIcon8.png'); ?>"> Save Post</a>
                                                         <?php } ?>
-                                                        <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon9.png'); ?>"> Forward Post</a>
-                                                        <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon10.png'); ?>"> Not interested in this post</a>
-                                                        <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon4.png'); ?>"> Follow @Username</a>
-                                                        <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/Postadd2.png'); ?>"> Add/remove @Username from Lists</a>
-                                                        <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon3.png'); ?>"> Mute @Username</a>
-                                                        <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon1.png'); ?>"> Block @Username</a>
-                                                        <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon5.png'); ?>"> Embed Post</a>
-                                                        <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon6.png'); ?>"> Report Post</a>
+                                                        <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="notInterestedPost(<?= $row->id ?>)"><img src="<?= base_url('assets/images/PostIcon10.png'); ?>"> Not interested in this post</a>
+                                                        <?php
+                                                        $getfollowData = $this->db->query("SELECT * FROM users_following WHERE following_id = '".$row->user_id."' AND followedBy_id = '".$_SESSION['afrebay']['userId']."'")->row();
+                                                        if (!empty($getfollowData)) { ?>
+                                                        <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="unfollowUsers(<?= $row->user_id ?>)"><img src="<?= base_url('assets/images/PostIcon1.png'); ?>">
+                                                        Unfollow
+                                                        <?php
+                                                        $getUserInfo = $this->db->query("SELECT * FROM users WHERE userId = '".@$row->user_id."'")->row();
+                                                        echo "@".$getUserInfo->username;
+                                                        ?>
+                                                        </a>
+                                                        <?php } else { ?>
+                                                        <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="followUsers(<?= $row->user_id ?>)"><img src="<?= base_url('assets/images/PostIcon4.png'); ?>">
+                                                        Follow
+                                                        <?php
+                                                        $getUserInfo = $this->db->query("SELECT * FROM users WHERE userId = '".@$row->user_id."'")->row();
+                                                        echo "@".$getUserInfo->username;
+                                                        ?>
+                                                        </a>
+                                                        <?php }
+                                                        $checkMuteUser = $this->db->query("SELECT * FROM mute_user WHERE to_user_id = '" . $row->user_id . "' AND from_user_id = '" . $_SESSION['afrebay']['userId'] . "'")->row();
+                                                        if (@$checkMuteUser->status == "1") { ?>
+                                                        <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="unmuteUser(<?= $row->user_id ?>)"><img src="<?= base_url('assets/images/unmute.png'); ?>"> Unmute <?= "@".$getUserInfo->username?></a>
+                                                        <?php } else { ?>
+                                                        <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="muteUser(<?= $row->user_id ?>)"><img src="<?= base_url('assets/images/PostIcon3.png'); ?>"> Mute <?= "@".$getUserInfo->username?></a>
+                                                        <?php } ?>
+                                                        <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="block(<?= $row->user_id ?>)"><img src="<?= base_url('assets/images/PostIcon1.png'); ?>"> Block <?= "@".$getUserInfo->username?></a>
+                                                        <!-- <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon1.png'); ?>"> Block <?= "@".$getUserInfo->username?></a>
+                                                        <a class="dropdown-item PostItem"><img src="<?= base_url('assets/images/PostIcon5.png'); ?>"> Embed Post</a> -->
+                                                        <a class="dropdown-item PostItem" href="javascript:void(0)" onclick="report(<?= $row->id ?>)"><img src="<?= base_url('assets/images/PostIcon6.png'); ?>"> Report Post</a>
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -204,7 +222,7 @@ function displayStars($rating) {
                                                 <div class="extra-images">+<?php echo $total_image - $max_display ?></div>
                                                 <?php }
                                                 } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
-                                                <video width="100%" controls> <source src="<?= base_url('uploads/postjob/' . $getImage[$i]['job_image']); ?>" type="video/mp4"> Your browser does not support the video tag. </video>
+                                                <video width="100%"> <source src="<?= base_url('uploads/postjob/' . $getImage[$i]['job_image']); ?>" type="video/mp4"> Your browser does not support the video tag. </video>
                                                 <?php } ?>
                                                 </div>
                                             <?php } ?>
@@ -260,166 +278,124 @@ function displayStars($rating) {
                                                 target="_blank"><i class="fa-brands fa-telegram"></i></a>
                                         </div>
                                     </div>
-                                                <!-- Comment Btn -->
-                                                <!-- Comment Data -->
+                                    <?php
+                                    $getpostComment = $this->db->query("SELECT * FROM postjob_comment WHERE postjob_id = '" . @$row->id . "'")->result_array();
+                                    if (!empty($getpostComment)) {
+                                    $i = 1;
+                                    foreach ($getpostComment as $each) {
+                                    $rplycount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment_like  WHERE postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row(); ?>
+                                    <div class="Comment_Block replyComment">
+                                        <div class="Comment_Block_Container" style="flex-direction: row; align-items: flex-start; justify-content: flex-start; display: flex; width: 100%;">
+                                            <div class="Comment_Img" style="min-width: 50px;">
                                                 <?php
-                                                $getpostComment = $this->db->query("SELECT * FROM postjob_comment WHERE postjob_id = '" . @$row->id . "'")->result_array();
-                                                if (!empty($getpostComment)) {
-                                                    $i = 1;
-                                                    foreach ($getpostComment as $each) {
-                                                        $rplycount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment_like  WHERE postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
+                                                $userData = $this->db->query("SELECT * FROM users WHERE userId = '" . $each['user_id'] . "'")->row();
+                                                if (!empty($userData->profilePic) && file_exists('uploads/users/' . $userData->profilePic)) { ?>
+                                                <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
+                                                    <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/users/<?= $userData->profilePic ?>" alt="User Profile">
+                                                </a>
+                                                <?php } else { ?>
+                                                <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
+                                                    <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="User Profile">
+                                                </a>
+                                                <?php } ?>
+                                            </div>
+                                            <div class="User_Comment_Data" style="width: 92%; display: flex; flex-direction: column;">
+                                                <div class="replyPost">
+                                                    <p style="margin: 0; font-weight: 600; color: #000 !important;">
+                                                        <?php
+                                                        if (!empty($userData->username)) {
+                                                            $username = "@".$userData->username;
+                                                        } else {
+                                                            $username = $userData->firstname . " " . $userData->lastname;
+                                                        }
                                                         ?>
-                                                        <div class="Comment_Block replyComment">
-                                                            <div class="Comment_Block_Container"
-                                                                style="flex-direction: row; align-items: flex-start; justify-content: flex-start; display: flex; width: 100%;">
-                                                                <div class="Comment_Img" style="min-width: 50px;">
-                                                                    <?php
-                                                                    $userData = $this->db->query("SELECT * FROM users WHERE userId = '" . $each['user_id'] . "'")->row();
-                                                                    if (!empty($userData->profilePic) && file_exists('uploads/users/' . $userData->profilePic)) { ?>
-                                                                        <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
-                                                                            <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/users/<?= $userData->profilePic ?>" alt="User Profile">
-                                                                        </a>
-                                                                    <?php } else { ?>
-                                                                        <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
-                                                                            <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="User Profile">
-                                                                        </a>
-                                                                    <?php } ?>
-                                                                </div>
-                                                                <div class="User_Comment_Data" style="width: 92%; display: flex; flex-direction: column;">
-                                                                    <div class="replyPost">
-                                                                        <p style="margin: 0; font-weight: 600; color: #000 !important;">
-                                                                            <?php
-                                                                            if (!empty($userData->username)) {
-                                                                                $username = "@".$userData->username;
-                                                                            } else {
-                                                                                $username = $userData->firstname . " " . $userData->lastname;
-                                                                            }
-                                                                            ?> 
-                                                                            <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>"><?= $username; ?> </a> .
-                                                                            <span style=" color: #6a6a6a; font-weight: 400;"><?php echo get_time_ago(strtotime($each['created_at'])) ?></span>
-                                                                        </p>
-                                                                        <p style="margin-bottom: 0; "><?= $each['comment']; ?></p>
-                                                                    </div>
-                                                                    <ul
-                                                                        style="margin: 0; display: flex; align-items: center; justify-content: flex-start; margin-top: 10px;">
-                                                                        <li
-                                                                            style="margin: 0 25px 0 0 !important; font-size: 14px; color: #000 !important; font-weight: 600;">
-                                                                            <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
-                                                                                $checkrplycount = $this->db->query("SELECT * FROM postjob_comment_like WHERE user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
-                                                                                if ($checkrplycount > 0) { ?>
-                                                                                    <a style="color: #000 !important;" href="javascript:void(0)"
-                                                                                        onclick="dislikeuserrply(<?= $row->id ?>, <?= $each['id'] ?>)"><i
-                                                                                            class="fa fa-heart" aria-hidden="true"></i></a>
-                                                                                <?php } else { ?>
-                                                                                    <a style="color: #000 !important;" href="javascript:void(0)"
-                                                                                        onclick="likeuserrply(<?= $row->id ?>, <?= $each['id'] ?>)"><i
-                                                                                            class="fa-regular fa-heart"></i></a>
-                                                                                <?php }
-                                                                            } else { ?>
-                                                                                <a style="color: #000 !important;"
-                                                                                    href="<?= base_url() ?>login"><i
-                                                                                        class="fa-regular fa-heart"></i></a>
-                                                                            <?php } ?>
-                                                                        </li>
-                                                                        <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
-                                                                            <li
-                                                                                style="margin: 0 !important; font-size: 13px; color: #000 !important; font-weight: 600;">
-                                                                                <a style="color: #000 !important;" href="javascript:void(0)"
-                                                                                    onclick="replylink(<?= $row->id; ?>, <?= $each['id']; ?>)"><i
-                                                                                        class="fa-sharp fa-regular fa-reply-all"></i></a>
-                                                                            </li>
-                                                                        <?php } else { ?>
-                                                                            <li
-                                                                                style="margin: 0 !important; font-size: 13px; color: #000 !important; font-weight: 600;">
-                                                                                <a style="color: #000 !important;"
-                                                                                    href="<?= base_url() ?>login"><i
-                                                                                        class="fa-sharp fa-regular fa-reply-all"></i></a>
-                                                                            </li>
-                                                                        <?php } ?>
-                                                                    </ul>
-                                                                    <!-- <div style="height: 148px; overflow-y: scroll;"> -->
-                                                                    <?php
-                                                                    $commentRply = $this->db->query("SELECT * FROM postjob_comment_rply WHERE comment_id = '" . $each['id'] . "'")->result_array();
-                                                                    if (!empty($commentRply)) {
-                                                                        foreach ($commentRply as $rply) {
-                                                                            $userDataRply = $this->db->query("SELECT * FROM users WHERE userId = '" . $rply['user_id'] . "'")->row(); ?>
-                                                                            <div class="replyPost mt-2" style="margin-left: 30px;">
-                                                                                <p style="font-weight: 600;color: #000 !important;">
-                                                                                    <?php
-                                                                                    if (!empty($userDataRply->companyname)) {
-                                                                                        echo $userDataRply->companyname;
-                                                                                    } else {
-                                                                                        echo $userDataRply->firstname . " " . $userDataRply->lastname;
-                                                                                    }
-                                                                                    ?> .
-                                                                                    <span
-                                                                                        style="font-size: 13px; color: #6a6a6a; font-weight: 400;"><?php echo get_time_ago(strtotime($rply['created_at'])) ?></span>
-                                                                                </p>
-                                                                                <p><?= $rply['comment']; ?></p>
-                                                                            </div>
-                                                                        <?php }
-                                                                    } ?>
-                                                                    <!-- </div> -->
-                                                                    <div class="replyBox mt-3" id="replyBox_<?= $each['id']; ?>">
-                                                                        <textarea required="" name="users_rply_<?= $each['id']; ?>" id="users_rply_<?= $each['id']; ?>" placeholder="Reply"></textarea>
-                                                                        <a href="javascript:void(0)" class="replySubmit Gradient_Back_Color" onclick="postUserComment(<?= $row->id; ?>, <?= $each['id']; ?>)"> Reply </a>
-                                                                        <!-- <div class="uploadOptionPost">
-                                                                            <div data-toggle="modal" style="margin-top: 20px;">
-                                                                                <label id="postBoximgup"><img src="assets/images/photo-icon.png"> Image</label>
-                                                                                <label id="postBoxvidup"><img src="assets/images/video-icon.png"> Video</label>
-                                                                                <input type="file" id="file-upload" name="postjobPic[]" multiple class="text-center center-block file-upload" />
-                                                                            </div>
-                                                                        </div> -->
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <?php $i++;
-                                                    }
-                                                } ?>
-                                                <div class="boxdownpost">
-                                                    <div class="d-flex">
-                                                        <div class="commnetUser">
-                                                            <img
-                                                                src="<?= base_url()?>uploads/no_pimage.png">
-                                                        </div>
-                                                        <div class="Comment_Mobile position-relative flex-fill w-100">
-                                                            <textarea class="postComment mt-0 form-control f1 emoji_act"
-                                                                type="text" placeholder="Enter your comments"
-                                                                name="comment_<?= $row->id ?>"
-                                                                id="comment_<?= $row->id ?>"></textarea>
-                                                            <div>
-                                                                <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
-                                                                    <a href="javascript:void(0)" class="postCommentbtn Gradient_Back_Color"
-                                                                        onclick="postComment(<?= $row->id ?>)">
-                                                                        <span style="color: #fff;">Comment</span>
-                                                                    </a>
-                                                                <?php } else { ?>
-                                                                    <a href="<?= base_url() ?>login" class="postCommentbtn Gradient_Back_Color">
-                                                                        <span style="color: #fff;">Comment</span>
-                                                                    </a>
-                                                                <?php } ?>
-                                                            </div>
-                                                            <!-- <div class="uploadOptionPost" style="margin-top: 20px;">
-                                                                <div data-toggle="modal">
-                                                                    <label id="postBoximgup"><img src="assets/images/photo-icon.png"> Image</label>
-                                                                    <label id="postBoxvidup"><img src="assets/images/video-icon.png"> Video</label>
-                                                                    <input type="file" id="file-upload" name="postjobPic[]" multiple class="text-center center-block file-upload" />
-                                                                </div>
-                                                            </div> -->
-                                                        </div>
-                                                    </div>
+                                                        <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>"><?= $username; ?> </a> .
+                                                        <span style=" color: #6a6a6a; font-weight: 400;"><?php echo get_time_ago(strtotime($each['created_at'])) ?></span>
+                                                    </p>
+                                                    <p style="margin-bottom: 0; "><?= $each['comment']; ?></p>
+                                                </div>
+                                                <ul style="margin: 0; display: flex; align-items: center; justify-content: flex-start; margin-top: 10px;">
+                                                    <li style="margin: 0 25px 0 0 !important; font-size: 14px; color: #000 !important; font-weight: 600;">
+                                                        <?php if (!empty(@$_SESSION['afrebay']['userType'])) {
+                                                        $checkrplycount = $this->db->query("SELECT * FROM postjob_comment_like WHERE user_id = '" . @$_SESSION['afrebay']['userId'] . "' AND postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
+                                                        if ($checkrplycount > 0) { ?>
+                                                        <a style="color: #000 !important;" href="javascript:void(0)" onclick="dislikeuserrply(<?= $row->id ?>, <?= $each['id'] ?>)"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                                        <?php } else { ?>
+                                                        <a style="color: #000 !important;" href="javascript:void(0)" onclick="likeuserrply(<?= $row->id ?>, <?= $each['id'] ?>)"><i class="fa-regular fa-heart"></i></a>
+                                                        <?php } } else { ?>
+                                                        <a style="color: #000 !important;" href="<?= base_url() ?>login"><i class="fa-regular fa-heart"></i></a>
+                                                        <?php } ?>
+                                                    </li>
+                                                    <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
+                                                    <li style="margin: 0 !important; font-size: 13px; color: #000 !important; font-weight: 600;">
+                                                        <a style="color: #000 !important;" href="javascript:void(0)" onclick="replylink(<?= $row->id; ?>, <?= $each['id']; ?>)"><i class="fa-sharp fa-regular fa-reply-all"></i></a>
+                                                    </li>
+                                                    <?php } else { ?>
+                                                    <li style="margin: 0 !important; font-size: 13px; color: #000 !important; font-weight: 600;">
+                                                        <a style="color: #000 !important;" href="<?= base_url() ?>login"><i class="fa-sharp fa-regular fa-reply-all"></i></a>
+                                                    </li>
+                                                    <?php } ?>
+                                                </ul>
+                                                <?php
+                                                $commentRply = $this->db->query("SELECT * FROM postjob_comment_rply WHERE comment_id = '" . $each['id'] . "'")->result_array();
+                                                if (!empty($commentRply)) {
+                                                foreach ($commentRply as $rply) {
+                                                $userDataRply = $this->db->query("SELECT * FROM users WHERE userId = '" . $rply['user_id'] . "'")->row(); ?>
+                                                <div class="replyPost mt-2" style="margin-left: 30px;">
+                                                    <p style="font-weight: 600;color: #000 !important;">
+                                                        <?php
+                                                        if (!empty($userDataRply->companyname)) {
+                                                            echo $userDataRply->companyname;
+                                                        } else {
+                                                            echo $userDataRply->firstname . " " . $userDataRply->lastname;
+                                                        }
+                                                        ?> .
+                                                        <span style="font-size: 13px; color: #6a6a6a; font-weight: 400;"><?php echo get_time_ago(strtotime($rply['created_at'])) ?></span>
+                                                    </p>
+                                                    <p><?= $rply['comment']; ?></p>
+                                                </div>
+                                                <?php } } ?>
+                                                <div class="replyBox mt-3" id="replyBox_<?= $each['id']; ?>">
+                                                    <textarea required="" name="users_rply_<?= $each['id']; ?>" id="users_rply_<?= $each['id']; ?>" placeholder="Reply"></textarea>
+                                                    <a href="javascript:void(0)" class="replySubmit Gradient_Back_Color" onclick="postUserComment(<?= $row->id; ?>, <?= $each['id']; ?>)"> Reply </a>
                                                 </div>
                                             </div>
-                                        <?php }
-                                    } else { ?>
-                                        <div class="col-12" style=" background: #fff; border-radius: 20px; ">
-                                            <div class="boxuppost">No post available</div>
                                         </div>
-                                    <?php } ?>
+                                    </div>
+                                    <?php $i++; } } ?>
+                                    <div class="boxdownpost">
+                                        <div class="d-flex">
+                                            <div class="commnetUser">
+                                                <img src="<?= base_url()?>uploads/no_pimage.png">
+                                            </div>
+                                            <div class="Comment_Mobile position-relative flex-fill w-100">
+                                                <textarea class="postComment mt-0 form-control f1 emoji_act"
+                                                    type="text" placeholder="Enter your comments"
+                                                    name="comment_<?= $row->id ?>"
+                                                    id="comment_<?= $row->id ?>"></textarea>
+                                                <div>
+                                                    <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
+                                                        <a href="javascript:void(0)" class="postCommentbtn Gradient_Back_Color"
+                                                            onclick="postComment(<?= $row->id ?>)">
+                                                            <span style="color: #fff;">Comment</span>
+                                                        </a>
+                                                    <?php } else { ?>
+                                                        <a href="<?= base_url() ?>login" class="postCommentbtn Gradient_Back_Color">
+                                                            <span style="color: #fff;">Comment</span>
+                                                        </a>
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php } } } else { ?>
+                                <div class="col-12" style=" background: #fff; border-radius: 20px; ">
+                                    <div class="boxuppost">No post available</div>
+                                </div>
+                                <?php } ?>
                                 </div>
                             </div>
-                            <!-- <div class="tab-pane fade" id="pills-global" role="tabpanel" aria-labelledby="pills-global-tab">...</div> -->
                         </div>
                     </div>
                     <div class="col-lg-3 mb-3 order-lg-1">
@@ -432,7 +408,6 @@ function displayStars($rating) {
                                 } else {
                                     $userProfileImage = base_url('uploads/no_pimage.png');
                                 }
-
                                 /*if (!empty($userData->backgroundPic) && file_exists('uploads/users/background/' . $userData->backgroundPic)) {
                                     $userBackgroundImage = base_url('uploads/users/background/' . $userData->backgroundPic);
                                 } else {
@@ -442,18 +417,18 @@ function displayStars($rating) {
                                 <div class="ProfileBlock mb-3">
                                     <div class="profilecover">
                                         <!-- <img src="<?= $userBackgroundImage ?>"> -->
-                                        <div id="slider">  
-                                            <?php 
+                                        <div id="slider">
+                                            <?php
                                             $getbackgroundimg = $this->db->query("SELECT * FROM user_background WHERE user_id = '".@$_SESSION['afrebay']['userId']."'")->result_array();
                                             if(!empty($getbackgroundimg)) {
                                                 foreach ($getbackgroundimg as $key => $sample) { ?>
                                                 <div class="slide">
-                                                    <?php 
+                                                    <?php
                                                     $extension = strtolower(pathinfo($sample['filecontent'], PATHINFO_EXTENSION));
                                                     if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'avif', 'webp'])) { ?>
                                                     <img src="<?= base_url('uploads/users/background/'.$sample['filecontent']); ?>" alt="Image">
                                                     <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
-                                                    <video style="width: 100%;height: 100%;object-fit: cover;" controls>
+                                                    <video style="width: 288px; height: 130px; object-fit: cover;">
                                                     <source src="<?= base_url('uploads/users/background/'.$sample['filecontent']); ?>" type="video/mp4">
                                                     Your browser does not support the video tag.
                                                     </video>
@@ -865,6 +840,50 @@ function displayStars($rating) {
     </div>
 </div>
 
+<div class="modal fade" id="exampleModalblockuser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 550px !important; position: relative; top: 80px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Block Reason</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea id="reason" name="reason"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="blockUser()">Save changes</button>
+                <input type="hidden" id="toUser" name="toUser" value="">
+                <input type="hidden" id="fromUser" name="fromUser" value="<?= $_SESSION['afrebay']['userId'] ?>">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalreportpost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 550px !important; position: relative; top: 80px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Report Reason</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea id="report_reason" name="report_reason"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="reportPost()">Save changes</button>
+                <input type="hidden" id="post_id" name="post_id" value="">
+                <input type="hidden" id="fromUser" name="fromUser" value="<?= $_SESSION['afrebay']['userId'] ?>">
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     #city,#state,.chosen_country{color:#888;height:60px;border-radius:50px;padding:17px!important}
     #city,#state{display:block}
@@ -937,7 +956,7 @@ function displayStars($rating) {
   font-size:1.5em;
   padding:15px 10px;
   border-radius:5px;
-  
+
 }
 
 .controls:hover{
@@ -970,15 +989,16 @@ function displayStars($rating) {
 }
 @media (max-width:576px){
   #slider{width:100%;}
-  
+
   .controls{
     font-size:1em;
   }
-  
+
   #dots-con{
     display:none;
   }
 }
+.profileImg img {position: sticky;}
 </style>
 <script>
 $(document).ready(function () {
@@ -1406,6 +1426,128 @@ function savePost(p_id, status) {
     })
 }
 
+function unsavePost(p_id, status) {
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/unsavePost",
+        method: "POST",
+        data: {p_id: p_id},
+        beforeSend: function () {
+            ///$("#loader_" + id).removeClass('d-none');
+        },
+        success: function (data) {
+            //console.log(data);
+            if (data == '1') {
+                location.reload(true);
+            } else {
+                location.reload(true);
+            }
+        }
+    })
+}
+
+function notInterestedPost(p_id, status) {
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/notInterestedPost",
+        method: "POST",
+        data: {p_id: p_id},
+        beforeSend: function () {
+            ///$("#loader_" + id).removeClass('d-none');
+        },
+        success: function (data) {
+            //console.log(data);
+            if (data == '1') {
+                location.reload(true);
+            } else {
+                location.reload(true);
+            }
+        }
+    })
+}
+
+function followUsers(f_id, status) {
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/followUsers",
+        method: "POST",
+        data: {f_id: f_id},
+        beforeSend: function () {
+            ///$("#loader_" + id).removeClass('d-none');
+        },
+        success: function (data) {
+            //console.log(data);
+            if (data == '1') {
+                location.reload(true);
+            } else {
+                location.reload(true);
+            }
+        }
+    })
+}
+
+function unfollowUsers(f_id, status) {
+    $.ajax({
+        url: "<?= base_url() ?>user/dashboard/unfollowUsers",
+        method: "POST",
+        data: {f_id: f_id},
+        beforeSend: function () {
+            ///$("#loader_" + id).removeClass('d-none');
+        },
+        success: function (data) {
+            //console.log(data);
+            if (data == '1') {
+                location.reload(true);
+            } else {
+                location.reload(true);
+            }
+        }
+    })
+}
+
+function muteUser(userid) {
+    var toUser = userid;
+    var fromUser = <?php if (!empty(@$_SESSION['afrebay']['userId'])) {
+        echo $_SESSION['afrebay']['userId'];
+    } else {
+        echo "NULL";
+    } ?>;
+    if (fromUser != "NULL") {
+        $.ajax({
+            url: "<?= base_url('user/dashboard/muteUser') ?>",
+            type: "POST",
+            data: { toUser: toUser, fromUser: fromUser },
+            success: function (response) {
+                if (response == "1") {
+                    location.reload();
+                } else {
+                    $('#error').text(response);
+                }
+            }
+        })
+    }
+}
+
+function unmuteUser(userid) {
+    var toUser = userid;
+    var fromUser = <?php if (!empty(@$_SESSION['afrebay']['userId'])) {
+        echo $_SESSION['afrebay']['userId'];
+    } else {
+        echo "NULL";
+    } ?>;
+    if (fromUser != "NULL") {
+        $.ajax({
+            url: "<?= base_url('user/dashboard/unmuteUser') ?>",
+            type: "POST",
+            data: { toUser: toUser, fromUser: fromUser },
+            success: function (response) {
+                if (response == "1") {
+                    location.reload();
+                } else {
+                    $('#error').text(response);
+                }
+            }
+        })
+    }
+}
+
 function postData() {
     //console.log($('.emojionearea-editor'));
     if ($('.emojionearea-editor').text() != '') {
@@ -1469,6 +1611,68 @@ function searchPost() {
     })
 }
 
+function block(userid) {
+    var toUser = userid;
+    var fromUser = <?php if (!empty(@$_SESSION['afrebay']['userId'])) {
+        echo $_SESSION['afrebay']['userId'];
+    } else {
+        echo "NULL";
+    } ?>;
+    if (fromUser != "NULL") {
+        $('#exampleModalblockuser').addClass('show');
+        $('#exampleModalblockuser').modal('show');
+        $('#toUser').val(toUser);
+    }
+}
+
+function blockUser() {
+    var toUser = $('#toUser').val();
+    var fromUser = $('#fromUser').val();
+    var reason = $('#reason').val();
+    $.ajax({
+        url: "<?= base_url('user/dashboard/blockUser') ?>",
+        type: "POST",
+        data: { toUser: toUser, fromUser: fromUser, reason: reason },
+        success: function (response) {
+            if (response == "1") {
+                location.reload();
+            } else {
+                $('#error').text(response);
+            }
+        }
+    })
+}
+
+function report(postid) {
+    var id = postid;
+    var fromUser = <?php if (!empty(@$_SESSION['afrebay']['userId'])) {
+        echo $_SESSION['afrebay']['userId'];
+    } else {
+        echo "NULL";
+    } ?>;
+    if (fromUser != "NULL") {
+        $('#exampleModalreportpost').addClass('show');
+        $('#exampleModalreportpost').modal('show');
+        $('#post_id').val(id);
+    }
+}
+function reportPost() {
+    var post_id = $('#post_id').val();
+    var fromUser = $('#fromUser').val();
+    var report_reason = $('#report_reason').val();
+    $.ajax({
+        url: "<?= base_url('user/dashboard/reportPost') ?>",
+        type: "POST",
+        data: { post_id: post_id, fromUser: fromUser, report_reason: report_reason },
+        success: function (response) {
+            if (response == "1") {
+                location.reload();
+            } else {
+                $('#error').text(response);
+            }
+        }
+    })
+}
 function onclickShare(id) {
     $('#shareMenu_' + id).toggle();
 }
@@ -1504,7 +1708,7 @@ var slides = document.querySelectorAll(".slide");
 var dots = document.querySelectorAll(".dot");
 var index = 0;
 function prevSlide(n){
-    index+=n;ac
+    index+=n;
     console.log("prevSlide is called");
     changeSlide();
 }
@@ -1521,9 +1725,28 @@ function changeSlide(){
     index=slides.length-1;
     for(let i=0;i<slides.length;i++){
         slides[i].style.display = "none";
-        dots[i].classList.remove("active"); 
+        dots[i].classList.remove("active");
     }
     slides[index].style.display = "block";
     dots[index].classList.add("active");
 }
+function startAutoSlide() {
+        slideInterval = setInterval(() => {
+            nextSlide(1);
+        }, 3000);
+    }
+
+    function stopAutoSlide() {
+        clearInterval(slideInterval);
+    }
+    startAutoSlide();
+    dots.forEach((dot, i) => {
+        dot.addEventListener("click", () => {
+            stopAutoSlide();
+            index = i;
+            changeSlide();
+            startAutoSlide();
+        });
+    });
+    changeSlide();
 </script>

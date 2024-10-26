@@ -11,11 +11,11 @@ if($data_request=='user') {
     $container='';
 } else {
     $container='container';
+    $style = 'style="margin-left: 170px;"';
 }
 ?>
-<div class="col-lg-9 display-table-cell v-align profileTabcontent my-4">
-     <div class="user-dashboard Admin_Profile form-design <?php echo $container;  ?> ">
-
+<div class="col-lg-9 display-table-cell v-align profileTabcontent my-4" <?php echo $style;  ?>>
+     <div class="user-dashboard Admin_Profile form-design <?php echo $container; ?> ">
         <h3 class="text-center h3 font-weight-bold Primary_Text_Color my-3">Update your profile</h3>
         <p class="text-center text-dark">You may modify your profile information at any moment in your profile section</p>
         <form class="form" action="<?php echo base_url('user/Dashboard/update_profile')?>" method="post" id="registrationForm" enctype="multipart/form-data">
@@ -25,10 +25,13 @@ if($data_request=='user') {
                     <div class="px-4 py-3">
                         <div class="profiletab position-relative d-flex">
                             <div class="tabBox d-flex w-auto">
+                                <?php if(!empty(@$_SESSION['afrebay']['user_id'])) { ?>
                                 <a href="<?= base_url()?>profile" class="tabnav active">My Profile</a>
-                                <?php //if($_SESSION['afrebay']['userType'] == '1') { ?>
                                 <a href="<?= base_url()?>business_details" class="tabnav">Business Details</a>
-                                <?php //} ?>
+                                <?php } else { ?>
+                                <a href="<?= base_url()?>profile/<?= $this->uri->segment(2);?>" class="tabnav active">My Profile</a>
+                                <a href="<?= base_url()?>business_details/<?= $this->uri->segment(2);?>" class="tabnav">Business Details</a>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
@@ -101,7 +104,7 @@ if($data_request=='user') {
                                     <div id="vld_zip" style="color:red; margin-top: 10px;">Please enter Zip Code.</div>
                                 </div>
                             </div>
-                            <?php if($_SESSION['afrebay']['userType'] == '2') { ?>
+                            <?php //if($_SESSION['afrebay']['userType'] == '2') { ?>
                             <div class="col-lg-4 profile-dsd">
                                 <div class="mb-4 float-left w-100">
                                     <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" value="<?php echo $userinfo->email;?>"/>
@@ -112,9 +115,9 @@ if($data_request=='user') {
                                     <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Contact Number" value="<?php echo $userinfo->mobile;?>"/>
                                 </div>
                             </div>
-                            <?php } ?>
+                            <?php //} ?>
                             <div class="col-lg-4 profile-dsd">
-                                <div class="mb-4 float-left w-100"> 
+                                <div class="mb-4 float-left w-100">
                                     <select class="form-control" name="rate_enabled" id="rate_enabled">
                                         <option value="">Choose an option</option>
                                         <option value="1" <?php if($userinfo->rate_enabled == '1') {echo "selected";} else {echo ""; }?>>Show rating on profile</option>
@@ -211,6 +214,11 @@ if($data_request=='user') {
                                         <button class="post-job-btn float-right mw-150 Gradient_Back_Color" style="border: none !important;" type="submit" id="save_profile_data">Save</button>
                                         <?php } ?>
                                         <input type="hidden" name="utype" id="utype" value="<?= @$userinfo->userType?>">
+                                        <?php if(!empty(@$_SESSION['afrebay']['user_id'])) { ?>
+                                        <input type="hidden" name="uid" id="uid" value="<?= @$_SESSION['afrebay']['user_id']?>">
+                                        <?php } else { ?>
+                                        <input type="hidden" name="uid" id="uid" value="<?= base64_decode($this->uri->segment(2));?>">
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>

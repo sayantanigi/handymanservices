@@ -6,17 +6,21 @@
 			        <h3 class="text-center h3 font-weight-bold Primary_Text_Color my-3">Update your business details</h3>
 			        <p class="text-center text-dark">You may modify your business information at any moment in your profile section</p>
 			        <form class="form" action="<?php echo base_url('user/Dashboard/update_businessDetails')?>" method="post" id="registrationForm" enctype="multipart/form-data">
-			        <input type="hidden" name="from_data_request" value="<?=$data_request;?>">
+                    <?php if(empty(@$_SESSION['afrebay']['user_id'])) { ?>
+			        <input type="hidden" name="from_data_request" value="admin">
+                    <?php } ?>
 			            <div class="row row-sm">
 			                <div class="col-xl-12 col-lg-12 col-md-12">
 			                    <div class="px-4 py-3">
 			                        <div class="profiletab position-relative d-flex">
 			                            <div class="tabBox d-flex w-auto">
-                                            <a href="<?= base_url()?>profile" class="tabnav">My Profile</a>
-                                            <!-- <?php if($_SESSION['afrebay']['userType'] == '1') { ?>
-                                            <a href="<?= base_url()?>business_details" class="tabnav active">Business Details</a>
-                                            <?php } ?> -->
-                                            <a href="<?= base_url()?>business_details" class="tabnav active">Business Details</a>
+                                            <?php if(!empty(@$_SESSION['afrebay']['user_id'])) { ?>
+                                            <a href="<?= base_url()?>profile" class="tabnav active">My Profile</a>
+                                            <a href="<?= base_url()?>business_details" class="tabnav">Business Details</a>
+                                            <?php } else { ?>
+                                            <a href="<?= base_url()?>profile/<?= $this->uri->segment(2);?>" class="tabnav">My Profile</a>
+                                            <a href="<?= base_url()?>business_details/<?= $this->uri->segment(2);?>" class="tabnav active">Business Details</a>
+                                            <?php } ?>
 			                            </div>
 			                        </div>
 			                    </div>
@@ -111,8 +115,13 @@
 			                        </div>
 			                        <div class="text-center px-3">
 			                        	<button class="post-job-btn float-right mw-150 Gradient_Back_Color" style="border: none !important;" type="submit">Finish</button>
-                                        <input type="hidden" name="id" value="<?=$userinfo->userId  ?>">
-			                        	<a href="<?= base_url()?>homepage" class="post-job-btn float-right mr-3 mw-150 btn-secondary Gradient_Back_Color" style="border: none !important; color: #fff !important;">Leave and complete later</a>
+                                        <!-- <input type="hidden" name="id" value="<?=$userinfo->userId  ?>"> -->
+                                        <?php if(!empty(@$_SESSION['afrebay']['user_id'])) { ?>
+                                        <input type="hidden" name="id" id="id" value="<?=$userinfo->userId  ?>">
+                                        <a href="<?= base_url()?>homepage" class="post-job-btn float-right mr-3 mw-150 btn-secondary Gradient_Back_Color" style="border: none !important; color: #fff !important;">Leave and complete later</a>
+                                        <?php } else { ?>
+                                        <input type="hidden" name="id" value="<?= base64_decode($this->uri->segment(2));?>">
+                                        <?php } ?>
 			                        </div>
 			                    </div>
 			                </div>

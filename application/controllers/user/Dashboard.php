@@ -71,109 +71,120 @@ class Dashboard extends CI_Controller {
 			}
 		}
 
-		/*if ($_FILES['backgroundPic']['name'] != '') {
-			$src = $_FILES['backgroundPic']['tmp_name'];
-			$filEnc = time();
-			$avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'];
-			$avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
-			$dest = getcwd() . '/uploads/users/background/' . $avatar1;
-			if (move_uploaded_file($src, $dest)) {
-				$bimage  = $avatar1;
-				@unlink('uploads/users/background/' . $_POST['old_bimage']);
-			}
-		} else {
-			if(!empty($_POST['old_bimage'])) {
-				$bimage  = $_POST['old_bimage'];
-			} else {
-				$bimage  = '';
-			}
-		}*/
-		if (!empty($_FILES['backgroundPic']['size'])) {
-        	$count = count($_FILES['backgroundPic']['name']);
-        	for ($i=0; $i < $count; $i++) {
-	            $src = $_FILES['backgroundPic']['tmp_name'][$i];
-	            $filEnc = time();
-	            $avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'][$i];
-	            $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
-	            $dest = getcwd() . '/uploads/users/background/' . $avatar1;
-	            if (move_uploaded_file($src, $dest)) {
-	                $bimage  = $avatar1;
-	            }
-				if(!empty($bimage)) {
-					$file  = $bimage;
-				} else if(!empty($_POST['old_bimage'])) {
-					$file  = $_POST['old_bimage'];
-				} else {
-					$file  = "";
-				}
-	            $details_data = array(
-                    'user_id'=> $_SESSION['afrebay']['userId'],
-                    'filecontent'=> $file,
-                    'created_at'=> date('Y-m-d H:m:s')
-                );
-                $this->Crud_model->SaveData('user_background',$details_data);
-	        }
+        if(!empty($_POST['uid'])){
+            if (!empty($_FILES['backgroundPic']['size'])) {
+                $count = count($_FILES['backgroundPic']['name']);
+                for ($i=0; $i < $count; $i++) {
+                    $src = $_FILES['backgroundPic']['tmp_name'][$i];
+                    $filEnc = time();
+                    $avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'][$i];
+                    $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+                    $dest = getcwd() . '/uploads/users/background/' . $avatar1;
+                    if (move_uploaded_file($src, $dest)) {
+                        $bimage  = $avatar1;
+                    }
+                    if(!empty($bimage)) {
+                        $file  = $bimage;
+                    } else if(!empty($_POST['old_bimage'])) {
+                        $file  = $_POST['old_bimage'];
+                    } else {
+                        $file  = "";
+                    }
+                    if(!empty($file)){
+                        $details_data = array(
+                            'user_id'=> $_POST['uid'],
+                            'filecontent'=> $file,
+                            'created_at'=> date('Y-m-d H:m:s')
+                        );
+                        $this->Crud_model->SaveData('user_background',$details_data);
+                    }
+                }
+            }
+        } else {
+            if (!empty($_FILES['backgroundPic']['size'])) {
+                $count = count($_FILES['backgroundPic']['name']);
+                for ($i=0; $i < $count; $i++) {
+                    $src = $_FILES['backgroundPic']['tmp_name'][$i];
+                    $filEnc = time();
+                    $avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'][$i];
+                    $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+                    $dest = getcwd() . '/uploads/users/background/' . $avatar1;
+                    if (move_uploaded_file($src, $dest)) {
+                        $bimage  = $avatar1;
+                    }
+                    if(!empty($bimage)) {
+                        $file  = $bimage;
+                    } else if(!empty($_POST['old_bimage'])) {
+                        $file  = $_POST['old_bimage'];
+                    } else {
+                        $file  = "";
+                    }
+                    if(!empty($file)){
+                        $details_data = array(
+                            'user_id'=> $_SESSION['afrebay']['userId'],
+                            'filecontent'=> $file,
+                            'created_at'=> date('Y-m-d H:m:s')
+                        );
+                        $this->Crud_model->SaveData('user_background',$details_data);
+                    }
+                }
+            }
         }
-		/*if ($_FILES['resume']['name'] != '') {
-			$src = $_FILES['resume']['tmp_name'];
-			$filEnc = time();
-			$avatar = rand(0000, 9999) . "_" . $_FILES['resume']['name'];
-			$avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
-			$dest = getcwd() . '/uploads/users/resume/' . $avatar1;
-			if (move_uploaded_file($src, $dest)) {
-				$resume  = $avatar1;
-				@unlink('uploads/users/resume/' . $_POST['old_resume']);
-			}
-		} else {
-			if(!empty($_POST['old_resume'])) {
-				$resume  = $_POST['old_resume'];
-			} else {
-				$resume  = '';
-			}
-		}
-        if ($_FILES['work_sample']['name'] != '') {
-			$src = $_FILES['work_sample']['tmp_name'];
-			$filEnc = time();
-			$avatar = rand(0000, 9999) . "_" . $_FILES['work_sample']['name'];
-			$avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
-			$dest = getcwd() . '/uploads/users/work_sample/' . $avatar1;
-			if (move_uploaded_file($src, $dest)) {
-				$work_sample  = $avatar1;
-				@unlink('uploads/users/work_sample/' . $_POST['old_work_sample']);
-			}
-		} else {
-			if(!empty($_POST['old_work_sample'])) {
-				$work_sample  = $_POST['old_work_sample'];
-			} else {
-				$work_sample  = '';
-			}
-		}*/
 
-        if (!empty($_FILES['work_sample']['size'])) {
-        	$count = count($_FILES['work_sample']['name']);
-        	for ($i=0; $i < $count; $i++) {
-	            $src = $_FILES['work_sample']['tmp_name'][$i];
-	            $filEnc = time();
-	            $avatar = rand(0000, 9999) . "_" . $_FILES['work_sample']['name'][$i];
-	            $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
-	            $dest = getcwd() . '/uploads/users/work_sample/' . $avatar1;
-	            if (move_uploaded_file($src, $dest)) {
-	                $file1  = $avatar1;
-	            }
-				if(!empty($file1)) {
-					$file  = $file1;
-				} else if(!empty($_POST['old_work_sample'])) {
-					$file  = $_POST['old_work_sample'];
-				} else {
-					$file  = "";
-				}
-	            $details_data = array(
-                    'user_id'=> $_SESSION['afrebay']['userId'],
-                    'work_sample'=> $file,
-                    'created_at'=> date('Y-m-d H:m:s')
-                );
-                $this->Crud_model->SaveData('users_work_sample',$details_data);
-	        }
+        if(!empty($_POST['uid'])){
+            if (!empty($_FILES['work_sample']['size'])) {
+                $count = count($_FILES['work_sample']['name']);
+                for ($i=0; $i < $count; $i++) {
+                    $src = $_FILES['work_sample']['tmp_name'][$i];
+                    $filEnc = time();
+                    $avatar = rand(0000, 9999) . "_" . $_FILES['work_sample']['name'][$i];
+                    $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+                    $dest = getcwd() . '/uploads/users/work_sample/' . $avatar1;
+                    if (move_uploaded_file($src, $dest)) {
+                        $file1  = $avatar1;
+                    }
+                    if(!empty($file1)) {
+                        $file  = $file1;
+                    } else if(!empty($_POST['old_work_sample'])) {
+                        $file  = $_POST['old_work_sample'];
+                    } else {
+                        $file  = "";
+                    }
+                    $details_data = array(
+                        'user_id'=> $_POST['uid'],
+                        'work_sample'=> $file,
+                        'created_at'=> date('Y-m-d H:m:s')
+                    );
+                    $this->Crud_model->SaveData('users_work_sample',$details_data);
+                }
+            }
+        } else {
+            if (!empty($_FILES['work_sample']['size'])) {
+                $count = count($_FILES['work_sample']['name']);
+                for ($i=0; $i < $count; $i++) {
+                    $src = $_FILES['work_sample']['tmp_name'][$i];
+                    $filEnc = time();
+                    $avatar = rand(0000, 9999) . "_" . $_FILES['work_sample']['name'][$i];
+                    $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+                    $dest = getcwd() . '/uploads/users/work_sample/' . $avatar1;
+                    if (move_uploaded_file($src, $dest)) {
+                        $file1  = $avatar1;
+                    }
+                    if(!empty($file1)) {
+                        $file  = $file1;
+                    } else if(!empty($_POST['old_work_sample'])) {
+                        $file  = $_POST['old_work_sample'];
+                    } else {
+                        $file  = "";
+                    }
+                    $details_data = array(
+                        'user_id'=> $_SESSION['afrebay']['userId'],
+                        'work_sample'=> $file,
+                        'created_at'=> date('Y-m-d H:m:s')
+                    );
+                    $this->Crud_model->SaveData('users_work_sample',$details_data);
+                }
+            }
         }
 
 		if(!empty($this->input->post('key_skills'))) {
@@ -211,11 +222,7 @@ class Dashboard extends CI_Controller {
 			$business_category = '';
 		}
 
-        $checkUserEmail = $this->db->query("SELECT * FROM users WHERE email = '".$_POST['email']."' AND userId != '".$_SESSION['afrebay']['userId']."'")->row();
-        if(!empty($checkUserEmail)) {
-            $this->session->set_flashdata('error', 'Email already exists');
-            redirect(base_url('profile'));
-        } else {
+        if(!empty($_POST['uid'])){
             $data = array(
                 'firstname' => $_POST['firstname'],
                 'lastname' => $_POST['lastname'],
@@ -226,31 +233,62 @@ class Dashboard extends CI_Controller {
                 'zip' => $_POST['zip'],
                 'short_bio' => $_POST['short_bio'],
             );
-            $this->Crud_model->SaveData('users', $data, "userId='" . $_SESSION['afrebay']['userId'] . "'");
+            $this->Crud_model->SaveData('users', $data, "userId='" . $_POST['uid'] . "'");
             if($_POST['from_data_request']=='admin'){
                 $this->session->set_flashdata('message', 'Profile Updated Successfull !');
                 redirect(base_url('admin/users'));
-            }
-            else{
+            } else{
                 $this->session->set_flashdata('message', 'Profile Updated Successfull !');
-                // if($_SESSION['afrebay']['userType'] == '2') {
-                //     redirect(base_url('homepage'));
-                // } else {
-                //     redirect(base_url('business_details'));
-                // }
                 redirect(base_url('homepage'));
+            }
+        } else {
+            $checkUserEmail = $this->db->query("SELECT * FROM users WHERE email = '".$_POST['email']."' AND userId != '".$_SESSION['afrebay']['userId']."'")->row();
+            if(!empty($checkUserEmail)) {
+                $this->session->set_flashdata('error', 'Email already exists');
+                redirect(base_url('profile'));
+            } else {
+                $data = array(
+                    'firstname' => $_POST['firstname'],
+                    'lastname' => $_POST['lastname'],
+                    'profilePic' => $image,
+                    'email' => $_POST['email'],
+                    'rate_enabled' => $_POST['rate_enabled'],
+                    //'backgroundPic' => $bimage,
+                    'zip' => $_POST['zip'],
+                    'short_bio' => $_POST['short_bio'],
+                );
+                $this->Crud_model->SaveData('users', $data, "userId='" . $_SESSION['afrebay']['userId'] . "'");
+                if($_POST['from_data_request']=='admin'){
+                    $this->session->set_flashdata('message', 'Profile Updated Successfull !');
+                    redirect(base_url('admin/users'));
+                }
+                else{
+                    $this->session->set_flashdata('message', 'Profile Updated Successfull !');
+                    redirect(base_url('homepage'));
+                }
             }
         }
 	}
 
     public function business_details() {
-        $user_info = $this->Crud_model->get_single('users', "userId='" . $_SESSION['afrebay']['userId'] . "'");
+        $user_id=base64_decode($this->uri->segment(2));
+		if($user_id!=''){
+			$userid=$user_id;
+			$data_request='admin';
+			$this->load->view('admin_header');
+		} else {
+			$userid=$_SESSION['afrebay']['userId'];
+			$data_request='user';
+			$data1['title'] = 'Profile';
+			$this->load->view('header', $data1);
+		}
+        $user_info = $this->Crud_model->get_single('users', "userId='" . $userid . "'");
 		$data = array(
 			'userinfo' => $user_info,
-			'data_request'=>'user',
+			'data_request'=>$data_request,
 		);
-        $data1['title'] = 'Business Details';
-        $this->load->view('header', $data1);
+        //$data1['title'] = 'Business Details';
+        //$this->load->view('header', $data1);
 		$this->load->view('user_dashboard/business_details', $data);
 		$this->load->view('footer');
     }
@@ -272,38 +310,63 @@ class Dashboard extends CI_Controller {
 		} else {
 			$business_category = '';
 		}
-
-        if (!empty($_FILES['work_sample']['size'])) {
-        	$count = count($_FILES['work_sample']['name']);
-        	for ($i=0; $i < $count; $i++) {
-	            $src = $_FILES['work_sample']['tmp_name'][$i];
-	            $filEnc = time();
-	            $avatar = rand(0000, 9999) . "_" . $_FILES['work_sample']['name'][$i];
-	            $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
-	            $dest = getcwd() . '/uploads/users/work_sample/' . $avatar1;
-	            if (move_uploaded_file($src, $dest)) {
-	                $file1  = $avatar1;
-	            }
-				if(!empty($file1)) {
-					$file  = $file1;
-				} else if(!empty($_POST['old_work_sample'])) {
-					$file  = $_POST['old_work_sample'];
-				} else {
-					$file  = "";
-				}
-	            $details_data = array(
-                    'user_id'=> $_SESSION['afrebay']['userId'],
-                    'work_sample'=> $file,
-                    'created_at'=> date('Y-m-d H:m:s')
-                );
-                $this->Crud_model->SaveData('users_work_sample',$details_data);
-	        }
-        }
-        $checkUserEmail = $this->db->query("SELECT * FROM users WHERE email = '".$_POST['email']."' AND userId != '".$_SESSION['afrebay']['userId']."'")->row();
-        if(!empty($checkUserEmail)) {
-            $this->session->set_flashdata('error', 'Email already exists');
-            redirect(base_url('business_details'));
+        if(!empty($this->input->post('id'))) {
+            if (!empty($_FILES['work_sample']['size'])) {
+                $count = count($_FILES['work_sample']['name']);
+                for ($i=0; $i < $count; $i++) {
+                    $src = $_FILES['work_sample']['tmp_name'][$i];
+                    $filEnc = time();
+                    $avatar = rand(0000, 9999) . "_" . $_FILES['work_sample']['name'][$i];
+                    $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+                    $dest = getcwd() . '/uploads/users/work_sample/' . $avatar1;
+                    if (move_uploaded_file($src, $dest)) {
+                        $file1  = $avatar1;
+                    }
+                    if(!empty($file1)) {
+                        $file  = $file1;
+                    } else if(!empty($_POST['old_work_sample'])) {
+                        $file  = $_POST['old_work_sample'];
+                    } else {
+                        $file  = "";
+                    }
+                    $details_data = array(
+                        'user_id'=> $this->input->post('id'),
+                        'work_sample'=> $file,
+                        'created_at'=> date('Y-m-d H:m:s')
+                    );
+                    $this->Crud_model->SaveData('users_work_sample',$details_data);
+                }
+            }
         } else {
+            if (!empty($_FILES['work_sample']['size'])) {
+                $count = count($_FILES['work_sample']['name']);
+                for ($i=0; $i < $count; $i++) {
+                    $src = $_FILES['work_sample']['tmp_name'][$i];
+                    $filEnc = time();
+                    $avatar = rand(0000, 9999) . "_" . $_FILES['work_sample']['name'][$i];
+                    $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+                    $dest = getcwd() . '/uploads/users/work_sample/' . $avatar1;
+                    if (move_uploaded_file($src, $dest)) {
+                        $file1  = $avatar1;
+                    }
+                    if(!empty($file1)) {
+                        $file  = $file1;
+                    } else if(!empty($_POST['old_work_sample'])) {
+                        $file  = $_POST['old_work_sample'];
+                    } else {
+                        $file  = "";
+                    }
+                    $details_data = array(
+                        'user_id'=> $_SESSION['afrebay']['userId'],
+                        'work_sample'=> $file,
+                        'created_at'=> date('Y-m-d H:m:s')
+                    );
+                    $this->Crud_model->SaveData('users_work_sample',$details_data);
+                }
+            }
+        }
+
+        if(!empty($this->input->post('id'))) {
             $data = array(
                 'companyname' => $_POST['companyname'],
                 'mobile' => $_POST['mobile'],
@@ -316,10 +379,42 @@ class Dashboard extends CI_Controller {
                 'hourly_rate' => $_POST['hourly_rate'],
             );
             //print_r($data); die();
-            $this->Crud_model->SaveData('users', $data, "userId='" . $_POST['id'] . "'");
-            redirect(base_url('homepage'));
+            $this->Crud_model->SaveData('users', $data, "userId='" . $this->input->post('id') . "'");
+            if($_POST['from_data_request']=='admin'){
+                $this->session->set_flashdata('message', 'Profile Updated Successfull !');
+                redirect(base_url('admin/users'));
+            } else{
+                $this->session->set_flashdata('message', 'Profile Updated Successfull !');
+                redirect(base_url('homepage'));
+            }
+        } else {
+            $checkUserEmail = $this->db->query("SELECT * FROM users WHERE email = '".$_POST['email']."' AND userId != '".$_SESSION['afrebay']['userId']."'")->row();
+            if(!empty($checkUserEmail)) {
+                $this->session->set_flashdata('error', 'Email already exists');
+                redirect(base_url('business_details'));
+            } else {
+                $data = array(
+                    'companyname' => $_POST['companyname'],
+                    'mobile' => $_POST['mobile'],
+                    'email' => $_POST['email'],
+                    'serviceType' => $business_category,
+                    'address' => $_POST['address'],
+                    'latitude' => $_POST['latitude'],
+                    'longitude' => $_POST['longitude'],
+                    'reference_link' => $_POST['reference_link'],
+                    'hourly_rate' => $_POST['hourly_rate'],
+                );
+                //print_r($data); die();
+                $this->Crud_model->SaveData('users', $data, "userId='" . $this->input->post('id') . "'");
+                if($_POST['from_data_request']=='admin'){
+                    $this->session->set_flashdata('message', 'Profile Updated Successfull !');
+                    redirect(base_url('admin/users'));
+                } else{
+                    $this->session->set_flashdata('message', 'Profile Updated Successfull !');
+                    redirect(base_url('homepage'));
+                }
+            }
         }
-
     }
 	function getVisIpAddr() {
     	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -1271,7 +1366,7 @@ class Dashboard extends CI_Controller {
 	public function dislikeuserrply() {
         $this->db->query("UPDATE postjob_comment_like SET is_liked = '0' WHERE user_id = '".$_POST['user_id']."' AND postjob_id = '".$_POST['postjob_id']."' AND comment_id = '".$_POST['comment_id']."'");
     }
-    public function reportUser() {
+    public function blockUser() {
         $toUser = $_POST['toUser'];
         $fromUser = $_POST['fromUser'];
         $reason = $_POST['reason'];
@@ -1281,6 +1376,23 @@ class Dashboard extends CI_Controller {
             'reason' => $reason,
         );
         $this->Crud_model->SaveData('report_user', $data);
+        $insertid = $this->db->insert_id();
+        if(!empty($insertid)) {
+            echo "1";
+        } else {
+            echo "Something went wrong. Please try again.";
+        }
+    }
+    public function reportPost() {
+        $post_id = $_POST['post_id'];
+        $fromUser = $_POST['fromUser'];
+        $reason = $_POST['report_reason'];
+        $data = array(
+            'post_id' => $post_id,
+            'from_user_id' => $fromUser,
+            'reason' => $reason,
+        );
+        $this->Crud_model->SaveData('report_post', $data);
         $insertid = $this->db->insert_id();
         if(!empty($insertid)) {
             echo "1";
@@ -1453,14 +1565,12 @@ class Dashboard extends CI_Controller {
                             </ul>
                         </div>
                     </div>
-                    <!-- Comment Btn -->
-                    <!-- Comment Data -->
                     <?php
                     $getpostComment = $this->db->query("SELECT * FROM postjob_comment WHERE postjob_id = '" . @$row->id . "'")->result_array();
                     if (!empty($getpostComment)) {
                         $i = 1;
                         foreach ($getpostComment as $each) {
-                            $rplycount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment_like  WHERE postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
+                        $rplycount = $this->db->query("SELECT COUNT(id) as count FROM postjob_comment_like  WHERE postjob_id = '" . @$row->id . "' AND comment_id = '" . $each['id'] . "' AND is_liked = 1")->row();
                     ?>
                     <div class="Comment_Block replyComment" style="display: flex; flex-direction: column; ">
                         <div class="Comment_Block_Container" style="flex-direction: row; align-items: flex-start; justify-content: flex-start; display: flex; width: 100%;">
@@ -1555,7 +1665,6 @@ class Dashboard extends CI_Controller {
             echo '<div class="col-12" style=" background: #fff; border-radius: 20px; "><div class="boxuppost">No post available</div></div>';
         }
     }
-
     public function search_post() {
         $year = $_POST['year'];
         $postedBy = $_POST['postedBy'];
@@ -1779,7 +1888,6 @@ class Dashboard extends CI_Controller {
             echo '<div class="col-12" style=" background: #fff; border-radius: 20px; "><div class="boxuppost">No post available</div></div>';
         }
     }
-
     public function savePost() {
         $post_id = $_POST['p_id'];
         $user_id =  $_SESSION['afrebay']['userId'];
@@ -1789,10 +1897,38 @@ class Dashboard extends CI_Controller {
             'status' => '1',
             'created_at'=> date('Y-m-d H:m:s')
         );
-        //print_r($details_data); die();
         $this->Crud_model->SaveData('users_save_post',$details_data);
     }
-
+    public function unsavePost() {
+        $post_id = $_POST['p_id'];
+        $user_id =  $_SESSION['afrebay']['userId'];
+        $this->db->query("DELETE FROM users_save_post WHERE user_id = '".$user_id."' AND post_id = '".$post_id."'");
+    }
+    public function notInterestedPost() {
+        $post_id = $_POST['p_id'];
+        $user_id =  $_SESSION['afrebay']['userId'];
+        $details_data = array(
+            'post_id' => $post_id,
+            'user_id' => $user_id,
+            'created_at'=> date('Y-m-d H:m:s')
+        );
+        $this->Crud_model->SaveData('not_interest_post',$details_data);
+    }
+    public function followUsers() {
+        $following_id = $_POST['f_id'];
+        $followedBy_id =  $_SESSION['afrebay']['userId'];
+        $details_data = array(
+            'following_id' => $following_id,
+            'followedBy_id' => $followedBy_id,
+            'created_at'=> date('Y-m-d H:m:s')
+        );
+        $this->Crud_model->SaveData('users_following', $details_data);
+    }
+    public function unfollowUsers() {
+        $following_id = $_POST['f_id'];
+        $followedBy_id =  $_SESSION['afrebay']['userId'];
+        $this->db->query("DELETE FROM users_following WHERE following_id = '".$following_id."' AND followedBy_id = '".$followedBy_id."'");
+    }
     public function searchPostData() {
         $search_box = $_POST['search_box'];
         $category = $_POST['category'];
