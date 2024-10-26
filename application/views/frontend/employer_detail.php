@@ -12,15 +12,49 @@ function displayStars($rating) {
 
     return $stars;
 }
-if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' . $get_banner->backgroundPic)) {
+/*if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' . $get_banner->backgroundPic)) {
     $banner_img=base_url("uploads/users/background/".$userdata->backgroundPic);
 } else {
     $banner_img=base_url("assets/images/resource/mslider1.jpg");
-} ?>
-<section style="width: 100%; height: 200px;">
-    <div style="width: 100%; height: 100%; position: relative;">
-        <div style="background: #c34e102b; position: absolute; z-index: 1; width: 100%; height: 100%;"></div>
-        <img style="width: 100%; height: 100%; object-fit: cover;" src="<?= $banner_img ?>" />
+} */
+?>
+<section style="width: 100%; height: 250px;">
+    <div style="width: 100%; height: 100%; position: absolute;">
+        <div style="background: #c34e102b; position: absolute; z-index: 1; width: 100%; height: 100%;">
+            <div id="slider">  
+                <?php 
+                $getbackgroundimg = $this->db->query("SELECT * FROM user_background WHERE user_id = '".$userdata->userId."'")->result_array();
+                if(!empty($getbackgroundimg)) {
+                    foreach ($getbackgroundimg as $key => $sample) { ?>
+                    <div class="slide" style="background:dodgerBlue;">
+                        <?php 
+                        $extension = strtolower(pathinfo($sample['filecontent'], PATHINFO_EXTENSION));
+                        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'avif', 'webp'])) { ?>
+                        <img src="<?= base_url('uploads/users/background/'.$sample['filecontent']); ?>" alt="Image" style="width: 100%;height: 100%;object-fit: cover;">
+                        <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
+                        <video controls style="width: 100%;height: 100%;object-fit: cover;">
+                        <source src="<?= base_url('uploads/users/background/'.$sample['filecontent']); ?>" type="video/mp4">
+                        Your browser does not support the video tag.
+                        </video>
+                    <?php } ?>
+                    </div>
+                    <?php }
+                } else { ?>
+                    <div class="slide" style="background:dodgerBlue;">
+                        <img src="<?= base_url("assets/images/resource/mslider1.jpg");?>" >
+                    </div>
+                <?php } ?>
+                <!--Controlling arrows-->
+                <span class="controls" onclick="prevSlide(-1)" id="left-arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></span>
+                <span class="controls" id="right-arrow" onclick="nextSlide(1)"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+            </div>
+            <div id="dots-con">
+                <?php foreach ($getbackgroundimg as $key => $sample) { ?>
+                <span class="dot"></span>
+                <?php } ?>
+            </div>
+        </div>
+        <!-- <img style="width: 100%; height: 100%; object-fit: cover;" src="<?= $banner_img ?>" /> -->
     </div>
 </section>
 
@@ -43,21 +77,17 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                         </div>
                                         <div class="job-single-info3">
                                             <h3>
-                                                <?php
-                                                $companyname = $userdata->companyname;
-                                                if (!empty($companyname)) {
-                                                    echo $name = ucwords($companyname);
-                                                } else {
-                                                    echo $name = ucwords($userdata->firstname." ".$userdata->lastname);
-                                                }
-                                                ?>
+                                                <?= ucwords($userdata->firstname." ".$userdata->lastname);?>
                                             </h3>
+                                            <p style="margin: 0px !important;"><?= "@".$userdata->username;?></p>
+                                            <?php if($userdata->rate_enabled == '1') { ?>
                                             <p>
                                                 <?php
                                                 $getAverageRatingSql = $this->db->query("SELECT ROUND(AVG(rating),1) as averageRating FROM `employer_rating` where `worker_id` = '" . @$userdata->userId . "'")->row();
                                                 echo displayStars($getAverageRatingSql->averageRating);
                                                 ?>
                                             </p>
+                                            <?php } ?>
                                             <?php if(@$_SESSION['afrebay']['userId'] != $userdata->userId) { ?>
                                             <!-- <div id="status-options">
                                                 <?php if(!empty(@$_SESSION['afrebay']['userId'])) {
@@ -104,9 +134,9 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                     <div class="job-details">
                                         <h3 class="Primary_Text_Color">About
                                         <?php
-                                        $companyname = $userdata->companyname;
-                                        if (!empty($companyname)) {
-                                            echo ucwords($companyname);
+                                        $username = $userdata->username;
+                                        if (!empty($username)) {
+                                            echo ucwords($username);
                                         } else {
                                             echo ucwords($userdata->firstname." ".$userdata->lastname);
                                         } ?>
@@ -119,9 +149,9 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                     <div class="recent-jobs">
                                         <h3 class="Primary_Text_Color">Jobs from
                                         <?php
-                                        $companyname = $userdata->companyname;
-                                        if (!empty($companyname)) {
-                                            echo ucwords($companyname);
+                                        $username = $userdata->username;
+                                        if (!empty($username)) {
+                                            echo ucwords($username);
                                         } else {
                                             echo ucwords($userdata->firstname." ".$userdata->lastname);
                                         } ?>
@@ -135,24 +165,37 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                                 ?>
                                                 <div class="job-listing wtabs noimg col-lg-6 col-md-6 col-sm-12">
                                                     <div class="CustomBlockDesign">
-                                                        <?php
-                                                        $getJobImage = $this->db->query("SELECT * FROM postjob_image WHERE job_id = '".$key->id."'")->row();
-                                                        if(!empty($getJobImage->job_image) && file_exists('uploads/postjob/'.$getJobImage->job_image)) {
-                                                            $extension = strtolower(pathinfo($getJobImage->job_image, PATHINFO_EXTENSION));
-                                                            if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) { ?>
-                                                            <img src="<?= base_url("uploads/postjob/".$getJobImage->job_image) ?>" alt="Image">
-                                                            <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
-                                                            <video width="371" height="300" controls>
-                                                            <source src="<?= base_url('uploads/postjob/'.$getJobImage->job_image); ?>" type="video/mp4">
-                                                            Your browser does not support the video tag.
-                                                            </video>
-                                                        <?php }
-                                                        } else {
-                                                            $jobimage = base_url("uploads/no_bimage.png");
-                                                        }
-                                                        ?>
+                                                        <div id="slider" style="border-radius: 15px;">
+                                                            <?php
+                                                            $getJobImage = $this->db->query("SELECT * FROM postjob_image WHERE job_id = '".$key->id."'")->result_array();
+                                                            foreach ($getJobImage as $sample) { ?>
+                                                                <div class="slide">
+                                                                <?php 
+                                                                if(!empty($sample['job_image']) && file_exists('uploads/postjob/'.$sample['job_image'])) {
+                                                                    $extension = strtolower(pathinfo($sample['job_image'], PATHINFO_EXTENSION));
+                                                                    if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'avif', 'webp'])) { ?>
+                                                                    <img src="<?= base_url("uploads/postjob/".$sample['job_image']) ?>" alt="Image">
+                                                                    <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
+                                                                    <video width="371" height="300" controls>
+                                                                    <source src="<?= base_url('uploads/postjob/'.$sample['job_image']); ?>" type="video/mp4">
+                                                                    Your browser does not support the video tag.
+                                                                    </video>
+                                                                <?php }
+                                                                } else {
+                                                                    $jobimage = base_url("uploads/no_bimage.png");
+                                                                } ?>
+                                                            </div>
+                                                            <?php } ?>
+                                                            <span class="controls" onclick="prevSlide(-1)" id="left-arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></span>
+                                                            <span class="controls" id="right-arrow" onclick="nextSlide(1)"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+                                                        </div>
+                                                        <div id="dots-con">
+                                                            <?php foreach ($getJobImage as $sample) { ?>
+                                                            <span class="dot"></span>
+                                                            <?php } ?>
+                                                        </div>
                                                         <!-- <img src="<?= $jobimage; ?>" /> -->
-                                                        <div class="CustomContainer">
+                                                        <div class="CustomContainer" style="height: 80px;">
                                                             <div class="job-title-sec">
                                                                 <h3 style="text-transform: uppercase;">
                                                                     <a href="<?php echo base_url() ?>workdetail/<?php echo base64_encode($key->id) ?>" title="">
@@ -188,6 +231,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                     </div>
                                     <?php } ?>
                                 </div>
+                                <?php if($userdata->rate_enabled == '1') { ?>
                                 <div class="col-lg-4 col-md-12 col-sm-12 column">
                                     <?php
                                     $uri = "$_SERVER[REQUEST_URI]";
@@ -213,7 +257,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                                     <input type="hidden" value="<?= @$_SESSION['afrebay']['userType'] ?>" name="userType">
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12 Form_Textarea" >
-                                                    <textarea placeholder="Enter review" name="review" style="border-radius: 10px;"></textarea>
+                                                    <textarea placeholder="Enter review" name="review" style="border-radius: 10px; height: 132px !important;"></textarea>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12 Form_Btn">
                                                     <button class="submit btn btn-info Gradient_Back_Color" style="background: #2892ff;border-radius: 30px;min-height: 30px;min-width: 52px;">Submit</button>
@@ -223,6 +267,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                     </div>
                                 <?php } ?>
                                 </div>
+                                <?php } ?>
                                 <?php
                                 $getSavedPost = $this->db->query("SELECT * FROM users_save_post WHERE user_id = '".@$userdata->userId."'")->result_array();
                                 if (!empty($getSavedPost)) {
@@ -230,7 +275,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                 ?>
                                 <div class="col-lg-12 col-md-12 col-sm-12 column">
                                     <div class="Product_Details">
-                                        <h3 class="mt-5 mb-5 Primary_Text_Color">Saved Post</h3>
+                                        <h3 class="mt-3 mb-3 Primary_Text_Color">Saved Post</h3>
                                         <div class="row">
                                             <?php foreach ($getSavedPost as $value) {
                                                 $post_details = $this->db->query("SELECT * FROM postjob WHERE id = '".$value['post_id']."'")->row();
@@ -271,6 +316,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                 <?php } ?>
                             </div>
                         </div>
+                        <?php if($userdata->rate_enabled == '1') { ?>
                         <div class="job-wide-devider">
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12 column">
@@ -308,6 +354,7 @@ if (!empty($userdata->backgroundPic) && file_exists('uploads/users/background/' 
                                 </div>
                             </div>
                         </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -439,6 +486,33 @@ function unmuteUser(userid) {
         })
     }
 }
+
+var slides = document.querySelectorAll(".slide");
+var dots = document.querySelectorAll(".dot");
+var index = 0;
+function prevSlide(n){
+    index+=n;ac
+    console.log("prevSlide is called");
+    changeSlide();
+}
+
+function nextSlide(n){
+    index+=n;
+    changeSlide();
+}
+changeSlide();
+function changeSlide(){
+  if(index>slides.length-1)
+    index=0;
+  if(index<0)
+    index=slides.length-1;
+    for(let i=0;i<slides.length;i++){
+        slides[i].style.display = "none";
+        dots[i].classList.remove("active"); 
+    }
+    slides[index].style.display = "block";
+    dots[index].classList.add("active");
+}
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script type="text/javascript" async="" src="<?php echo base_url(); ?>assets/js/Map_Modal.js"></script>
@@ -455,4 +529,76 @@ function unmuteUser(userid) {
 .job-thumb .active {opacity: 1; visibility: visible; margin: 75px 0 0 0;}
 .hidden {display: none;}
 #shareMenu {border: 1px solid #ccc; padding: 10px; position: absolute; background-color: white; margin-top: 120px; margin-left: 128px; z-index: 111;}
+.Form_Textarea textarea {min-height: 132px !important;}
+
+#slider{
+    width:100%;
+    margin:0 auto;
+    position:absolute;
+    overflow:hidden;
+    box-shadow:2px 5px 10px rgba(0,0,0,0.4);
+    height: 100%;
+    object-fit: cover;
+}
+
+.slide{
+    width:100%;
+    display:block !important;
+    animation-name:fade;
+    animation-duration:1s;
+}
+img{
+    width:100%; 
+}
+@keyframes fade{
+  from{opacity:0.5;}
+  to{opacity:1;}
+}
+
+.controls{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:1.5em;
+    padding:15px 10px;
+    border-radius:5px;
+}
+
+.controls:hover{
+    background:white;
+    transition:0.3s;
+}
+
+.controls:active{
+    color:grey;
+}
+
+#left-arrow{
+    left:10px;
+}
+
+#right-arrow{
+    right:10px;
+}
+
+#dots-con{
+    text-align:center;
+}
+.dot{
+    display:inline-block;
+    background:grey;
+    padding:8px;
+    border-radius:50%;
+    margin:10px 5px;
+}
+
+.active{
+    background:crimson;
+}
+
+@media (max-width:576px){
+    #slider{width:100%;}
+    .controls{font-size:1em;}
+    #dots-con{display:none;}
+}
 </style>

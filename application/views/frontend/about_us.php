@@ -96,4 +96,17 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         padding-right: 60px !important;
     }
 }
+.slick-track {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100% !important;
+}
+.slick-slide {
+    width: 30% !important;
+}
+.slick-track .reviews {
+    height: 200px;
+}
 </style>

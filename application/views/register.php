@@ -103,18 +103,6 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                                         <div class="error text-left" id="err_check_pass"></div>
                                                     </div>
                                                 </div>
-                                                <!-- <div class="col-lg-12 email mb-3">
-                                                    <div class="error text-left" id="err_usertype"></div>
-                                                    <div class="cfield cfield_top">
-                                                        <div class="cfield_Input">
-                                                            <select class="form-control form-select" id="user_type" name="user_type">
-                                                                <option value="">Choose account type</option>
-                                                                <option value="2">Customer</option>
-                                                                <option value="1">Business Provider</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
                                                 <div class="col-lg-12 col-md-12 col-sm-12 SignUp_Btn">
                                                     <button type="button" class="btn logbtn w-100 mt-4 Gradient_Back_Color" id="rSignUp" onclick="return btn_register();">Continue</button>
                                                     <input type="hidden" name="location" id="location" value="<?= @$loc ?>" placeholder="Set Location" />
@@ -154,7 +142,45 @@ header {
 <script src="<?= base_url('assets/js/jquery.min.js') ?>" type="text/javascript"></script>
 <script type="text/javascript" src="<?= base_url('assets/custom_js/register.js') ?>"></script>
 <script>
-    window.addEventListener('load', () => {
-        document.body.classList.add('loaded');
-    });
+window.addEventListener('load', () => {
+    document.body.classList.add('loaded');
+});
+$(document).ready(function() {
+    $('#username').on( "keypress", function() {
+        console.log($('#username').val().length);
+        if($('#username').val().length > 6) {
+            var username = $('#username').val();
+            console.log(username);
+            $("#err_username").html("");
+            $.ajax({
+                type: "POST",
+                url: "<?= base_url('user/Login/checkusername')?>",
+                data: {username: username},
+                dataType:'json',
+                beforeSend : function(){},
+                success:function(returndata) {
+                    //console.log(returndata.result);
+                    if(returndata.result == 'success') {
+                        $('#err_username').fadeIn().html(returndata.data).css({'color':'green','margin-bottom':'5px'});
+                        $("#rSignUp").prop("disabled", false);
+                    } else {
+                        $('#err_username').fadeIn().html(returndata.data).css({'color':'red','margin-bottom':'5px'});
+                        setTimeout(function(){$("#err_username").html("");},3000);
+                        $("#username").focus();
+                        $("#rSignUp").prop("disabled", true);
+                        return false;
+                    }
+                }
+            })
+        } else {
+            $('#err_username').html('Username should be at least 8 characters long');
+            $('#err_username').css({'color':'red'});
+            $('#username').css({'color':'red', 'border':'1px solid red'});
+            //setTimeout(function(){$("#err_username").html("");},3000)
+            $("#err_username").focus();
+            //return false;
+            $('#rSignUp').prop("disabled", true);
+        }
+    })
+})
 </script>

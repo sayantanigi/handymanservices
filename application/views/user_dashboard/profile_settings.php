@@ -102,18 +102,27 @@ if($data_request=='user') {
                                 </div>
                             </div>
                             <?php if($_SESSION['afrebay']['userType'] == '2') { ?>
-                            <div class="col-lg-6 profile-dsd">
+                            <div class="col-lg-4 profile-dsd">
                                 <div class="mb-4 float-left w-100">
                                     <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" value="<?php echo $userinfo->email;?>"/>
                                 </div>
                             </div>
-                            <div class="col-lg-6 profile-dsd">
+                            <div class="col-lg-4 profile-dsd">
                                 <div class="mb-4 float-left w-100">
                                     <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Contact Number" value="<?php echo $userinfo->mobile;?>"/>
                                 </div>
                             </div>
                             <?php } ?>
-                            <div class="col-lg-12 mb-4">
+                            <div class="col-lg-4 profile-dsd">
+                                <div class="mb-4 float-left w-100"> 
+                                    <select class="form-control" name="rate_enabled" id="rate_enabled">
+                                        <option value="">Choose an option</option>
+                                        <option value="1" <?php if($userinfo->rate_enabled == '1') {echo "selected";} else {echo ""; }?>>Show rating on profile</option>
+                                        <option value="2" <?php if($userinfo->rate_enabled == '2') {echo "selected";} else {echo ""; }?>>Don't show rating on profile</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- <div class="col-lg-12 mb-4">
                                 <div class="new-pro uploadProfilephoto workupload">
                                     <?php
                                     if(!empty($userinfo->backgroundPic)) {
@@ -146,10 +155,45 @@ if($data_request=='user') {
                                             <?php } else { ?>
                                                 <h6><i class="fa-solid fa-cloud-arrow-up"></i> Upload </h6>
                                             <?php } ?>
-                                            <input type="file" name="backgroundPic" class="d-none" />
+                                            <input type="file" name="backgroundPic[]" multiple class="d-none" />
                                         </label>
                                     </div>
 
+                                </div>
+                            </div> -->
+                            <div class="col-lg-12 mb-4">
+                                <div class="new-pro uploadProfilephoto workupload">
+                                    <?php
+                                    $getWorkSample = $this->db->query("SELECT * FROM user_background WHERE user_id = '".$userinfo->userId."'")->result_array();
+                                    if(!empty($getWorkSample)) { ?>
+                                    <div class="profileImgBox">
+                                    <?php foreach ($getWorkSample as $sample) {
+                                        $extension = strtolower(pathinfo($sample['filecontent'], PATHINFO_EXTENSION));
+                                        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'avif', 'webp'])) { ?>
+                                        <img src="<?= base_url('uploads/users/background/'.$sample['filecontent']); ?>" alt="Image" style="width: 165px;height: 110px;">
+                                        <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
+                                        <video width="165" height="110" controls>
+                                        <source src="<?= base_url('uploads/users/background/'.$sample['filecontent']); ?>" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                        </video>
+                                        <?php } ?>
+                                        <input type="hidden" name="old_work_sample" value="<?= $sample['filecontent'] ?>">
+                                    <?php } ?>
+                                    </div>
+                                    <?php } else { ?>
+                                    <div class="profileImgBox profilenoImg  py-4">
+                                        <img src="<?php echo base_url('uploads/addPhoto.png')?>"/>
+                                        <h6>Upload work samples</h6>
+                                        <p>Images must be less than 5 MB in size</p>
+                                        <p>Videos must be less than 25 MB in size</p>
+                                    </div>
+                                    <?php } ?>
+                                    <div class="profile-ak">
+                                        <label>
+                                            <h6><i class="fa-solid fa-cloud-arrow-up"></i> Upload </h6>
+                                            <input type="file" name="backgroundPic[]" multiple class="d-none" />
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-12 profile-dsd">
@@ -309,35 +353,45 @@ $("form").submit( function(e) {
             $('#firstname').focus().attr('placeholder', 'This field is required');
             $('#vld_firstname').show();
             $('#firstname').focus().css('border', '1px solid red');
-            setTimeout(function(){$("#vld_firstname").hide();},5000)
+            setTimeout(function(){$("#vld_firstname").hide();},5000);
+            $("#save_profile_dataloader").hide();
+            $(".Gradient_Back_Color").prop('disabled', false);
             e.preventDefault();
         }
         if($('#lastname').val() == ''){
             $('#lastname').focus().attr('placeholder', 'This field is required');
             $('#vld_lastname').show();
             $('#lastname').focus().css('border', '1px solid red');
-            setTimeout(function(){$("#vld_lastname").hide();},5000)
+            setTimeout(function(){$("#vld_lastname").hide();},5000);
+            $("#save_profile_dataloader").hide();
+            $(".Gradient_Back_Color").prop('disabled', false);
             e.preventDefault();
         }
-        // if($('#location').val() == ''){
-        //     $('#location').focus().attr('placeholder', 'This field is required');
-        //     $('#vld_location').show();
-        //     $('#location').focus().css('border', '1px solid red');
-        //     setTimeout(function(){$("#vld_location").hide();},5000)
-        //     e.preventDefault();
-        // }
+        if($('#rate_enabled').val() == ''){
+            $('#rate_enabled').focus().attr('placeholder', 'This field is required');
+            $('#vld_rate_enabled').show();
+            $('#rate_enabled').focus().css('border', '1px solid red');
+            setTimeout(function(){$("#vld_rate_enabled").hide();},5000);
+            $("#save_profile_dataloader").hide();
+            $(".Gradient_Back_Color").prop('disabled', false);
+            e.preventDefault();
+        }
         if($('#zip').val() == ''){
             $('#zip').focus().attr('placeholder', 'This field is required');
             $('#vld_zip').show();
             $('#zip').focus().css('border', '1px solid red');
-            setTimeout(function(){$("#vld_zip").hide();},5000)
+            setTimeout(function(){$("#vld_zip").hide();},5000);
+            $("#save_profile_dataloader").hide();
+            $(".Gradient_Back_Color").prop('disabled', false);
             e.preventDefault();
         }
         if($('#short_bio').val() == ''){
             $('#short_bio').focus().attr('placeholder', 'This field is required');
             $('#vld_shrtBio').show();
             $('#short_bio').focus().css('border', '1px solid red');
-            setTimeout(function(){$("#vld_shrtBio").hide();},5000)
+            setTimeout(function(){$("#vld_shrtBio").hide();},5000);
+            $("#save_profile_dataloader").hide();
+            $(".Gradient_Back_Color").prop('disabled', false);
             e.preventDefault();
         }
     }
@@ -345,7 +399,6 @@ $("form").submit( function(e) {
 
 $("#save_profile_data").on('click', function(){
     $("#save_profile_dataloader").show();
-    //$(".Gradient_Back_Color").prop('disabled', true);
     return true;
 })
 </script>

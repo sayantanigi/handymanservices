@@ -74,7 +74,9 @@ function displayStars($rating) {
                                         $profilePic = base_url('uploads/no_pimage.png');
                                     }
                                     ?>
-                                    <img src="<?= $profilePic; ?>">
+                                    <a href="<?php if($getUser_details->userType == '1') {echo base_url('professionals_detail/'.base64_encode($getUser_details->userId)); } else{ echo base_url('customer_detail/'.base64_encode($getUser_details->userId)); }?>">
+                                        <img src="<?= $profilePic; ?>">
+                                    </a>
                                 </div>
                                 <div class="flex-fill w-100">
                                     <div class="postType">
@@ -86,7 +88,7 @@ function displayStars($rating) {
                                             <input type="hidden" id="search_lat" name="s_lat" value="<?= @$lat ?>">
                                             <input type="hidden" id="search_lon" name="s_lon" value="<?= @$lon ?>">
                                             <input type="hidden" id="cat_value" name="cat_value" value="">
-                                            <select name="category" id="category" class="categories_style" onchange="getcategoryval(this.value);" required style="position: absolute; margin-left: 26rem;">
+                                            <select name="category" id="category" class="categories_style" onchange="getcategoryval(this.value);" required style="position: fixed; margin-left: 26rem;">
                                                 <option value="">Select Category</option>
                                                 <?php
                                                 $getCategory = $this->db->query("SELECT * FROM category WHERE status = 'Active'")->result_array();
@@ -128,19 +130,25 @@ function displayStars($rating) {
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="InfoBlock" style="display: flex; flex-direction: row; height: 70px; align-items: center; justify-content: flex-start;">
                                                 <?php if (!empty($get_user->profilePic) && file_exists('uploads/users/' . $get_user->profilePic)) { ?>
-                                                <img style="width:70px; height: 70px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/users/<?= $get_user->profilePic ?>" alt="">
+                                                <a href="<?php if($get_user->userType == '1') {echo base_url('professionals_detail/'.base64_encode($get_user->userId)); } else{ echo base_url('customer_detail/'.base64_encode($get_user->userId)); }?>">
+                                                    <img style="width:70px; height: 70px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/users/<?= $get_user->profilePic ?>" alt="">
+                                                </a>
                                                 <?php } else { ?>
-                                                <img style="width: 70px; height: 70px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="">
+                                                <a href="<?php if($get_user->userType == '1') {echo base_url('professionals_detail/'.base64_encode($get_user->userId)); } else{ echo base_url('customer_detail/'.base64_encode($get_user->userId)); }?>">
+                                                    <img style="width: 70px; height: 70px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="">
+                                                </a>
                                                 <?php } ?>
                                                 <div class="TextData" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 15px;">
                                                     <a href="<?php if($get_user->userType == '1') {echo base_url('professionals_detail/'.base64_encode($get_user->userId)); } else{ echo base_url('customer_detail/'.base64_encode($get_user->userId)); }?>">
                                                         <h3 style="font-size: 20px; font-weight: 600; margin: 0;" class="Primary_Text_Color"><?php echo "@".$get_user->username; ?></h3>
+                                                        <?php if($get_user->rate_enabled == '1') { ?>
                                                         <p style="line-height: 0px;margin: 0;font-size: 10px;margin-top: 5px;margin-bottom: 10px;">
                                                             <?php
                                                             $getAverageRatingSql = $this->db->query("SELECT ROUND(AVG(rating),1) as averageRating FROM `employer_rating` where `worker_id` = '" . @$get_user->userId . "'")->row();
                                                             echo displayStars($getAverageRatingSql->averageRating);
                                                             ?>
                                                         </p>
+                                                        <?php } ?>
                                                     </a>
                                                     <p style="margin: 0; font-size: 13px; color: #b1b1b1;">Posted <?php echo get_time_ago(strtotime($row->created_date)) ?> </p>
                                                 </div>
@@ -190,7 +198,7 @@ function displayStars($rating) {
                                             <div class="box-image<?php if ($total_image > 4) { echo $max_display; } else { echo $total_image; } ?>">
                                                 <?php
                                                 $extension = strtolower(pathinfo($getImage[$i]['job_image'], PATHINFO_EXTENSION));
-                                                if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) { ?>
+                                                if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'avif', 'webp'])) { ?>
                                                 <img src="<?php base_url() ?>uploads/postjob/<?= $getImage[$i]['job_image'] ?>" class="postImageData">
                                                 <?php if ($i === $max_display - 1 && $total_image > $max_display) { ?>
                                                 <div class="extra-images">+<?php echo $total_image - $max_display ?></div>
@@ -268,28 +276,27 @@ function displayStars($rating) {
                                                                     <?php
                                                                     $userData = $this->db->query("SELECT * FROM users WHERE userId = '" . $each['user_id'] . "'")->row();
                                                                     if (!empty($userData->profilePic) && file_exists('uploads/users/' . $userData->profilePic)) { ?>
-                                                                        <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;"
-                                                                            src="<?= base_url() ?>uploads/users/<?= $userData->profilePic ?>"
-                                                                            alt="User Profile">
+                                                                        <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
+                                                                            <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/users/<?= $userData->profilePic ?>" alt="User Profile">
+                                                                        </a>
                                                                     <?php } else { ?>
-                                                                        <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;"
-                                                                            src="<?= base_url() ?>uploads/no_pimage.png" alt="User Profile">
+                                                                        <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
+                                                                            <img style="width: 45px; height: 45px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="User Profile">
+                                                                        </a>
                                                                     <?php } ?>
                                                                 </div>
-                                                                <div class="User_Comment_Data"
-                                                                    style="width: 92%; display: flex; flex-direction: column;">
+                                                                <div class="User_Comment_Data" style="width: 92%; display: flex; flex-direction: column;">
                                                                     <div class="replyPost">
                                                                         <p style="margin: 0; font-weight: 600; color: #000 !important;">
                                                                             <?php
-                                                                            if (!empty($userData->companyname)) {
-                                                                                echo $userData->companyname;
+                                                                            if (!empty($userData->username)) {
+                                                                                $username = "@".$userData->username;
                                                                             } else {
-                                                                                echo $userData->firstname . " " . $userData->lastname;
+                                                                                $username = $userData->firstname . " " . $userData->lastname;
                                                                             }
-                                                                            ?> .
-                                                                            <span
-                                                                                style=" color: #6a6a6a; font-weight: 400;"><?php echo get_time_ago(strtotime($each['created_at'])) ?></span>
-
+                                                                            ?> 
+                                                                            <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>"><?= $username; ?> </a> .
+                                                                            <span style=" color: #6a6a6a; font-weight: 400;"><?php echo get_time_ago(strtotime($each['created_at'])) ?></span>
                                                                         </p>
                                                                         <p style="margin-bottom: 0; "><?= $each['comment']; ?></p>
                                                                     </div>
@@ -426,25 +433,64 @@ function displayStars($rating) {
                                     $userProfileImage = base_url('uploads/no_pimage.png');
                                 }
 
-                                if (!empty($userData->backgroundPic) && file_exists('uploads/users/background/' . $userData->backgroundPic)) {
+                                /*if (!empty($userData->backgroundPic) && file_exists('uploads/users/background/' . $userData->backgroundPic)) {
                                     $userBackgroundImage = base_url('uploads/users/background/' . $userData->backgroundPic);
                                 } else {
                                     $userBackgroundImage = base_url('uploads/no_pimage.png');
-                                }
+                                }*/
                                 ?>
                                 <div class="ProfileBlock mb-3">
                                     <div class="profilecover">
-                                        <img src="<?= $userBackgroundImage ?>">
+                                        <!-- <img src="<?= $userBackgroundImage ?>"> -->
+                                        <div id="slider">  
+                                            <?php 
+                                            $getbackgroundimg = $this->db->query("SELECT * FROM user_background WHERE user_id = '".@$_SESSION['afrebay']['userId']."'")->result_array();
+                                            if(!empty($getbackgroundimg)) {
+                                                foreach ($getbackgroundimg as $key => $sample) { ?>
+                                                <div class="slide">
+                                                    <?php 
+                                                    $extension = strtolower(pathinfo($sample['filecontent'], PATHINFO_EXTENSION));
+                                                    if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'avif', 'webp'])) { ?>
+                                                    <img src="<?= base_url('uploads/users/background/'.$sample['filecontent']); ?>" alt="Image">
+                                                    <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
+                                                    <video style="width: 100%;height: 100%;object-fit: cover;" controls>
+                                                    <source src="<?= base_url('uploads/users/background/'.$sample['filecontent']); ?>" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                    </video>
+                                                <?php } ?>
+                                                </div>
+                                                <?php }
+                                            } else { ?>
+                                                <div class="slide" style="background:dodgerBlue;">
+                                                    <img src="<?= base_url("assets/images/resource/mslider1.jpg");?>" >
+                                                </div>
+                                            <?php } ?>
+                                            <!--Controlling arrows-->
+                                            <span class="controls" onclick="prevSlide(-1)" id="left-arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></span>
+                                            <span class="controls" id="right-arrow" onclick="nextSlide(1)"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+                                        </div>
+                                        <div id="dots-con">
+                                            <?php foreach ($getbackgroundimg as $key => $sample) { ?>
+                                            <span class="dot"></span>
+                                            <?php } ?>
+                                        </div>
                                     </div>
-                                    <div class="profileImg"><img src="<?= $userProfileImage; ?>"></div>
-                                    <h2 style="text-transform: lowercase;" class="Primary_Text_Color"><?= "@".$userData->username; ?>
-                                    </h2>
+                                    <div class="profileImg">
+                                        <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
+                                            <img src="<?= $userProfileImage; ?>">
+                                        </a>
+                                    </div>
+                                    <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
+                                        <h2 style="text-transform: lowercase;" class="Primary_Text_Color"><?= "@".$userData->username; ?></h2>
+                                    </a>
+                                    <?php if($get_user->rate_enabled == '1') { ?>
                                     <p style="line-height: 0px;margin: 0;font-size: 10px;margin-top: 5px;margin-bottom: 10px; text-align: center;">
                                         <?php
                                         $getAverageRatingSql = $this->db->query("SELECT ROUND(AVG(rating),1) as averageRating FROM `employer_rating` where `worker_id` = '" . @$_SESSION['afrebay']['userId'] . "'")->row();
                                         echo displayStars($getAverageRatingSql->averageRating);
                                         ?>
                                     </p>
+                                    <?php } ?>
                                     <p class="text-center memberinfo">
                                         <?= 'Member Since ' . date('M Y', strtotime($userData->created)) ?> .
                                         <!-- <?php if ($userData->userType === '1') {
@@ -864,6 +910,75 @@ function displayStars($rating) {
     .shareMenu{border:1px solid #ccc;padding:5px;background-color:#fff;float:right}
     .PostItem{height:30px;display:flex;padding:0 0 0 10px;align-items:center;justify-content:flex-start}
     .PostItem img{height:16px;width:16px;object-fit:contain;margin-right:5px}
+    #slider{
+        width:100%;
+        margin:0 auto;
+        position:static;
+        overflow:hidden;
+    }
+
+    .slide{
+        width:100%;
+        display:none;
+        animation-name:fade;
+        animation-duration:1s;
+        position: static;
+    }
+
+@keyframes fade{
+  from{opacity:0.5;}
+  to{opacity:1;}
+}
+
+.controls{
+  position:absolute;
+  top:20%;
+  transform:translateY(-50%);
+  font-size:1.5em;
+  padding:15px 10px;
+  border-radius:5px;
+  
+}
+
+.controls:hover{
+  background:white;
+  transition:0.3s;
+}
+
+.controls:active{
+  color:grey;
+}
+
+#left-arrow{
+  left:25px;
+}
+
+#right-arrow{
+  right:25px;
+}
+
+#dots-con{
+  text-align:center;
+  display: none;
+}
+.dot{
+  display:inline-block;
+  background:grey;
+  padding:8px;
+  border-radius:50%;
+  margin:10px 5px;
+}
+@media (max-width:576px){
+  #slider{width:100%;}
+  
+  .controls{
+    font-size:1em;
+  }
+  
+  #dots-con{
+    display:none;
+  }
+}
 </style>
 <script>
 $(document).ready(function () {
@@ -1384,4 +1499,31 @@ $('#iconvideoupload').click(function () {
 $('.loginURL').click(function () {
     window.location.href = '<?= base_url() ?>logout';
 })
+
+var slides = document.querySelectorAll(".slide");
+var dots = document.querySelectorAll(".dot");
+var index = 0;
+function prevSlide(n){
+    index+=n;ac
+    console.log("prevSlide is called");
+    changeSlide();
+}
+
+function nextSlide(n){
+    index+=n;
+    changeSlide();
+}
+changeSlide();
+function changeSlide(){
+  if(index>slides.length-1)
+    index=0;
+  if(index<0)
+    index=slides.length-1;
+    for(let i=0;i<slides.length;i++){
+        slides[i].style.display = "none";
+        dots[i].classList.remove("active"); 
+    }
+    slides[index].style.display = "block";
+    dots[index].classList.add("active");
+}
 </script>

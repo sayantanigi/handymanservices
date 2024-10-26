@@ -1,12 +1,13 @@
 <?php
-if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->image)){
-    $banner_img=base_url("uploads/banner/".$get_banner->image);
+if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->image)) {
+    $banner_img = base_url("uploads/banner/" . $get_banner->image);
 } else {
-    $banner_img=base_url("assets/images/resource/mslider1.jpg");
+    $banner_img = base_url("assets/images/resource/mslider1.jpg");
 } ?>
 <section class="overlape">
     <div class="block no-padding">
-        <div data-velocity="-.1" style="background: url('<?= $banner_img ?>') repeat scroll 50% 422.28px transparent;" class="parallax scrolly-invisible no-parallax"></div>
+        <div data-velocity="-.1" style="background: url('<?= $banner_img ?>') repeat scroll 50% 422.28px transparent;"
+            class="parallax scrolly-invisible no-parallax"></div>
         <div class="container fluid">
             <div class="row">
                 <div class="col-lg-12">
@@ -44,9 +45,13 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                                     <div id="profile">
                                                         <div class="wrap">
                                                             <?php if (@$get_user->profilePic && file_exists('uploads/users/' . @$get_user->profilePic)) { ?>
-                                                                <img id="profile-img" src="<?= base_url('uploads/users/' . @$get_user->profilePic) ?>" class="online" alt="" />
+                                                                <img id="profile-img"
+                                                                    src="<?= base_url('uploads/users/' . @$get_user->profilePic) ?>"
+                                                                    class="online" alt="" />
                                                             <?php } else { ?>
-                                                                <img id="profile-img" src="<?= base_url('uploads/no_pimage.png') ?>" class="online" alt="" />
+                                                                <img id="profile-img"
+                                                                    src="<?= base_url('uploads/no_pimage.png') ?>"
+                                                                    class="online" alt="" />
                                                             <?php } ?>
                                                             <p>
                                                                 <?php if (!empty($get_user->firstname)) {
@@ -85,7 +90,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                                         $tab_heading = "All Users";
                                                         $placeholder = "Search by User";
                                                     } ?>
-                                                    <div id="contacts">
+                                                    <div id="contacts" style="height: calc(100% - 110px) !important;">
                                                         <div id="tabs">
                                                             <ul>
                                                                 <li><a href="#tab-1"><?= $tab_heading ?></a></li>
@@ -93,25 +98,29 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                                             </ul>
                                                             <div id="tab-1">
                                                                 <div id="search">
-                                                                    <input type="text" id="search_professional_all" placeholder="<?= $placeholder ?>" />
+                                                                    <input type="text" id="search_professional_all"
+                                                                        placeholder="<?= $placeholder ?>" />
                                                                 </div>
                                                                 <ul style="display: inline-block; width: 100%;">
                                                                     <?php
                                                                     if (@$_SESSION['afrebay']['userType'] == '1') {
                                                                         $userList = $this->db->query("SELECT * FROM users WHERE userType = '2' AND status = '1' AND email_verified = '1'")->result();
                                                                     } else {
-                                                                        $userList = $this->db->query("SELECT * FROM users WHERE userType = '2' AND status = '1' AND email_verified = '1' AND userId != '".@$_SESSION['afrebay']['userId']."'")->result();
+                                                                        $userList = $this->db->query("SELECT * FROM users WHERE userType = '2' AND status = '1' AND email_verified = '1' AND userId != '" . @$_SESSION['afrebay']['userId'] . "'")->result();
                                                                     }
                                                                     //echo "<pre>"; print_r($userList); die();
                                                                     if (!empty($userList)) {
                                                                         foreach ($userList as $user) { ?>
-                                                                            <li class="contact contactList_all" onclick="return getuser('<?= $user->userId ?>');">
+                                                                            <li class="contact contactList_all"
+                                                                                onclick="return getuser('<?= $user->userId ?>');">
                                                                                 <div class="wrap">
                                                                                     <span class="contact-status online"></span>
                                                                                     <?php if (@$user->profilePic && file_exists('uploads/users/' . @$user->profilePic)) { ?>
-                                                                                        <img src="<?= base_url('uploads/users/' . @$user->profilePic) ?>" alt="" />
+                                                                                        <img src="<?= base_url('uploads/users/' . @$user->profilePic) ?>"
+                                                                                            alt="" />
                                                                                     <?php } else { ?>
-                                                                                        <img src="<?= base_url('uploads/no_pimage.png') ?>" alt="" />
+                                                                                        <img src="<?= base_url('uploads/no_pimage.png') ?>"
+                                                                                            alt="" />
                                                                                     <?php } ?>
                                                                                     <div class="meta">
                                                                                         <p class="name">
@@ -124,13 +133,14 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                                                                     </div>
                                                                                 </div>
                                                                             </li>
-                                                                    <?php }
+                                                                        <?php }
                                                                     } ?>
                                                                 </ul>
                                                             </div>
                                                             <div id="tab-2">
                                                                 <div id="search">
-                                                                    <input type="text" id="search_professional_recent" placeholder="<?= $placeholder ?>" />
+                                                                    <input type="text" id="search_professional_recent"
+                                                                        placeholder="<?= $placeholder ?>" />
                                                                 </div>
                                                                 <ul style="display: inline-block; width: 100%;">
                                                                     <?php
@@ -152,13 +162,16 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
 
                                                                     if (!empty($userList)) {
                                                                         foreach ($userList as $user) { ?>
-                                                                            <li class="contact contactList_recent" onclick="return getuser('<?= $user->userId ?>');">
+                                                                            <li class="contact contactList_recent"
+                                                                                onclick="return getuser('<?= $user->userId ?>');">
                                                                                 <div class="wrap">
                                                                                     <span class="contact-status online"></span>
                                                                                     <?php if (@$user->profilePic && file_exists('uploads/users/' . @$user->profilePic)) { ?>
-                                                                                        <img src="<?= base_url('uploads/users/' . @$user->profilePic) ?>" alt="" />
+                                                                                        <img src="<?= base_url('uploads/users/' . @$user->profilePic) ?>"
+                                                                                            alt="" />
                                                                                     <?php } else { ?>
-                                                                                        <img src="<?= base_url('uploads/no_pimage.png') ?>" alt="" />
+                                                                                        <img src="<?= base_url('uploads/no_pimage.png') ?>"
+                                                                                            alt="" />
                                                                                     <?php } ?>
                                                                                     <div class="meta">
                                                                                         <p class="name">
@@ -171,7 +184,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                                                                     </div>
                                                                                 </div>
                                                                             </li>
-                                                                    <?php }
+                                                                        <?php }
                                                                     } ?>
                                                                 </ul>
                                                             </div>
@@ -180,17 +193,23 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                                                 </div>
                                                 <div class="content">
                                                     <img class="chat-start-img" src="assets/images/chat-start-img.png">
-                                                    <div id="message_list" style="height:100%;  overflow-y: scroll;overflow-y: hidden;">
+                                                    <div id="message_list"
+                                                        style="height:100%;  overflow-y: scroll;overflow-y: hidden;">
                                                         </ul>
                                                     </div>
                                                     <div class="message-input">
                                                         <div class="wrap">
-                                                            <input type="hidden" name="userfromid" id="userfromid" value="<?= $_SESSION['afrebay']['userId'] ?>" />
-                                                            <input type="hidden" name="usertoid" id="usertoid" value="" />
+                                                            <input type="hidden" name="userfromid" id="userfromid"
+                                                                value="<?= $_SESSION['afrebay']['userId'] ?>" />
+                                                            <input type="hidden" name="usertoid" id="usertoid"
+                                                                value="" />
                                                             <input type="hidden" name="postid" id="postid" value="" />
-                                                            <input type="text" name="message" id="message" placeholder="Write your message..." />
-                                                            <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-                                                            <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                                            <input type="text" name="message" id="message"
+                                                                placeholder="Write your message..." />
+                                                            <i class="fa fa-paperclip attachment"
+                                                                aria-hidden="true"></i>
+                                                            <button class="submit"><i class="fa fa-paper-plane"
+                                                                    aria-hidden="true"></i></button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -211,12 +230,12 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
     <div class="modal-dialog modal-sm" role="document" style="max-width: 100%;">
         <div class="modal-content">
             <?php
-            $myBidList =  $this->db->query("SELECT postjob.post_title FROM job_bid JOIN postjob on job_bid.postjob_id = postjob.id where job_bid.user_id = '" . $_SESSION['afrebay']['userId'] . "' and job_bid.bidding_status = 'Accept' and job_bid.status = 'Active'")->result_array();
+            $myBidList = $this->db->query("SELECT postjob.post_title FROM job_bid JOIN postjob on job_bid.postjob_id = postjob.id where job_bid.user_id = '" . $_SESSION['afrebay']['userId'] . "' and job_bid.bidding_status = 'Accept' and job_bid.status = 'Active'")->result_array();
             if (!empty($myBidList)) {
                 $i = 1;
                 foreach ($myBidList as $value) { ?>
                     <p><?= $i . ". " . $value['post_title'] ?></p>
-            <?php $i++;
+                    <?php $i++;
                 }
             } ?>
         </div>
@@ -308,6 +327,19 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
 
     .Custom_Chat_Design .ui-widget.ui-widget-content ul li a {
         font-size: 15px !important;
+    }
+
+    .Custom_Chat_Design ul.ui-tabs-nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: #313e4a !important;
+    }
+
+    .Custom_Chat_Design #search {
+        position: sticky;
+        top: 45px;
+        z-index: 10;
     }
 
     .message-input {
@@ -435,7 +467,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
 
     .ui-tabs .ui-tabs-nav li.ui-tabs-active {
         width: 46% !important;
-        background: linear-gradient(145deg, rgba(32,67,135,1) 0%, rgba(65,204,121,1) 40%, rgba(128,224,149,1) 70%, rgba(165,236,129,1) 100%) !important;
+        background: linear-gradient(145deg, rgba(32, 67, 135, 1) 0%, rgba(65, 204, 121, 1) 40%, rgba(128, 224, 149, 1) 70%, rgba(165, 236, 129, 1) 100%) !important;
         border: none !important;
         color: #fff !important;
         border-radius: 10px !important;
@@ -477,31 +509,32 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         Typekit.load({
             async: true
         });
-    } catch (e) {}
+    } catch (e) { }
 </script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script>
     var jq = jQuery.noConflict();
-    jq(document).ready(function() {
+    jq(document).ready(function () {
         jq("#tabs").tabs();
     });
 </script>
-<script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script>
+<script
+    src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script>
 <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
 <script>
     $(".messages").animate({
         scrollTop: $(document).height()
     }, "fast");
-    $("#profile-img").click(function() {
+    $("#profile-img").click(function () {
         $("#status-options").toggleClass("active");
     });
-    $(".expand-button").click(function() {
+    $(".expand-button").click(function () {
         $("#profile").toggleClass("expanded");
         $("#contacts").toggleClass("expanded");
     });
-    $("#status-options ul li").click(function() {
+    $("#status-options ul li").click(function () {
         $("#profile-img").removeClass();
         $("#status-online").removeClass("active");
         $("#status-away").removeClass("active");
@@ -541,8 +574,8 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                 message: message
             },
             dataType: 'json',
-            success: function(returndata) {
-                setInterval(function() {
+            success: function (returndata) {
+                setInterval(function () {
                     getMessageCount();
                 }, 5000);
                 if (returndata.result == 1) {
@@ -554,18 +587,18 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
             }
         });
     }
-    $("#message").mouseover(function() {
+    $("#message").mouseover(function () {
         $('.EachvChat').hide();
         $('.EachfChat').hide();
-        setInterval(function() {
+        setInterval(function () {
             getMessage();
             getMessageCount();
         }, 5000);
     });
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('.EachvChat').hide();
         $('.EachfChat').hide();
-        $('#search_professional_all').on('input', function(e) {
+        $('#search_professional_all').on('input', function (e) {
             let lists = document.querySelectorAll('.contactList_all')
             lists.forEach((list) => {
                 if (!list.innerHTML.toLowerCase().includes(e.target.value.toLowerCase())) {
@@ -575,7 +608,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                 }
             })
         })
-        $('#search_professional_recent').on('input', function(e) {
+        $('#search_professional_recent').on('input', function (e) {
             let lists = document.querySelectorAll('.contactList_recent')
             lists.forEach((list) => {
                 if (!list.innerHTML.toLowerCase().includes(e.target.value.toLowerCase())) {
@@ -600,7 +633,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                 postid: postid
             },
             dataType: 'json',
-            success: function(result) {
+            success: function (result) {
                 $('#message_list').html(result);
                 $(".messages").scrollTop(10000000);
             }
@@ -620,7 +653,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                 postid: postid
             },
             dataType: 'json',
-            success: function(result) {
+            success: function (result) {
                 <?php if (@$_SESSION['afrebay']['userType'] == '2') { ?>
                     if (result.count > 0) {
                         $('.EachChatv').hide();
@@ -643,10 +676,10 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
             }
         });
     }
-    $('.submit').click(function() {
+    $('.submit').click(function () {
         newMessage();
     });
-    $(window).on('keydown', function(e) {
+    $(window).on('keydown', function (e) {
         if (e.which == 13) {
             newMessage();
             return false;
@@ -689,7 +722,7 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
                 post_id: post_id
             },
             dataType: 'json',
-            success: function(result) {
+            success: function (result) {
                 $('#message_list').html(result);
                 $(".messages").scrollTop(10000000);
                 $('.message-input').show();
@@ -702,12 +735,12 @@ if(!empty($get_banner->image) && file_exists('uploads/banner/'.$get_banner->imag
         var callPath = "<?php echo base_url('livevideo/video/'); ?>" + fid;
         window.open(callPath, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=250,left=20,width=600,height=450");
     }
-    $(function() {
-        $('#showBidList').mouseover(function() {
+    $(function () {
+        $('#showBidList').mouseover(function () {
             $(".modal").addClass('showBidListContent');
         });
 
-        $('#showBidList').mouseout(function() {
+        $('#showBidList').mouseout(function () {
             $(".modal").removeClass('showBidListContent');
         });
     })

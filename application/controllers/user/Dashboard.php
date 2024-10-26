@@ -71,7 +71,7 @@ class Dashboard extends CI_Controller {
 			}
 		}
 
-		if ($_FILES['backgroundPic']['name'] != '') {
+		/*if ($_FILES['backgroundPic']['name'] != '') {
 			$src = $_FILES['backgroundPic']['tmp_name'];
 			$filEnc = time();
 			$avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'];
@@ -87,7 +87,33 @@ class Dashboard extends CI_Controller {
 			} else {
 				$bimage  = '';
 			}
-		}
+		}*/
+		if (!empty($_FILES['backgroundPic']['size'])) {
+        	$count = count($_FILES['backgroundPic']['name']);
+        	for ($i=0; $i < $count; $i++) {
+	            $src = $_FILES['backgroundPic']['tmp_name'][$i];
+	            $filEnc = time();
+	            $avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'][$i];
+	            $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+	            $dest = getcwd() . '/uploads/users/background/' . $avatar1;
+	            if (move_uploaded_file($src, $dest)) {
+	                $bimage  = $avatar1;
+	            }
+				if(!empty($bimage)) {
+					$file  = $bimage;
+				} else if(!empty($_POST['old_bimage'])) {
+					$file  = $_POST['old_bimage'];
+				} else {
+					$file  = "";
+				}
+	            $details_data = array(
+                    'user_id'=> $_SESSION['afrebay']['userId'],
+                    'filecontent'=> $file,
+                    'created_at'=> date('Y-m-d H:m:s')
+                );
+                $this->Crud_model->SaveData('user_background',$details_data);
+	        }
+        }
 		/*if ($_FILES['resume']['name'] != '') {
 			$src = $_FILES['resume']['tmp_name'];
 			$filEnc = time();
@@ -195,7 +221,8 @@ class Dashboard extends CI_Controller {
                 'lastname' => $_POST['lastname'],
                 'profilePic' => $image,
                 'email' => $_POST['email'],
-                'backgroundPic' => $bimage,
+                'rate_enabled' => $_POST['rate_enabled'],
+                //'backgroundPic' => $bimage,
                 'zip' => $_POST['zip'],
                 'short_bio' => $_POST['short_bio'],
             );
