@@ -1951,7 +1951,7 @@ label::after {
   float: left;
   width: 100%;
   text-align: center;
-  border-top: 1px solid #e8ecec;
+  /* border-top: 1px solid #e8ecec; */
   font-family: Open Sans;
   font-size: 13px;
   padding: 17px 0;

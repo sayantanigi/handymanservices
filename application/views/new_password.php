@@ -47,10 +47,9 @@ $email=base64_decode($seg2);
                                 </div>
                                 <div class="error text-left" id="err_confirmpassword"></div>
                                 <span id="matchPass2"></span>
-
                                 <button type="button" onclick="newpassword()" class="frgt_pass">Submit</button>
                             </form>
-
+                            <h6 class="mb-0 font-weight-bold text-dark" style="display: inline-block; margin-top: 25px;"><a href="<?= base_url('login'); ?>" class="text-primary">Sign in</a></h6>
                         </div>
                     </div>
                 </div>

@@ -225,7 +225,7 @@ class Login extends CI_Controller {
 					'email'=>$get_email->email
 				);
 				$get_setting=$this->Crud_model->get_single('setting');
-				$htmlContent = "<div style='width:600px; margin: 0 auto;background: #fff;border: 1px solid #e6e6e6;'><div style='padding: 30px 30px 15px 30px;box-sizing: border-box;'><img src='cid:Logo' style='width:100px;float: right;margin-top: 0 auto;'><h3 style='padding-top:40px; line-height: 30px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Handyman Services</span></h3><p style='font-size:24px;'>Hello User,</p><p style='font-size:24px;'>Trouble signing in? Resetting your password is easy.</p><p style='font-size:24px;'>Just press the button below and follow the instructions.</p><p style='text-align: center;'><a href='".base_url('new-password/'.base64_encode($get_email->email))."' style='height: 50px; width: 300px; background: rgb(253,179,2); background: linear-gradient(0deg, rgba(253,179,2,1) 0%, rgba(244,77,9,1) 100%); text-align: center; font-size: 18px; color: #fff; border-radius: 12px; display: inline-block; line-height: 50px; text-decoration: none; text-transform: uppercase; font-weight: 600;'>CLICK HERE TO RESET</a></p><p style='font-size:20px;'>Thank you!</p><p style='font-size:20px;list-style: none;'>Sincerly</p><p style='list-style: none;'><b>Handyman Services</b></p><p style='list-style:none;'><b>Visit us:</b> <span>$get_setting->address</span></p><p style='list-style:none'><b>Email us:</b> <span>$get_setting->email</span></p></div><table style='width: 100%;'><tr><td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Handyman Services. All rights reserved.</td></tr></table></div>";
+				$htmlContent = "<div style='width:600px; margin: 0 auto;background: #fff;border: 1px solid #e6e6e6;'><div style='padding: 30px 30px 15px 30px;box-sizing: border-box;'><img src='cid:Logo' style='width:100px;float: right;margin-top: 0 auto;'><h3 style='padding-top:40px; line-height: 30px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'> Side Quote</span></h3><p style='font-size:24px;'>Hello User,</p><p style='font-size:24px;'>Trouble signing in? Resetting your password is easy.</p><p style='font-size:24px;'>Just press the button below and follow the instructions.</p><p style='text-align: center;'><a href='".base_url('new-password/'.base64_encode($get_email->email))."' style='height: 50px; width: 300px; background: rgb(253,179,2); background: linear-gradient(0deg, rgba(253,179,2,1) 0%, rgba(244,77,9,1) 100%); text-align: center; font-size: 18px; color: #fff; border-radius: 12px; display: inline-block; line-height: 50px; text-decoration: none; text-transform: uppercase; font-weight: 600;'>CLICK HERE TO RESET</a></p><p style='font-size:20px;'>Thank you!</p><p style='font-size:20px;list-style: none;'>Sincerly</p><p style='list-style: none;'><b>Side Quote</b></p><p style='list-style:none;'><b>Visit us:</b> <span>$get_setting->address</span></p><p style='list-style:none'><b>Email us:</b> <span>$get_setting->email</span></p></div><table style='width: 100%;'><tr><td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Side Quote. All rights reserved.</td></tr></table></div>";
 				require 'vendor/autoload.php';
 				$mail = new PHPMailer(true);
 				try {
@@ -233,7 +233,7 @@ class Login extends CI_Controller {
 					$mail->SetFrom('support@sidequote.com', 'Side Quote');
 					$mail->AddAddress($_POST['email']);
 					$mail->IsHTML(true);
-					$mail->Subject = "Forgot Password Confirmation message from Handyman Services";
+					$mail->Subject = "Forgot Password Confirmation message from Side Quote";
 					$mail->AddEmbeddedImage('uploads/logo/'.$get_setting->flogo, 'Logo');
 					$mail->Body = $htmlContent;
 					$mail->IsSMTP();
@@ -249,7 +249,7 @@ class Login extends CI_Controller {
 					$this->session->set_flashdata('message', 'Something went wrong. Please try again later!');
 				}
          	} else {
-				$this->session->set_flashdata('error', 'invalid Email Id!');
+				$this->session->set_flashdata('error', 'Email address is not registered with us. Please register this email address.');
    			}
 			redirect(base_url('forgot-password'));
 		}
