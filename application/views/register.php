@@ -45,7 +45,7 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                         </div>
                                         <form id="signUp_form" action="#" method="post">
                                             <div class="row m-0">
-                                                <div class="col-lg-12">
+                                                <!-- <div class="col-lg-12">
                                                     <div class="extra-login reg mb-3">
                                                         <div class="mb-3">
                                                             <a class="socialBtn" href="#" title=""><img src="<?= base_url(); ?>assets/images/google-icon.png"> Continue with Google</a>
@@ -53,7 +53,7 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                                         </div>
                                                         <span>OR</span>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="col-lg-6 col-md-6 col-sm-6 first_name">
                                                     <div class="cfield cfield_top">
                                                         <div class="cfield_Input">
@@ -119,11 +119,21 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                 </div>
                             </div>
                         </div>
-                        <div class="logForm" style="width :100%; margin-top: 10px; display: flex; float: left; margin-right: 20px;">
+                        <div class="logForm" style="width :48%; margin-top: 10px; display: flex; float: left; margin-right: 20px;">
                             <div class="col-lg-12 text-center">
                                 <a href="<?= base_url() ?>login" class="text-primary font-weight-bold">Sign In</a>
                             </div>
                         </div>
+                        <div class="logForm" style="width :48%; margin-top: 10px; display: flex; float: left; padding: 19px;">
+                        <div class="col-lg-12 text-center">
+                            <form id="signUp_form" action="<?= base_url()?>view_as_guest" method="post">
+                                <input type="hidden" name="location_guest" id="location_guest" value="<?= @$loc ?>" placeholder="Set Location" />
+                                <input type="hidden" id="search_lat_guest" name="s_lat_guest" value="<?= @$lat ?>">
+                                <input type="hidden" id="search_lon_guest" name="s_lon_guest" value="<?= @$lon ?>">
+                                <input type="submit" class="text-primary font-weight-bold" name="submit" value="Proceed as Guest" style="border: none; background: none;">
+                            </form>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>

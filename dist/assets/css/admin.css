@@ -848,8 +848,8 @@ button.bg-danger:hover {
 }
 
 .btn-primary {
-
-	background: linear-gradient(145deg, rgba(32, 67, 135, 1) 0%, rgba(97, 128, 190, 1) 25%, rgba(128, 224, 149, 1) 70%, rgba(165, 236, 129, 1) 100%) !important;
+	/* background: linear-gradient(145deg, rgba(32, 67, 135, 1) 0%, rgba(97, 128, 190, 1) 25%, rgba(128, 224, 149, 1) 70%, rgba(165, 236, 129, 1) 100%) !important; */
+    background: #2892ff !important;
 	border: none !important;
 
 }
@@ -4661,7 +4661,8 @@ small.help-block {
 
 	height: 50vh;
 
-	background: linear-gradient(145deg, rgba(32, 67, 135, 1) 0%, rgba(97, 128, 190, 1) 25%, rgba(128, 224, 149, 1) 70%, rgba(165, 236, 129, 1) 100%) !important;
+	/* background: linear-gradient(145deg, rgba(32, 67, 135, 1) 0%, rgba(97, 128, 190, 1) 25%, rgba(128, 224, 149, 1) 70%, rgba(165, 236, 129, 1) 100%) !important; */
+    background: #2892ff !important;
 
 	border-radius: 0 0 2.5rem 2.5rem;
 

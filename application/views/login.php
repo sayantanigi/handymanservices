@@ -6,31 +6,13 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
     $banner_img = base_url("assets/images/resource/mslider1.jpg");
 } ?>
 <style>
-    /*.text-success-msg {display: none;}*/
-    .text-invalid {
-        color: red;
-    }
-
-    .text-danger {
-        display: none;
-    }
-
-    .text-error {
-        display: none;
-    }
-
-    #forgotpass_message {
-        text-align: center;
-        margin-top: 10px;
-    }
-
-    .bottom-line .scrollup {
-        display: none;
-    }
-
-    header {
-        display: none !important;
-    }
+/*.text-success-msg {display: none;}*/
+.text-invalid {color: red;}
+.text-danger {display: none;}
+.text-error {display: none;}
+#forgotpass_message {text-align: center; margin-top: 10px;}
+.bottom-line .scrollup {display: none;}
+header {display: none !important;}
 </style>
 
 <section class="max_height">
@@ -103,7 +85,7 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                             <div class="col-lg-12 col-md-12 col-sm-12 SignIn_Btn">
                                                 <button type="submit" class="btn logbtn w-100 Gradient_Back_Color">Log In</button>
                                             </div>
-                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <!-- <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <div class="extra-login">
                                                     <span>OR</span>
                                                     <div class="mt-3">
@@ -111,7 +93,7 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                                         <a class="socialBtn" href="#" title=""><img src="<?= base_url(); ?>assets/images/apple-icon.png"> Continue with Apple</a>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </form>
                                 </div>

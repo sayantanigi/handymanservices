@@ -135,7 +135,7 @@ $(function () {
                 <div class="container-fluid Header_Menu_Nav">
                     <div class="d-flex align-items-center">
                         <div class="logo mr-2">
-                            <?php if (!empty(@$_SESSION['afrebay']['userId'])) { ?>
+                            <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
                             <a href="<?= base_url(); ?>homepage" title="">
                                 <img class="hidesticky" src="<?= base_url(); ?>uploads/logo/<?= $get_setting->logo ?>" alt="" />
                                 <img class="showsticky" src="<?= base_url(); ?>uploads/logo/<?= $get_setting->logo ?>" alt="" />

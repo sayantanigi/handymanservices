@@ -71,118 +71,31 @@ class Dashboard extends CI_Controller {
 			}
 		}
 
-        if(!empty($_POST['uid'])){
-            if (!empty($_FILES['backgroundPic']['size'])) {
-                $count = count($_FILES['backgroundPic']['name']);
-                for ($i=0; $i < $count; $i++) {
-                    $src = $_FILES['backgroundPic']['tmp_name'][$i];
-                    $filEnc = time();
-                    $avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'][$i];
-                    $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
-                    $dest = getcwd() . '/uploads/users/background/' . $avatar1;
-                    if (move_uploaded_file($src, $dest)) {
-                        $bimage  = $avatar1;
-                    }
-                    if(!empty($bimage)) {
-                        $file  = $bimage;
-                    } else if(!empty($_POST['old_bimage'])) {
-                        $file  = $_POST['old_bimage'];
-                    } else {
-                        $file  = "";
-                    }
-                    if(!empty($file)){
-                        $details_data = array(
-                            'user_id'=> $_POST['uid'],
-                            'filecontent'=> $file,
-                            'created_at'=> date('Y-m-d H:m:s')
-                        );
-                        $this->Crud_model->SaveData('user_background',$details_data);
-                    }
+        if (!empty($_FILES['backgroundPic']['size'])) {
+            $count = count($_FILES['backgroundPic']['name']);
+            for ($i=0; $i < $count; $i++) {
+                $src = $_FILES['backgroundPic']['tmp_name'][$i];
+                $filEnc = time();
+                $avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'][$i];
+                $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+                $dest = getcwd() . '/uploads/users/background/' . $avatar1;
+                if (move_uploaded_file($src, $dest)) {
+                    $bimage  = $avatar1;
                 }
-            }
-        } else {
-            if (!empty($_FILES['backgroundPic']['size'])) {
-                $count = count($_FILES['backgroundPic']['name']);
-                for ($i=0; $i < $count; $i++) {
-                    $src = $_FILES['backgroundPic']['tmp_name'][$i];
-                    $filEnc = time();
-                    $avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'][$i];
-                    $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
-                    $dest = getcwd() . '/uploads/users/background/' . $avatar1;
-                    if (move_uploaded_file($src, $dest)) {
-                        $bimage  = $avatar1;
-                    }
-                    if(!empty($bimage)) {
-                        $file  = $bimage;
-                    } else if(!empty($_POST['old_bimage'])) {
-                        $file  = $_POST['old_bimage'];
-                    } else {
-                        $file  = "";
-                    }
-                    if(!empty($file)){
-                        $details_data = array(
-                            'user_id'=> $_SESSION['afrebay']['userId'],
-                            'filecontent'=> $file,
-                            'created_at'=> date('Y-m-d H:m:s')
-                        );
-                        $this->Crud_model->SaveData('user_background',$details_data);
-                    }
+                if(!empty($bimage)) {
+                    $file  = $bimage;
+                } else if(!empty($_POST['old_background'])) {
+                    $file  = $_POST['old_background'];
+                } else {
+                    $file  = "";
                 }
-            }
-        }
-
-        if(!empty($_POST['uid'])){
-            if (!empty($_FILES['work_sample']['size'])) {
-                $count = count($_FILES['work_sample']['name']);
-                for ($i=0; $i < $count; $i++) {
-                    $src = $_FILES['work_sample']['tmp_name'][$i];
-                    $filEnc = time();
-                    $avatar = rand(0000, 9999) . "_" . $_FILES['work_sample']['name'][$i];
-                    $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
-                    $dest = getcwd() . '/uploads/users/work_sample/' . $avatar1;
-                    if (move_uploaded_file($src, $dest)) {
-                        $file1  = $avatar1;
-                    }
-                    if(!empty($file1)) {
-                        $file  = $file1;
-                    } else if(!empty($_POST['old_work_sample'])) {
-                        $file  = $_POST['old_work_sample'];
-                    } else {
-                        $file  = "";
-                    }
-                    $details_data = array(
-                        'user_id'=> $_POST['uid'],
-                        'work_sample'=> $file,
-                        'created_at'=> date('Y-m-d H:m:s')
-                    );
-                    $this->Crud_model->SaveData('users_work_sample',$details_data);
-                }
-            }
-        } else {
-            if (!empty($_FILES['work_sample']['size'])) {
-                $count = count($_FILES['work_sample']['name']);
-                for ($i=0; $i < $count; $i++) {
-                    $src = $_FILES['work_sample']['tmp_name'][$i];
-                    $filEnc = time();
-                    $avatar = rand(0000, 9999) . "_" . $_FILES['work_sample']['name'][$i];
-                    $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
-                    $dest = getcwd() . '/uploads/users/work_sample/' . $avatar1;
-                    if (move_uploaded_file($src, $dest)) {
-                        $file1  = $avatar1;
-                    }
-                    if(!empty($file1)) {
-                        $file  = $file1;
-                    } else if(!empty($_POST['old_work_sample'])) {
-                        $file  = $_POST['old_work_sample'];
-                    } else {
-                        $file  = "";
-                    }
+                if(!empty($file)){
                     $details_data = array(
                         'user_id'=> $_SESSION['afrebay']['userId'],
-                        'work_sample'=> $file,
+                        'filecontent'=> $file,
                         'created_at'=> date('Y-m-d H:m:s')
                     );
-                    $this->Crud_model->SaveData('users_work_sample',$details_data);
+                    $this->Crud_model->SaveData('user_background',$details_data);
                 }
             }
         }
@@ -1669,14 +1582,21 @@ class Dashboard extends CI_Controller {
         $year = $_POST['year'];
         $postedBy = $_POST['postedBy'];
         $privacy = $_POST['privacy'];
-        if(isset($year) || isset($postedBy) || isset($privacy)) {
+        $category = $_POST['category'];
+        $filterType = $_POST['filterType'];
+        $specificDate = $_POST['specificDate'];
+        $fromDate = $_POST['fromDate'];
+        $toDate = $_POST['toDate'];
+        if(isset($year) || isset($postedBy) || isset($privacy) || isset($filterType) || isset($specificDate) || isset($fromDate) ||  isset($toDate)) {
             $query = "SELECT * FROM postjob WHERE status = 'Active'";
-            if(!empty($year)) {
-                $query .= " AND created_date like '%".$year."%'";
-            }
+            // if(!empty($year)) {
+            //     $query .= " AND created_date like '%".$year."%'";
+            // }
             if(!empty($postedBy)) {
                 if($postedBy == '2') {
                     $query .= " AND user_id = '".$_SESSION['afrebay']['userId']."'";
+                } else if($postedBy == '1') {
+                    $query .= " AND user_id != '".$_SESSION['afrebay']['userId']."'";
                 } else {
                     $query .= " AND 1=1";
                 }
@@ -1684,6 +1604,29 @@ class Dashboard extends CI_Controller {
             if(!empty($privacy)) {
                 $query .= " AND visibility = '".$privacy."'";
             }
+            if(!empty($category)) {
+                $query .= " AND category_id = '".$category."'";
+            }
+            if(!empty($filterType)) {
+                if($filterType == 'last30') {
+                    $query .= " AND created_date >= CURDATE() - INTERVAL 30 DAY";
+                } else if($filterType == 'today') {
+                    $query .= " AND created_date >= CURDATE()";
+                } else if($filterType == 'yesterday') {
+                    $query .= " AND created_date >= CURDATE() - INTERVAL 1 DAY AND created_date < CURDATE()";
+                } else if($filterType == 'thisWeek') {
+                    $query .= " AND created_date BETWEEN '".$fromDate."' AND '".$toDate."'";
+                } else if($filterType == 'thisMonth') {
+                    $query .= " AND created_date BETWEEN '".$fromDate."' AND '".$toDate."'";
+                } else if($filterType == 'specificDate') {
+                    $query .= " AND created_date BETWEEN '".$fromDate."' AND '".$toDate."'";
+                } else if($filterType == 'byYear') {
+                    $query .= " AND created_date like '%".$year."%'";
+                } else {
+                    $query .= " AND 1=1";
+                }
+            }
+
             $get_post = $this->db->query($query)->result();
         }
         if (!empty($get_post)) {
@@ -1722,9 +1665,9 @@ class Dashboard extends CI_Controller {
                         </div>
                         <p class="CommentData" style="margin-top: 15px;margin-bottom:8px;font-size: 14px;color: #000;line-height: 25px;"><?= ucfirst($row->post_title) ?></p>
                         <?php if(!empty($row->category_id)) {
-                                            $get_category = $this->db->query("SELECT * FROM category WHERE id = '".$row->category_id."'")->row();
-                                        } ?>
-                                        <p class="CommentData" style="margin-top: 8px;margin-bottom: 8px;font-size: 14px;color: #2892ff;line-height: 18px;"> <?= "#".ucfirst(str_replace(' ', '', $get_category->category_name)) ?></p>
+                            $get_category = $this->db->query("SELECT * FROM category WHERE id = '".$row->category_id."'")->row();
+                        } ?>
+                        <p class="CommentData" style="margin-top: 8px;margin-bottom: 8px;font-size: 14px;color: #2892ff;line-height: 18px;"> <?= "#".ucfirst(str_replace(' ', '', $get_category->category_name)) ?></p>
                         <div class="imageData">
                             <?php
                             $getImage = $this->db->query("SELECT * FROM postjob_image WHERE job_id = '".$row->id."'")->result_array();
@@ -1735,7 +1678,7 @@ class Dashboard extends CI_Controller {
                             <div class="box-image<?php if($total_image > 4) {echo $max_display;} else {echo $total_image;} ?>">
                                 <?php
                                 $extension = strtolower(pathinfo($getImage[$i]['job_image'], PATHINFO_EXTENSION));
-                                if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) { ?>
+                                if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'avif', 'webp'])) { ?>
                                 <img src="<?php base_url()?>uploads/postjob/<?= $getImage[$i]['job_image']?>" class="postImageData">
                                 <?php if ($i===$max_display - 1 && $total_image > $max_display) {?>
                                 <div class="extra-images">+<?php echo $total_image - $max_display?></div>

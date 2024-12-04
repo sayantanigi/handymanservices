@@ -35,9 +35,7 @@ function displayStars($rating) {
     $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0;
     $emptyStars = 5 - $fullStars - $halfStar;
 
-    $stars = str_repeat('<i class="fas fa-star"></i>', $fullStars) .
-             str_repeat('<i class="fas fa-star-half-alt"></i>', $halfStar) .
-             str_repeat('<i class="far fa-star"></i>', $emptyStars);
+    $stars = str_repeat('<i class="fas fa-star"></i>', $fullStars) . str_repeat('<i class="fas fa-star-half-alt"></i>', $halfStar) . str_repeat('<i class="far fa-star"></i>', $emptyStars);
 
     return $stars;
 }
@@ -394,291 +392,354 @@ function displayStars($rating) {
                                     <div class="boxuppost">No post available</div>
                                 </div>
                                 <?php } ?>
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 mb-3 order-lg-1">
-                        <div class="add-sidebar1 sticky-top" style="top: 100px !important;">
-                            <?php
-                            if (is_numeric($_SESSION['afrebay']['userId'])) {
-                                $userData = $this->db->query("SELECT * FROM users WHERE userId = '" . @$_SESSION['afrebay']['userId'] . "'")->row();
-                                if (!empty($userData->profilePic) && file_exists('uploads/users/' . $userData->profilePic)) {
-                                    $userProfileImage = base_url('uploads/users/' . $userData->profilePic);
-                                } else {
-                                    $userProfileImage = base_url('uploads/no_pimage.png');
-                                }
-                                /*if (!empty($userData->backgroundPic) && file_exists('uploads/users/background/' . $userData->backgroundPic)) {
-                                    $userBackgroundImage = base_url('uploads/users/background/' . $userData->backgroundPic);
-                                } else {
-                                    $userBackgroundImage = base_url('uploads/no_pimage.png');
-                                }*/
-                                ?>
-                                <div class="ProfileBlock mb-3">
-                                    <div class="profilecover">
-                                        <!-- <img src="<?= $userBackgroundImage ?>"> -->
-                                        <div id="slider">
-                                            <?php
-                                            $getbackgroundimg = $this->db->query("SELECT * FROM user_background WHERE user_id = '".@$_SESSION['afrebay']['userId']."'")->result_array();
-                                            if(!empty($getbackgroundimg)) {
-                                                foreach ($getbackgroundimg as $key => $sample) { ?>
-                                                <div class="slide">
-                                                    <?php
-                                                    $extension = strtolower(pathinfo($sample['filecontent'], PATHINFO_EXTENSION));
-                                                    if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'avif', 'webp'])) { ?>
-                                                    <img src="<?= base_url('uploads/users/background/'.$sample['filecontent']); ?>" alt="Image">
-                                                    <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
-                                                    <video style="width: 288px; height: 130px; object-fit: cover;">
-                                                    <source src="<?= base_url('uploads/users/background/'.$sample['filecontent']); ?>" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                    </video>
-                                                <?php } ?>
-                                                </div>
-                                                <?php }
-                                            } else { ?>
-                                                <div class="slide" style="background:dodgerBlue;">
-                                                    <img src="<?= base_url("assets/images/resource/mslider1.jpg");?>" >
-                                                </div>
-                                            <?php } ?>
-                                            <!--Controlling arrows-->
-                                            <span class="controls" onclick="prevSlide(-1)" id="left-arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></span>
-                                            <span class="controls" id="right-arrow" onclick="nextSlide(1)"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
-                                        </div>
-                                        <div id="dots-con">
-                                            <?php foreach ($getbackgroundimg as $key => $sample) { ?>
-                                            <span class="dot"></span>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                    <div class="profileImg">
-                                        <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
-                                            <img src="<?= $userProfileImage; ?>">
-                                        </a>
-                                    </div>
-                                    <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
-                                        <h2 style="text-transform: lowercase;" class="Primary_Text_Color"><?= "@".$userData->username; ?></h2>
-                                    </a>
-                                    <?php if($get_user->rate_enabled == '1') { ?>
-                                    <p style="line-height: 0px;margin: 0;font-size: 10px;margin-top: 5px;margin-bottom: 10px; text-align: center;">
+                </div>
+                <div class="col-lg-3 mb-3 order-lg-1">
+                    <div class="add-sidebar1 sticky-top" style="top: 100px !important; <?php if (!empty($_SESSION['afrebay']['userType'])) { echo ""; } else {echo 'display: none'; }?>">
+                        <?php
+                        if (is_numeric($_SESSION['afrebay']['userId'])) {
+                            $userData = $this->db->query("SELECT * FROM users WHERE userId = '" . @$_SESSION['afrebay']['userId'] . "'")->row();
+                            if (!empty($userData->profilePic) && file_exists('uploads/users/' . $userData->profilePic)) {
+                                $userProfileImage = base_url('uploads/users/' . $userData->profilePic);
+                            } else {
+                                $userProfileImage = base_url('uploads/no_pimage.png');
+                            }
+                            /*if (!empty($userData->backgroundPic) && file_exists('uploads/users/background/' . $userData->backgroundPic)) {
+                                $userBackgroundImage = base_url('uploads/users/background/' . $userData->backgroundPic);
+                            } else {
+                                $userBackgroundImage = base_url('uploads/no_pimage.png');
+                            }*/
+                            ?>
+                            <div class="ProfileBlock mb-3">
+                                <div class="profilecover">
+                                    <!-- <img src="<?= $userBackgroundImage ?>"> -->
+                                    <div id="slider">
                                         <?php
-                                        $getAverageRatingSql = $this->db->query("SELECT ROUND(AVG(rating),1) as averageRating FROM `employer_rating` where `worker_id` = '" . @$_SESSION['afrebay']['userId'] . "'")->row();
-                                        echo displayStars($getAverageRatingSql->averageRating);
-                                        ?>
-                                    </p>
-                                    <?php } ?>
-                                    <p class="text-center memberinfo">
-                                        <?= 'Member Since ' . date('M Y', strtotime($userData->created)) ?> .
-                                        <!-- <?php if ($userData->userType === '1') {
-                                            echo "Professional";
-                                        } else {
-                                            echo "Customer";
-                                        } ?> -->
-                                    </p>
-                                    <div class="profileInfo d-flex justify-content-between text-center" style="display: none !important">
-                                        <div>
-                                            <h3>
+                                        $getbackgroundimg = $this->db->query("SELECT * FROM user_background WHERE user_id = '".@$_SESSION['afrebay']['userId']."'")->result_array();
+                                        if(!empty($getbackgroundimg)) {
+                                            foreach ($getbackgroundimg as $key => $sample) { ?>
+                                            <div class="slide">
                                                 <?php
-                                                $countPost = $this->db->query("SELECT COUNT(id) as totalPost FROM postjob WHERE user_id = '" . $userData->userId . "'")->row();
-                                                echo $countPost->totalPost;
-                                                ?>
-                                            </h3>
-                                            <h4>Posts</h4>
+                                                $extension = strtolower(pathinfo($sample['filecontent'], PATHINFO_EXTENSION));
+                                                if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'avif', 'webp'])) { ?>
+                                                <img src="<?= base_url('uploads/users/background/'.$sample['filecontent']); ?>" alt="Image">
+                                                <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
+                                                <video style="width: 288px; height: 130px; object-fit: cover;">
+                                                <source src="<?= base_url('uploads/users/background/'.$sample['filecontent']); ?>" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                                </video>
+                                            <?php } ?>
+                                            </div>
+                                            <?php }
+                                        } else { ?>
+                                            <div class="slide" style="background:dodgerBlue;">
+                                                <img src="<?= base_url("assets/images/resource/mslider1.jpg");?>" >
+                                            </div>
+                                        <?php } ?>
+                                        <!--Controlling arrows-->
+                                        <span class="controls" onclick="prevSlide(-1)" id="left-arrow"><i class="fa fa-arrow-left" aria-hidden="true"></i></span>
+                                        <span class="controls" id="right-arrow" onclick="nextSlide(1)"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+                                    </div>
+                                    <div id="dots-con">
+                                        <?php foreach ($getbackgroundimg as $key => $sample) { ?>
+                                        <span class="dot"></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="profileImg">
+                                    <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
+                                        <img src="<?= $userProfileImage; ?>">
+                                    </a>
+                                </div>
+                                <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
+                                    <h2 style="text-transform: lowercase;" class="Primary_Text_Color"><?= "@".$userData->username; ?></h2>
+                                </a>
+                                <?php if($get_user->rate_enabled == '1') { ?>
+                                <p style="line-height: 0px;margin: 0;font-size: 10px;margin-top: 5px;margin-bottom: 10px; text-align: center;">
+                                    <?php
+                                    $getAverageRatingSql = $this->db->query("SELECT ROUND(AVG(rating),1) as averageRating FROM `employer_rating` where `worker_id` = '" . @$_SESSION['afrebay']['userId'] . "'")->row();
+                                    echo displayStars($getAverageRatingSql->averageRating);
+                                    ?>
+                                </p>
+                                <?php } ?>
+                                <p class="text-center memberinfo">
+                                    <?= 'Member Since ' . date('M Y', strtotime($userData->created)) ?> .
+                                    <!-- <?php if ($userData->userType === '1') {
+                                        echo "Professional";
+                                    } else {
+                                        echo "Customer";
+                                    } ?> -->
+                                </p>
+                                <div class="profileInfo d-flex justify-content-between text-center" style="display: none !important">
+                                    <div>
+                                        <h3>
+                                            <?php
+                                            $countPost = $this->db->query("SELECT COUNT(id) as totalPost FROM postjob WHERE user_id = '" . $userData->userId . "'")->row();
+                                            echo $countPost->totalPost;
+                                            ?>
+                                        </h3>
+                                        <h4>Posts</h4>
+                                    </div>
+                                    <div>
+                                        <h3>
+                                            <?php
+                                            $getPostID = $this->db->query("SELECT GROUP_CONCAT(id) as post_id FROM postjob WHERE user_id = '" . @$userData->userId . "'")->row();
+                                            if (!empty($getPostID->post_id)) {
+                                                $commentPost = $this->db->query("SELECT COUNT(id) as total_comment FROM postjob_comment WHERE postjob_id IN (" . @$getPostID->post_id . ")")->row();
+                                                $commentPostrply = $this->db->query("SELECT COUNT(id) as total_commentrply FROM postjob_comment_rply WHERE postjob_id IN (" . @$getPostID->post_id . ")")->row();
+                                            } else {
+                                                $commentPost = 0;
+                                                $commentPostrply = 0;
+                                            }
+                                            echo $total_comment = ($commentPost->total_comment + $commentPostrply->total_commentrply);
+                                            ?>
+                                        </h3>
+                                        <h4>Comments</h4>
+                                    </div>
+                                    <div>
+                                        <h3>
+                                            <?php
+                                            if (!empty($getPostID->post_id)) {
+                                                $getPostLike = $this->db->query("SELECT COUNT(id) as total_like FROM postjob_like WHERE postjob_id IN (" . $getPostID->post_id . ")")->row();
+                                                echo $getPostLike->total_like;
+                                            } else {
+                                                echo "0";
+                                            }
+                                            ?>
+                                        </h3>
+                                        <h4>Likes</h4>
+                                    </div>
+                                    <div>
+                                        <h3>
+                                            <?php
+                                            // if($_SESSION['afrebay']['userType'] == "2") {
+                                            //     echo "SELECT COUNT(id) as review FROM employer_rating WHERE worker_id = '".$_SESSION['afrebay']['userId']."'";
+                                            //     $getreview = $this->db->query("SELECT COUNT(id) as review FROM employer_rating WHERE worker_id = '".$_SESSION['afrebay']['userId']."'")->row();
+                                            // } else {
+                                            //     echo "SELECT COUNT(id) as review FROM employer_rating WHERE employer_id = '".$_SESSION['afrebay']['userId']."'";
+                                            //     $getreview = $this->db->query("SELECT COUNT(id) as review FROM employer_rating WHERE employer_id = '".$_SESSION['afrebay']['userId']."'")->row();
+                                            // }
+                                            $getreview = $this->db->query("SELECT COUNT(id) as review FROM employer_rating WHERE worker_id = '".$_SESSION['afrebay']['userId']."'")->row();
+                                            if (!empty($getreview->review)) {
+                                                echo $getreview->review;
+                                            } else {
+                                                echo "0";
+                                            }
+                                            ?>
+                                        </h3>
+                                        <h4>Reviews</h4>
+                                    </div>
+                                </div>
+                                <?php
+                                $uid = $_SESSION['afrebay']['userType'];
+                                if (@$_SESSION['afrebay']['userType'] == '1') { ?>
+                                    <a href="<?php echo base_url("professionals_detail/" . base64_encode($_SESSION['afrebay']['userId'])) ?>"
+                                        title="" class="profileBtn Gradient_Back_Color" style="color: #fff;">My Profile</a>
+                                <?php } else { ?>
+                                    <a href="<?php echo base_url("customer_detail/" . base64_encode($_SESSION['afrebay']['userId'])) ?>"
+                                        title="" class="profileBtn Gradient_Back_Color" style="color: #fff;">My Profile</a>
+                                <?php } ?>
+                            </div>
+                        <?php } ?>
+                        <div class="activityBox mb-3">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h6 class="font-weight-bold">Activity</h6>
+                                <!-- <div><a href="#" class="seeall">See All</a></div> -->
+                            </div>
+                            <?php
+                            $getPostData = $this->db->query("SELECT GROUP_CONCAT(id) as id FROM postjob WHERE user_id = '" . $_SESSION['afrebay']['userId'] . "'")->row();
+                            if (!empty($getPostData->id)) {
+                                $checkPostLike = $this->db->query("SELECT * FROM postjob_like WHERE postjob_id IN (" . $getPostData->id . ") AND is_liked = '1' AND user_id != '".$_SESSION['afrebay']['userId']."'ORDER BY id DESC")->result_array();
+                                foreach ($checkPostLike as $postLike) {
+                                    $getUserDetails = $this->db->query("SELECT * FROM users WHERE userId = '" . $postLike['user_id'] . "'")->row();
+                                    if (!empty($getUserDetails->profilePic) && file_exists('uploads/users/' . $getUserDetails->profilePic)) {
+                                        $profilePic = base_url() . 'uploads/users/' . $getUserDetails->profilePic;
+                                    } else {
+                                        $profilePic = base_url() . 'uploads/no_pimage.png';
+                                    }
+                                    if (!empty($getUserDetails->companyname)) {
+                                        $fullname = $getUserDetails->companyname;
+                                    } else {
+                                        $fullname = $getUserDetails->firstname . ' ' . $getUserDetails->lastname;
+                                    }
+                                    if ($getUserDetails->userType == '2') {
+                                        $link = base_url('customer_detail/' . base64_encode($getUserDetails->userId));
+                                    } else {
+                                        $link = base_url('professionals_detail/' . base64_encode($getUserDetails->userId));
+                                    }
+                                    ?>
+                                    <div class="d-flex mb-2 activitylist align-items-center">
+                                        <div class="activityUser">
+                                            <a href="javascript:void(0)"><img src="<?= $profilePic; ?>"></a>
                                         </div>
                                         <div>
-                                            <h3>
-                                                <?php
-                                                $getPostID = $this->db->query("SELECT GROUP_CONCAT(id) as post_id FROM postjob WHERE user_id = '" . @$userData->userId . "'")->row();
-                                                if (!empty($getPostID->post_id)) {
-                                                    $commentPost = $this->db->query("SELECT COUNT(id) as total_comment FROM postjob_comment WHERE postjob_id IN (" . @$getPostID->post_id . ")")->row();
-                                                    $commentPostrply = $this->db->query("SELECT COUNT(id) as total_commentrply FROM postjob_comment_rply WHERE postjob_id IN (" . @$getPostID->post_id . ")")->row();
-                                                } else {
-                                                    $commentPost = 0;
-                                                    $commentPostrply = 0;
-                                                }
-                                                echo $total_comment = ($commentPost->total_comment + $commentPostrply->total_commentrply);
-                                                ?>
-                                            </h3>
-                                            <h4>Comments</h4>
-                                        </div>
-                                        <div>
-                                            <h3>
-                                                <?php
-                                                if (!empty($getPostID->post_id)) {
-                                                    $getPostLike = $this->db->query("SELECT COUNT(id) as total_like FROM postjob_like WHERE postjob_id IN (" . $getPostID->post_id . ")")->row();
-                                                    echo $getPostLike->total_like;
-                                                } else {
-                                                    echo "0";
-                                                }
-                                                ?>
-                                            </h3>
-                                            <h4>Likes</h4>
-                                        </div>
-                                        <div>
-                                            <h3>
-                                                <?php
-                                                // if($_SESSION['afrebay']['userType'] == "2") {
-                                                //     echo "SELECT COUNT(id) as review FROM employer_rating WHERE worker_id = '".$_SESSION['afrebay']['userId']."'";
-                                                //     $getreview = $this->db->query("SELECT COUNT(id) as review FROM employer_rating WHERE worker_id = '".$_SESSION['afrebay']['userId']."'")->row();
-                                                // } else {
-                                                //     echo "SELECT COUNT(id) as review FROM employer_rating WHERE employer_id = '".$_SESSION['afrebay']['userId']."'";
-                                                //     $getreview = $this->db->query("SELECT COUNT(id) as review FROM employer_rating WHERE employer_id = '".$_SESSION['afrebay']['userId']."'")->row();
-                                                // }
-                                                $getreview = $this->db->query("SELECT COUNT(id) as review FROM employer_rating WHERE worker_id = '".$_SESSION['afrebay']['userId']."'")->row();
-                                                if (!empty($getreview->review)) {
-                                                    echo $getreview->review;
-                                                } else {
-                                                    echo "0";
-                                                }
-                                                ?>
-                                            </h3>
-                                            <h4>Reviews</h4>
+                                            <h4><a href="<?= $link; ?>" target="_blank"><span class="font-weight-bold"><?= "@".$getUserDetails->username; ?></span> liked your post.</a></h4>
+                                            <p><?php echo get_time_ago(strtotime($postLike['created_at'])) ?></p>
                                         </div>
                                     </div>
-                                    <?php
-                                    $uid = $_SESSION['afrebay']['userType'];
-                                    if (@$_SESSION['afrebay']['userType'] == '1') { ?>
-                                        <a href="<?php echo base_url("professionals_detail/" . base64_encode($_SESSION['afrebay']['userId'])) ?>"
-                                            title="" class="profileBtn Gradient_Back_Color" style="color: #fff;">My Profile</a>
-                                    <?php } else { ?>
-                                        <a href="<?php echo base_url("customer_detail/" . base64_encode($_SESSION['afrebay']['userId'])) ?>"
-                                            title="" class="profileBtn Gradient_Back_Color" style="color: #fff;">My Profile</a>
-                                    <?php } ?>
-                                </div>
-                            <?php } ?>
-                            <div class="activityBox mb-3">
-                                <div class="d-flex justify-content-between mb-3">
-                                    <h6 class="font-weight-bold">Activity</h6>
-                                    <!-- <div><a href="#" class="seeall">See All</a></div> -->
-                                </div>
-                                <?php
-                                $getPostData = $this->db->query("SELECT GROUP_CONCAT(id) as id FROM postjob WHERE user_id = '" . $_SESSION['afrebay']['userId'] . "'")->row();
-                                if (!empty($getPostData->id)) {
-                                    $checkPostLike = $this->db->query("SELECT * FROM postjob_like WHERE postjob_id IN (" . $getPostData->id . ") AND is_liked = '1' AND user_id != '".$_SESSION['afrebay']['userId']."'ORDER BY id DESC")->result_array();
-                                    foreach ($checkPostLike as $postLike) {
-                                        $getUserDetails = $this->db->query("SELECT * FROM users WHERE userId = '" . $postLike['user_id'] . "'")->row();
-                                        if (!empty($getUserDetails->profilePic) && file_exists('uploads/users/' . $getUserDetails->profilePic)) {
-                                            $profilePic = base_url() . 'uploads/users/' . $getUserDetails->profilePic;
-                                        } else {
-                                            $profilePic = base_url() . 'uploads/no_pimage.png';
-                                        }
-                                        if (!empty($getUserDetails->companyname)) {
-                                            $fullname = $getUserDetails->companyname;
-                                        } else {
-                                            $fullname = $getUserDetails->firstname . ' ' . $getUserDetails->lastname;
-                                        }
-                                        if ($getUserDetails->userType == '2') {
-                                            $link = base_url('customer_detail/' . base64_encode($getUserDetails->userId));
-                                        } else {
-                                            $link = base_url('professionals_detail/' . base64_encode($getUserDetails->userId));
-                                        }
-                                        ?>
-                                        <div class="d-flex mb-2 activitylist align-items-center">
-                                            <div class="activityUser">
-                                                <a href="javascript:void(0)"><img src="<?= $profilePic; ?>"></a>
-                                            </div>
-                                            <div>
-                                                <h4><a href="<?= $link; ?>" target="_blank"><span class="font-weight-bold"><?= "@".$getUserDetails->username; ?></span> liked your post.</a></h4>
-                                                <p><?php echo get_time_ago(strtotime($postLike['created_at'])) ?></p>
-                                            </div>
-                                        </div>
-                                    <?php }
-                                } ?>
-                                <?php
-                                $getPostData = $this->db->query("SELECT GROUP_CONCAT(id) as id FROM postjob WHERE user_id = '" . $_SESSION['afrebay']['userId'] . "'")->row();
-                                if (!empty($getPostData->id)) {
-                                    $checkPostLike = $this->db->query("SELECT * FROM postjob_comment WHERE postjob_id IN (" . $getPostData->id . ") AND user_id != '".$_SESSION['afrebay']['userId']."'ORDER BY id DESC")->result_array();
-                                    foreach ($checkPostLike as $postLike) {
-                                        $getUserDetails = $this->db->query("SELECT * FROM users WHERE userId = '" . $postLike['user_id'] . "'")->row();
-                                        if (!empty($getUserDetails->profilePic) && file_exists('uploads/users/' . $getUserDetails->profilePic)) {
-                                            $profilePic = base_url() . 'uploads/users/' . $getUserDetails->profilePic;
-                                        } else {
-                                            $profilePic = base_url() . 'uploads/no_pimage.png';
-                                        }
-                                        if (!empty($getUserDetails->companyname)) {
-                                            $fullname = $getUserDetails->companyname;
-                                        } else {
-                                            $fullname = $getUserDetails->firstname . ' ' . $getUserDetails->lastname;
-                                        }
-                                        if ($getUserDetails->userType == '2') {
-                                            $link = base_url('customer_detail/' . base64_encode($getUserDetails->userId));
-                                        } else {
-                                            $link = base_url('professionals_detail/' . base64_encode($getUserDetails->userId));
-                                        }
-                                        ?>
-                                        <div class="d-flex mb-2 activitylist align-items-center">
-                                            <div class="activityUser">
-                                                <a href="javascript:void(0)"><img src="<?= $profilePic; ?>"></a>
-                                            </div>
-                                            <div>
-                                                <h4><a href="<?= $link; ?>" target="_blank"><span class="font-weight-bold"><?= "@".$getUserDetails->username; ?></span> commented your post.</a></h4>
-                                                <p><?php echo get_time_ago(strtotime($postLike['created_at'])) ?></p>
-                                            </div>
-                                        </div>
-                                    <?php }
-                                } ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 order-lg-3">
-                        <div class="card" style=" margin-top: 32px; background: #fff; padding: 20px; text-align: center; border-radius: 30px; margin-bottom: 18px; ">
-                            <a href="<?= base_url('career-tips')?>">Career Tips</a>
-                        </div>
-                        <div class="add-sidebar1 sticky-top" style="top: 100px !important;">
+                                <?php }
+                            } ?>
                             <?php
-                            $getAdSense = $this->db->query("SELECT * FROM adsense WHERE status = 'Active'")->result_array();
-                            if (!empty($getAdSense)) {
-                                foreach ($getAdSense as $key => $adsense) {
-                                    if (!empty($adsense['link'])) {
-                                        $link = $adsense['link'];
+                            $getPostData = $this->db->query("SELECT GROUP_CONCAT(id) as id FROM postjob WHERE user_id = '" . $_SESSION['afrebay']['userId'] . "'")->row();
+                            if (!empty($getPostData->id)) {
+                                $checkPostLike = $this->db->query("SELECT * FROM postjob_comment WHERE postjob_id IN (" . $getPostData->id . ") AND user_id != '".$_SESSION['afrebay']['userId']."'ORDER BY id DESC")->result_array();
+                                foreach ($checkPostLike as $postLike) {
+                                    $getUserDetails = $this->db->query("SELECT * FROM users WHERE userId = '" . $postLike['user_id'] . "'")->row();
+                                    if (!empty($getUserDetails->profilePic) && file_exists('uploads/users/' . $getUserDetails->profilePic)) {
+                                        $profilePic = base_url() . 'uploads/users/' . $getUserDetails->profilePic;
                                     } else {
-                                        $link = '#';
+                                        $profilePic = base_url() . 'uploads/no_pimage.png';
                                     }
-                                    if (!empty($adsense['image']) && file_exists('uploads/adsense/' . $adsense['image'])) {
-                                        $image = base_url('uploads/adsense/' . $adsense['image']);
+                                    if (!empty($getUserDetails->companyname)) {
+                                        $fullname = $getUserDetails->companyname;
                                     } else {
-                                        $image = base_url('uploads/no_bimage.png');
-                                    } ?>
-                                    <a href="<?= $link; ?>" class="mb-3 d-block"><img src="<?= $image; ?>" class="rounded"
-                                            style="width: 100%; "></a>
+                                        $fullname = $getUserDetails->firstname . ' ' . $getUserDetails->lastname;
+                                    }
+                                    if ($getUserDetails->userType == '2') {
+                                        $link = base_url('customer_detail/' . base64_encode($getUserDetails->userId));
+                                    } else {
+                                        $link = base_url('professionals_detail/' . base64_encode($getUserDetails->userId));
+                                    }
+                                    ?>
+                                    <div class="d-flex mb-2 activitylist align-items-center">
+                                        <div class="activityUser">
+                                            <a href="javascript:void(0)"><img src="<?= $profilePic; ?>"></a>
+                                        </div>
+                                        <div>
+                                            <h4><a href="<?= $link; ?>" target="_blank"><span class="font-weight-bold"><?= "@".$getUserDetails->username; ?></span> commented your post.</a></h4>
+                                            <p><?php echo get_time_ago(strtotime($postLike['created_at'])) ?></p>
+                                        </div>
+                                    </div>
                                 <?php }
                             } ?>
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-3 order-lg-3">
+                    <div class="card" style=" margin-top: 32px; background: #fff; padding: 20px; text-align: center; border-radius: 30px; margin-bottom: 18px; ">
+                        <a href="<?= base_url('career-tips')?>">Career Tips</a>
+                    </div>
+                    <div class="add-sidebar1 sticky-top" style="top: 100px !important; <?php if (!empty($_SESSION['afrebay']['userType'])) { echo ""; } else {echo 'display: none'; }?>">
+                        <?php
+                        $getAdSense = $this->db->query("SELECT * FROM adsense WHERE status = 'Active'")->result_array();
+                        if (!empty($getAdSense)) {
+                            foreach ($getAdSense as $key => $adsense) {
+                                if (!empty($adsense['link'])) {
+                                    $link = $adsense['link'];
+                                } else {
+                                    $link = '#';
+                                }
+                                if (!empty($adsense['image']) && file_exists('uploads/adsense/' . $adsense['image'])) {
+                                    $image = base_url('uploads/adsense/' . $adsense['image']);
+                                } else {
+                                    $image = base_url('uploads/no_bimage.png');
+                                } ?>
+                                <a href="<?= $link; ?>" class="mb-3 d-block"><img src="<?= $image; ?>" class="rounded"
+                                        style="width: 100%; "></a>
+                            <?php }
+                        } ?>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 </section>
 <!-- Button trigger modal -->
 
 <!-- Modal -->
-<div class="modal fade postMOdal" id="filterModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
-    aria-labelledby="postModalLabel" aria-hidden="true">
+<div class="modal fade postMOdal" id="filterModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title w-100 font-weight-bold text-dark text-center" id="staticBackdropLabel">Post
-                    Filters</h5>
+                <h5 class="modal-title w-100 font-weight-bold text-dark text-center" id="staticBackdropLabel">Post Filters</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body filterContent">
-                <h5 class="mb-0 font-weight-bold h6 text-dark text-center">Use filters to find posts on your timeline.
-                </h5>
+                <h5 class="mb-0 font-weight-bold h6 text-dark text-center">Use filters to find posts on your timeline.</h5>
                 <p style="font-size:14px;" class="text-center">This will no affect how others see your timeline.</p>
                 <form>
                     <div class="row mb-3 align-items-center justify-content-center">
                         <div class="col-lg-3 col-6">
-                            <label>Go to:</label>
+                            <label>Filter By:</label>
                         </div>
                         <div class="col-lg-5 col-6">
-                            <select class="form-control" id="year">
+                            <select class="form-control" id="filterType">
+                                <option value="last30">Last 30 Days</option>
+                                <option value="today">Today</option>
+                                <option value="yesterday">Yesterday</option>
+                                <option value="thisWeek">This Week</option>
+                                <option value="thisMonth">This Month</option>
+                                <option value="specificDate">Specific Date</option>
+                                <option value="byYear">By Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="specificDateDiv" style="display:none;">
+                        <div class="row mb-3 align-items-center justify-content-center">
+                            <div class="col-lg-3 col-6">
+                                <label>Select Specific Date:</label>
+                            </div>
+                            <div class="col-lg-5 col-6">
+                                <input class="form-control" type="date" id="specificDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="yearDiv" style="display:none;">
+                        <div class="row mb-3 align-items-center justify-content-center">
+                            <div class="col-lg-3 col-6">
+                                <label>Go to:</label>
+                            </div>
+                            <div class="col-lg-5 col-6">
+                                <select class="form-control" id="year">
+                                    <?php
+                                    $startYear = 2000;
+                                    echo $endYear = date('Y');
+                                    for ($year = $endYear; $year >= $startYear; $year--) { ?>
+                                        <option value="<?= $year; ?>"><?= $year; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- From and To Date Pickers for Date Range -->
+                    <div id="dateRangeDiv" style="display:none;">
+                        <div class="row mb-3 align-items-center justify-content-center">
+                            <div class="col-lg-3 col-6">
+                                <label>From Date:</label>
+                            </div>
+                            <div class="col-lg-5 col-6">
+                                <input class="form-control" type="date" id="fromDate">
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center justify-content-center">
+                            <div class="col-lg-3 col-6">
+                                <label>To Date:</label>
+                            </div>
+                            <div class="col-lg-5 col-6">
+                                <input class="form-control" type="date" id="toDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 align-items-center justify-content-center">
+                        <div class="col-lg-3 col-6">
+                            <label>Category:</label>
+                        </div>
+                        <div class="col-lg-5 col-6">
+                            <select class="form-control" id="searchCategory" name="searchCategory">
+                                <option value="0">All Category</option>
                                 <?php
-                                $startYear = 2000;
-                                echo $endYear = date('Y');
-                                for ($year = $endYear; $year >= $startYear; $year--) { ?>
-                                    <option value="<?= $year; ?>"><?= $year; ?></option>
-                                <?php } ?>
+                                $getCategory = $this->db->query("SELECT * FROM category WHERE status = 'Active'")->result_array();
+                                if(!empty($getCategory)) {
+                                foreach($getCategory as $item) { ?>
+                                <option value="<?= $item['id'] ?>"><?= ucfirst($item['category_name'])?></option>
+                                <?php } }?>
                             </select>
                         </div>
                     </div>
@@ -709,11 +770,10 @@ function displayStars($rating) {
                             <button class="btn bg-primary w-100" type="button" onclick="searchPost()">Done</button>
                         </div>
                     </div>
+                </form>
             </div>
-            </form>
         </div>
     </div>
-</div>
 </div>
 
 <div class="modal fade postMOdal" id="postModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
@@ -1586,13 +1646,33 @@ function searchPost() {
     var year = $('#year').val();
     var postedBy = $('#postedBy').val();
     var privacy = $('#privacy').val();
+    var category = $('#searchCategory').val();
+    var filterType = $('#filterType').val();
+    var fromDate = $('#fromDate').val();
+    var toDate = $('#toDate').val();
+    if(filterType == 'thisWeek' || filterType == 'thisMonth' || filterType == 'specificDate') {
+        if(fromDate == '') {
+            $('#fromDate').css('border', '1px solid red');
+            return false;
+        }
+        if(toDate == '') {
+            $('#toDate').css('border', '1px solid red');
+            return false;
+        }
+    }
+    var specificDate = $('#specificDate').val();
     $.ajax({
         url: "<?= base_url() ?>user/dashboard/search_post",
         method: "POST",
         data: {
             year: year,
             postedBy: postedBy,
-            privacy: privacy
+            privacy: privacy,
+            category: category,
+            filterType: filterType,
+            specificDate: specificDate,
+            fromDate: fromDate,
+            toDate: toDate
         },
         beforeSend: function () {
             $("#loader").removeClass('d-none');
@@ -1731,22 +1811,30 @@ function changeSlide(){
     dots[index].classList.add("active");
 }
 function startAutoSlide() {
-        slideInterval = setInterval(() => {
-            nextSlide(1);
-        }, 3000);
-    }
+    slideInterval = setInterval(() => {
+        nextSlide(1);
+    }, 3000);
+}
 
-    function stopAutoSlide() {
-        clearInterval(slideInterval);
-    }
-    startAutoSlide();
-    dots.forEach((dot, i) => {
-        dot.addEventListener("click", () => {
-            stopAutoSlide();
-            index = i;
-            changeSlide();
-            startAutoSlide();
-        });
+function stopAutoSlide() {
+    clearInterval(slideInterval);
+}
+startAutoSlide();
+dots.forEach((dot, i) => {
+    dot.addEventListener("click", () => {
+        stopAutoSlide();
+        index = i;
+        changeSlide();
+        startAutoSlide();
     });
-    changeSlide();
+});
+changeSlide();
+
+document.getElementById('filterType').addEventListener('change', function() {
+    var filterType = this.value;
+    document.getElementById('specificDateDiv').style.display = (filterType === 'specificDate') ? 'block' : 'none';
+    document.getElementById('yearDiv').style.display = (filterType === 'byYear') ? 'block' : 'none';
+    document.getElementById('dateRangeDiv').style.display = (filterType === 'last30' || filterType === 'thisWeek' || filterType === 'thisMonth') ? 'block' : 'none';
+});
+
 </script>

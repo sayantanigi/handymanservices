@@ -602,6 +602,22 @@ function get_time_ago($time) {
                             </select>
                         </div>
                     </div>
+                    <div class="row mb-3 align-items-center justify-content-center">
+                        <div class="col-lg-3 col-6">
+                            <label>Category:</label>
+                        </div>
+                        <div class="col-lg-5 col-6">
+                            <select class="form-control" id="year">
+                                <option value="0">All Category</option>
+                                <?php
+                                $getCategory = $this->db->query("SELECT * FROM category WHERE status = 'Active'")->result_array();
+                                if(!empty($getCategory)) {
+                                foreach($getCategory as $item) { ?>
+                                <option value="<?= $item['id'] ?>"><?= ucfirst($item['category_name'])?></option>
+                                <?php } }?>
+                            </select>
+                        </div>
+                    </div>
                     <div class="row mb-3  align-items-center justify-content-center">
                         <div class="col-lg-3 col-6">
                             <label>Posted By:</label>

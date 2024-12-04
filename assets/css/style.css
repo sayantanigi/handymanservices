@@ -213,7 +213,7 @@ header {
 }
 
 .Primary_Text_Color {
-  color: #0ee758 !important;
+  color:#2892ff !important;
 }
 
 .Secondary_Text_Color {
@@ -221,17 +221,18 @@ header {
 }
 
 .Primary_Back_Color {
-  background: #0ee758 !important;
+  background:#2892ff !important;
 }
 
 .Gradient_Back_Color {
-  background: linear-gradient(
+  /* background: linear-gradient(
     145deg,
     rgba(32, 67, 135, 1) 0%,
     rgba(97, 128, 190, 1) 25%,
     rgba(128, 224, 149, 1) 70%,
     rgba(165, 236, 129, 1) 100%
-  ) !important;
+  ) !important; */
+   background: #2892ff !important;
 }
 
 .block {
@@ -904,7 +905,7 @@ label::after {
 }
 .menu-sec nav > ul > li > a.active {
   background: #f6f6f6;
-  color: #0ee758;
+  color: #13b4f0;
 }
 .menu-sec nav > ul > li > a i {
   font-size: 28px;
@@ -14640,7 +14641,7 @@ h2 {
 }
 .blog-details a span,
 .Career .my-blog .blog-details a span {
-  background: linear-gradient(145deg, rgba(32, 67, 135, 1) 0%, rgba(97, 128, 190, 1) 25%, rgba(128, 224, 149, 1) 70%, rgba(165, 236, 129, 1) 100%) !important;
+  background: #2892ff !important;
   border: 0;
   font-weight: 600;
   color: #fff;
@@ -14656,7 +14657,7 @@ h2 {
 }
 .Job .blog-details a span:hover,
 .Career .my-blog .blog-details a span:hover {
-  background: linear-gradient(145deg, rgba(32, 67, 135, 1) 0%, rgba(97, 128, 190, 1) 25%, rgba(128, 224, 149, 1) 70%, rgba(165, 236, 129, 1) 100%) !important;
+  background: #2892ff !important;
 }
 .Career .blog-metas {
   background: #7fdd96 !important;
@@ -15378,7 +15379,7 @@ footer .bottom-line span {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 120vh;
+  height: 100vh;
 }
 .Sign_Up .account-popup {
   width: 100% !important;
@@ -16407,13 +16408,14 @@ footer .bottom-line span {
   position: absolute;
   right: 0;
   bottom: -10px;
-  background: linear-gradient(
+  /* background: linear-gradient(
     145deg,
     rgba(32, 67, 135, 1) 0%,
     rgba(97, 128, 190, 1) 25%,
     rgba(128, 224, 149, 1) 70%,
     rgba(165, 236, 129, 1) 100%
-  );
+  ); */
+  background: #2892ff !important;
   color: #fff !important;
 }
 .Employees_Search_List
@@ -16421,13 +16423,14 @@ footer .bottom-line span {
   .emply-resume-list
   .shortlists
   a:nth-last-child(1):hover {
-  background: linear-gradient(
+  /* background: linear-gradient(
     145deg,
     rgba(32, 67, 135, 1) 0%,
     rgba(97, 128, 190, 1) 25%,
     rgba(128, 224, 149, 1) 70%,
     rgba(165, 236, 129, 1) 100%
-  ) !important;
+  ) !important; */
+  background: #2892ff !important;
 }
 .Employees_Search_List .Employees_Search_Result .Employee-Details p::before {
   content: "...";
@@ -16693,7 +16696,7 @@ footer .bottom-line span {
   align-items: center;
 }
 .Contact_Us .contact-form .btn {
-  background: #0ee758;
+  background: #2892ff !important;
   border: 0;
   color: #fff;
   border-radius: 30px;
@@ -16713,7 +16716,7 @@ footer .bottom-line span {
 .Contact_Us .remove-bottom .Map_back {
   width: 200px;
   height: 350px;
-  background: #0ee758;
+  background: #085eac;
   position: absolute;
   top: 0;
   right: 0;
@@ -16755,7 +16758,7 @@ footer .bottom-line span {
   cursor: pointer;
 }
 .Contact_Us .contact-textinfo ul li i {
-  color: #0ee758;
+  color: #085eac;
 }
 .Contact_Us .contact-textinfo ul li span {
   line-height: 15px !important;
@@ -18757,7 +18760,7 @@ section.topak
   display: block;
   padding: 8px 8px;
   color: #fff;
-  background: #0ee758;
+  background: #2892ff !important;
   font-size: 14px;
   border-radius: 30px;
   position: absolute;
@@ -18813,7 +18816,7 @@ section.topak
 }
 .ProfileBlock h2 {
   font-size: 18px;
-  color: #000;
+  color: #2892ff !important;
   font-weight: 600;
   text-align: center;
   text-transform: capitalize;
@@ -18846,7 +18849,7 @@ section.topak
 .profileBtn {
   display: block;
   text-align: center;
-  background: #0ee758;
+  background: #2892ff !important;
   color: #fff;
   min-height: 45px;
   line-height: 45px;
@@ -18918,7 +18921,7 @@ section.topak
   position: absolute;
   right: 10px;
   top: 10px;
-  background: #0ee758;
+  background: #2892ff !important;
   border-radius: 30px;
   font-size: 13px;
   padding: 0 5px;
@@ -19054,13 +19057,13 @@ section.topak
 .logForm .logbtn {
   padding: 0 30px;
   min-height: 55px;
-  background: #0ee758;
+  background: #2892ff !important;
   border-radius: 30px;
   letter-spacing: 0;
   text-transform: capitalize;
 }
 .text-primary {
-  color: #0ee758 !important;
+  color: #29bed2 !important;
 }
 .rememberme label {
   margin-left: 5px;
@@ -19519,13 +19522,14 @@ body.loaded .content {
 .uploadProfilephoto .profile-ak label h6 {
   display: inline-block;
   font-size: 15px;
-  background: linear-gradient(
+  /* background: linear-gradient(
     145deg,
     rgba(32, 67, 135, 1) 0%,
     rgba(97, 128, 190, 1) 25%,
     rgba(128, 224, 149, 1) 70%,
     rgba(165, 236, 129, 1) 100%
-  );
+  ); */
+  background: #2892ff !important;
   color: #fff;
   padding: 12px 26px;
   border-radius: 30px;
@@ -19550,17 +19554,18 @@ body.loaded .content {
   background-color: #4ae264 !important;
 }
 .post-job-btn {
-  background-color: #2992ff;
-  border: 2px solid #4ae264 !important;
+  background-color: #2992ff !important;
+  /* border: 2px solid #4ae264 !important; */
 }
 .filterbtn {
-  background: linear-gradient(
+  /* background: linear-gradient(
     145deg,
     rgba(32, 67, 135, 1) 0%,
     rgba(97, 128, 190, 1) 25%,
     rgba(128, 224, 149, 1) 70%,
     rgba(165, 236, 129, 1) 100%
-  ) !important;
+  ) !important; */
+   background: #2892ff !important;
 }
 .tabBox .tabnav {
   background: #cccccc;
@@ -19573,13 +19578,14 @@ body.loaded .content {
   font-size: 13px;
 }
 .tabBox .tabnav.active {
-  background: linear-gradient(
+  /* background: linear-gradient(
     145deg,
     rgba(32, 67, 135, 1) 0%,
     rgba(97, 128, 190, 1) 25%,
     rgba(128, 224, 149, 1) 70%,
     rgba(165, 236, 129, 1) 100%
-  );
+  ); */
+  background: #2892ff !important;
   color: #fff;
 }
 .tabBox .tabnav:hover {
@@ -19707,3 +19713,4 @@ body.loaded .content {
   height: 110px;
   object-fit: contain;
 }
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {background: #2892ff !important;}
