@@ -79,35 +79,32 @@
 			                            </div>
                                         <div class="col-lg-12 mb-4">
                                             <div class="new-pro uploadProfilephoto workupload">
-                                                <?php
-                                                $getWorkSample = $this->db->query("SELECT * FROM users_work_sample WHERE user_id = '".$userinfo->userId."'")->result_array();
-                                                if(!empty($getWorkSample)) { ?>
-                                                <div class="profileImgBox">
-                                                <?php foreach ($getWorkSample as $sample) {
-                                                    $extension = strtolower(pathinfo($sample['work_sample'], PATHINFO_EXTENSION));
-                                                    if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) { ?>
-                                                    <img src="<?= base_url('uploads/users/work_sample/'.$sample['work_sample']); ?>" alt="Image" style="width: 165px;height: 110px;">
-                                                    <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
-                                                    <video width="165" height="110" controls>
-                                                    <source src="<?= base_url('uploads/users/work_sample/'.$sample['work_sample']); ?>" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                    </video>
+                                                <?php $getWorkSample = $this->db->query("SELECT * FROM users_work_sample WHERE user_id = '".$userinfo->userId."'")->result_array(); ?>
+                                                <div class="profileImgBox profilenoImg py-4" id="preview1" style="<?php if (!empty($getWorkSample)) {echo 'padding: 0px !important';}?>">
+                                                    <?php if(!empty($getWorkSample)) {
+                                                        foreach ($getWorkSample as $sample) { ?>
+                                                        <?php $extension = strtolower(pathinfo($sample['work_sample'], PATHINFO_EXTENSION));
+                                                        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) { ?>
+                                                        <img src="<?= base_url('uploads/users/work_sample/'.$sample['work_sample']); ?>" alt="Image" style="width: 215px; height: 150px; object-fit: cover !important;">
+                                                        <i class="fa fa-trash" style="position: absolute; margin-top: 5px; margin-left: -35px; color: red; background: #eee; padding: 8px; border-radius: 20px;" onclick="deleteImage(<?= $sample['id']?>)"></i>
+                                                        <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
+                                                        <video width="215" height="150" controls>
+                                                            <source src="<?= base_url('uploads/users/work_sample/'.$sample['work_sample']); ?>" type="video/mp4">
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                        <i class="fa fa-trash" style="position: absolute; margin-top: 5px; margin-left: -35px; color: red; background: #eee; padding: 8px; border-radius: 20px;" onclick="deleteImage(<?= $sample['id']?>)"></i>
                                                     <?php } ?>
-                                                    <input type="hidden" name="old_work_sample" value="<?= $sample['work_sample'] ?>">
-                                                <?php } ?>
-                                                </div>
-                                                <?php } else { ?>
-                                                <div class="profileImgBox profilenoImg  py-4">
+                                                <?php } } else { ?>
                                                     <img src="<?php echo base_url('uploads/addPhoto.png')?>"/>
                                                     <h6>Upload work samples</h6>
                                                     <p>Images must be less than 5 MB in size</p>
                                                     <p>Videos must be less than 25 MB in size</p>
+                                                    <?php } ?>
                                                 </div>
-                                                <?php } ?>
                                                 <div class="profile-ak">
                                                     <label>
                                                         <h6><i class="fa-solid fa-cloud-arrow-up"></i> Upload </h6>
-                                                        <input type="file" name="work_sample[]" multiple class="d-none" />
+                                                        <input type="file" name="work_sample[]" multiple class="d-none" accept="image/*, video/*" id="file-input1"/>
                                                     </label>
                                                 </div>
                                             </div>
@@ -140,11 +137,16 @@
 .select2-container .select2-search--inline {width: 100% !important;}
 .select2-selection__rendered li{margin-bottom: 5px !important;}
 .select2-search__field {width: 100% !important; margin-top: 0px !important; min-height: 50px !important; font-size: 14px !important;}
+.preview-item1 {width: 215px; height: 150px; margin: 0px 5px 5px 0px; display: flex; justify-content: center; align-items: center;}
+.preview-item1 img, .preview-item1 video {width: 215px !important; height: 150px !important; object-fit: cover !important;}
+.jconfirm .jconfirm-box .jconfirm-buttons button.btn-blue {background: #9dcc90 !important; }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
 <script type="text/javascript">
 $('#skills').tagsinput({
     confirmKeys: [13, 44],
@@ -161,4 +163,112 @@ $('.key_skills').select2({
     tokenSeparators: [','],
     placeholder: "Select or Type Specialization",
 });
+
+var fileInput = document.getElementById('file-input1');
+var preview = document.getElementById('preview1');
+
+fileInput.addEventListener('change', function() {
+    displayFiles(this.files);
+    $('#preview1').css({"height": "auto", "display": "flex", "flex-wrap": "wrap", "justify-content": "space-between"});
+});
+
+function displayFiles(files) {
+    //preview.innerHTML = '';
+    for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    var reader = new FileReader();
+
+    reader.onload = (function(file) {
+        return function(e) {
+        var fileType = file.type.split('/')[0];
+        var previewItem = document.createElement('div');
+        previewItem.className = 'preview-item1';
+        var previewElement;
+
+        if (fileType === 'image') {
+            previewElement = document.createElement('img');
+        } else if (fileType === 'video') {
+            previewElement = document.createElement('video');
+            previewElement.controls = true;
+        } else {
+            return; // Unsupported file type
+        }
+        previewElement.src = e.target.result;
+        previewItem.appendChild(previewElement);
+        preview.appendChild(previewItem);
+        };
+    })(file);
+
+    reader.readAsDataURL(file);
+    }
+}
+
+function deleteImage(id) {
+    $.alert({
+        title: '',
+        content: 'Are you sure you want to delete this file? Once delete it can\'t be undone',
+        animation: 'scale',
+        closeAnimation: 'scale',
+        buttons: {
+            yes: {
+                text: 'Yes',
+                btnClass: 'btn-blue-cstm',
+                keys: ['enter', 'shift'],
+                action: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= base_url('user/dashboard/deleteworksampleImage')?>",
+                        data: { id: id },
+                        success: function (data) {
+                            res = JSON.parse(data);
+                            if(res.status == 'success'){
+                                $.alert({
+                                    title: '',
+                                    content: res.message,
+                                    animation: 'scale',
+                                    closeAnimation: 'scale',
+                                    buttons: {
+                                        ok: {
+                                            text: 'Ok',
+                                            btnClass: 'btn-blue-cstm',
+                                            keys: ['enter', 'shift'],
+                                            action: function(){
+                                                window.location.reload();
+                                            }
+                                        }
+                                    }
+                                });
+                            } else {
+                                $.alert({
+                                    title: '',
+                                    content: res.message,
+                                    animation: 'scale',
+                                    closeAnimation: 'scale',
+                                    buttons: {
+                                        ok: {
+                                            text: 'Ok',
+                                            btnClass: 'btn-blue-cstm',
+                                            keys: ['enter', 'shift'],
+                                            action: function(){
+                                                window.location.reload();
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    })
+                }
+            },
+            no: {
+                text: 'No',
+                btnClass: 'btn-blue-cstm',
+                keys: ['enter', 'shift'],
+                action: function(){
+                }
+            }
+        }
+    });
+}
+</script>
 </script>

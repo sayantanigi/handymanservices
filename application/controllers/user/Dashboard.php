@@ -182,7 +182,16 @@ class Dashboard extends CI_Controller {
             }
         }
 	}
-
+    public function deletecoverImage() {
+        $imageId = $_POST['id'];
+        $result = $this->db->query("DELETE FROM user_background WHERE id = '".$imageId."'");
+        if($result){
+            $response = array('status' => 'success', 'message' => 'Cover image deleted successfully');
+        } else {
+            $response = array('status' => 'error', 'message' => 'Error deleting image. Please try again later.');
+        }
+        echo json_encode($response);
+    }
     public function business_details() {
         $user_id=base64_decode($this->uri->segment(2));
 		if($user_id!=''){
@@ -328,6 +337,16 @@ class Dashboard extends CI_Controller {
                 }
             }
         }
+    }
+    public function deleteworksampleImage() {
+        $imageId = $_POST['id'];
+        $result = $this->db->query("DELETE FROM users_work_sample WHERE id = '".$imageId."'");
+        if($result){
+            $response = array('status' => 'success', 'message' => 'Work image deleted successfully');
+        } else {
+            $response = array('status' => 'error', 'message' => 'Error deleting image. Please try again later.');
+        }
+        echo json_encode($response);
     }
 	function getVisIpAddr() {
     	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {

@@ -140,16 +140,19 @@ if ($data_request == 'user') {
                                             $extension = strtolower(pathinfo($sample['filecontent'], PATHINFO_EXTENSION));
                                             if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'avif', 'webp'])) { ?>
                                         <img src="<?= base_url('uploads/users/background/' . $sample['filecontent']); ?>" alt="Image" style="width: 215px; height: 150px; object-fit: cover !important;">
+                                        <i class="fa fa-trash" style="position: absolute; margin-top: 5px; margin-left: -35px; color: red; background: #eee; padding: 8px; border-radius: 20px;" onclick="deleteImage(<?= $sample['id']?>)"></i>
                                         <?php } elseif (in_array($extension, ['mp4', 'webm', 'avi', 'mov'])) { ?>
                                             <video width="215" height="150" controls>
                                                 <source src="<?= base_url('uploads/users/background/' . $sample['filecontent']); ?>" type="video/mp4">
                                                 Your browser does not support the video tag.
                                             </video>
+                                            <i class="fa fa-trash" style="position: absolute; margin-top: 5px; margin-left: -35px; color: red; background: #eee; padding: 8px; border-radius: 20px;" onclick="deleteImage(<?= $sample['id']?>)"></i>
                                         <?php } ?>
                                         <?php } } else { ?>
-                                        <h6>Upload backgroud image</h6>
-                                        <p>Images must be less than 5 MB in size</p>
-                                        <p>Videos must be less than 25 MB in size</p>
+                                            <img src="<?php echo base_url('uploads/addPhoto.png')?>"/>
+                                            <h6>Upload backgroud image</h6>
+                                            <p>Images must be less than 5 MB in size</p>
+                                            <p>Videos must be less than 25 MB in size</p>
                                         <?php } ?>
                                     </div>
                                     <div class="profile-ak">
@@ -208,6 +211,7 @@ if ($data_request == 'user') {
 /* #preview {width: 100%; height: auto; display: flex; flex-wrap: wrap; padding: 0 !important;} */
 .preview-item {width: 215px; height: 150px; margin: 0px 5px 5px 0px; display: flex; justify-content: center; align-items: center;}
 .preview-item img, .preview-item video {width: 215px !important; height: 150px !important; object-fit: cover !important;}
+.jconfirm .jconfirm-box .jconfirm-buttons button.btn-blue {background: #9dcc90 !important; }
 </style>
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" />
@@ -216,193 +220,263 @@ if ($data_request == 'user') {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
 <script type="text/javascript">
-    $('#skills').tagsinput({
-        confirmKeys: [13, 44],
-        maxTags: 20,
-    });
-    $('.business_category').select2({
-        //tags: true,
-        tokenSeparators: [','],
-        placeholder: "Select or Type Business Category",
-    });
+$('#skills').tagsinput({
+    confirmKeys: [13, 44],
+    maxTags: 20,
+});
 
-    $('.key_skills').select2({
-        //tags: true,
-        tokenSeparators: [','],
-        placeholder: "Select or Type Specialization",
-    });
+$('.business_category').select2({
+    //tags: true,
+    tokenSeparators: [','],
+    placeholder: "Select or Type Business Category",
+});
 
-    function preview_profileimage(event) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var output = document.getElementById('output_image');
-            output.src = reader.result;
+$('.key_skills').select2({
+    //tags: true,
+    tokenSeparators: [','],
+    placeholder: "Select or Type Specialization",
+});
+
+function preview_profileimage(event) {
+    var reader = new FileReader();
+    reader.onload = function () {
+        var output = document.getElementById('output_image');
+        output.src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+    $('.profilenoImg').css('padding', '0px');
+    $('.profileupload h6').hide();
+    $('.profileupload p').hide();
+    $('#output_image').addClass('activeImg');
+}
+
+var fileInput = document.getElementById('file-input');
+var preview = document.getElementById('preview');
+
+fileInput.addEventListener('change', function() {
+    displayFiles(this.files);
+    $('#preview').css({"height": "auto", "display": "flex", "flex-wrap": "wrap", "justify-content": "space-between"});
+});
+
+function displayFiles(files) {
+    //preview.innerHTML = '';
+    for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    var reader = new FileReader();
+
+    reader.onload = (function(file) {
+        return function(e) {
+        var fileType = file.type.split('/')[0];
+        var previewItem = document.createElement('div');
+        previewItem.className = 'preview-item';
+        var previewElement;
+
+        if (fileType === 'image') {
+            previewElement = document.createElement('img');
+        } else if (fileType === 'video') {
+            previewElement = document.createElement('video');
+            previewElement.controls = true;
+        } else {
+            return; // Unsupported file type
         }
-        reader.readAsDataURL(event.target.files[0]);
-        $('.profilenoImg').css('padding', '0px');
-        $('.profileupload h6').hide();
-        $('.profileupload p').hide();
-        $('#output_image').addClass('activeImg');
+        previewElement.src = e.target.result;
+        previewItem.appendChild(previewElement);
+        preview.appendChild(previewItem);
+        };
+    })(file);
+
+    reader.readAsDataURL(file);
+    }
+}
+
+$('#short_bio').keyup(function () {
+    var characterCount = $(this).val().length,
+        current = $('#current'),
+        maximum = $('#maximum'),
+        theCount = $('#the-count');
+    current.text(characterCount);
+    if (characterCount < 500) {
+        current.css('color', '#666');
+    }
+    if (characterCount > 500 && characterCount < 650) {
+        current.css('color', '#6d5555');
+    }
+    if (characterCount > 650 && characterCount < 750) {
+        current.css('color', '#793535');
+    }
+    if (characterCount > 750 && characterCount < 850) {
+        current.css('color', '#841c1c');
+    }
+    if (characterCount > 850 && characterCount < 999) {
+        current.css('color', '#8f0001');
     }
 
-    var fileInput = document.getElementById('file-input');
-    var preview = document.getElementById('preview');
+    if (characterCount >= 740) {
+        maximum.css('color', '#8f0001');
+        current.css('color', '#8f0001');
+        theCount.css('font-weight', 'bold');
+    } else {
+        maximum.css('color', '#666');
+        theCount.css('font-weight', 'normal');
+    }
+});
 
-    fileInput.addEventListener('change', function() {
-        displayFiles(this.files);
-        $('#preview').css({"height": "auto", "display": "flex", "flex-wrap": "wrap", "justify-content": "space-between"});
-    });
-    function displayFiles(files) {
-        //preview.innerHTML = '';
-        for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        var reader = new FileReader();
-
-        reader.onload = (function(file) {
-            return function(e) {
-            var fileType = file.type.split('/')[0];
-            var previewItem = document.createElement('div');
-            previewItem.className = 'preview-item';
-            var previewElement;
-
-            if (fileType === 'image') {
-                previewElement = document.createElement('img');
-            } else if (fileType === 'video') {
-                previewElement = document.createElement('video');
-                previewElement.controls = true;
-            } else {
-                return; // Unsupported file type
-            }
-            previewElement.src = e.target.result;
-            previewItem.appendChild(previewElement);
-            preview.appendChild(previewItem);
-            };
-        })(file);
-
-        reader.readAsDataURL(file);
+$("form").submit(function (e) {
+    if ($('#utype').val() == 1) {
+        if ($('#firstname').val() == '') {
+            $('#firstname').focus().attr('placeholder', 'This field is required');
+            $('#vld_firstname').show();
+            $('#firstname').focus().css('border', '1px solid red');
+            setTimeout(function () { $("#vld_firstname").hide(); }, 5000)
+            e.preventDefault();
+        }
+        if ($('#lastname').val() == '') {
+            $('#lastname').focus().attr('placeholder', 'This field is required');
+            $('#vld_lastname').show();
+            $('#lastname').focus().css('border', '1px solid red');
+            setTimeout(function () { $("#vld_lastname").hide(); }, 5000)
+            e.preventDefault();
+        }
+        if ($('#gender').val() == '') {
+            $('#gender').focus().attr('placeholder', 'This field is required');
+            $('#vld_gender').show();
+            $('#gender').focus().css('border', '1px solid red');
+            setTimeout(function () { $("#vld_gender").hide(); }, 5000)
+            e.preventDefault();
+        }
+        if ($('#location').val() == '') {
+            $('#location').focus().attr('placeholder', 'This field is required');
+            $('#vld_location').show();
+            $('#location').focus().css('border', '1px solid red');
+            setTimeout(function () { $("#vld_location").hide(); }, 5000)
+            e.preventDefault();
+        }
+        if ($('#short_bio').val() == '') {
+            $('#short_bio').focus().attr('placeholder', 'This field is required');
+            $('#vld_shrtBio').show();
+            $('#short_bio').focus().css('border', '1px solid red');
+            setTimeout(function () { $("#vld_shrtBio").hide(); }, 5000)
+            e.preventDefault();
+        }
+    } else {
+        if ($('#firstname').val() == '') {
+            $('#firstname').focus().attr('placeholder', 'This field is required');
+            $('#vld_firstname').show();
+            $('#firstname').focus().css('border', '1px solid red');
+            setTimeout(function () { $("#vld_firstname").hide(); }, 5000);
+            $("#save_profile_dataloader").hide();
+            $(".Gradient_Back_Color").prop('disabled', false);
+            e.preventDefault();
+        }
+        if ($('#lastname').val() == '') {
+            $('#lastname').focus().attr('placeholder', 'This field is required');
+            $('#vld_lastname').show();
+            $('#lastname').focus().css('border', '1px solid red');
+            setTimeout(function () { $("#vld_lastname").hide(); }, 5000);
+            $("#save_profile_dataloader").hide();
+            $(".Gradient_Back_Color").prop('disabled', false);
+            e.preventDefault();
+        }
+        if ($('#rate_enabled').val() == '') {
+            $('#rate_enabled').focus().attr('placeholder', 'This field is required');
+            $('#vld_rate_enabled').show();
+            $('#rate_enabled').focus().css('border', '1px solid red');
+            setTimeout(function () { $("#vld_rate_enabled").hide(); }, 5000);
+            $("#save_profile_dataloader").hide();
+            $(".Gradient_Back_Color").prop('disabled', false);
+            e.preventDefault();
+        }
+        if ($('#zip').val() == '') {
+            $('#zip').focus().attr('placeholder', 'This field is required');
+            $('#vld_zip').show();
+            $('#zip').focus().css('border', '1px solid red');
+            setTimeout(function () { $("#vld_zip").hide(); }, 5000);
+            $("#save_profile_dataloader").hide();
+            $(".Gradient_Back_Color").prop('disabled', false);
+            e.preventDefault();
+        }
+        if ($('#short_bio').val() == '') {
+            $('#short_bio').focus().attr('placeholder', 'This field is required');
+            $('#vld_shrtBio').show();
+            $('#short_bio').focus().css('border', '1px solid red');
+            setTimeout(function () { $("#vld_shrtBio").hide(); }, 5000);
+            $("#save_profile_dataloader").hide();
+            $(".Gradient_Back_Color").prop('disabled', false);
+            e.preventDefault();
         }
     }
+});
 
-    $('#short_bio').keyup(function () {
-        var characterCount = $(this).val().length,
-            current = $('#current'),
-            maximum = $('#maximum'),
-            theCount = $('#the-count');
-        current.text(characterCount);
-        if (characterCount < 500) {
-            current.css('color', '#666');
-        }
-        if (characterCount > 500 && characterCount < 650) {
-            current.css('color', '#6d5555');
-        }
-        if (characterCount > 650 && characterCount < 750) {
-            current.css('color', '#793535');
-        }
-        if (characterCount > 750 && characterCount < 850) {
-            current.css('color', '#841c1c');
-        }
-        if (characterCount > 850 && characterCount < 999) {
-            current.css('color', '#8f0001');
-        }
+$("#save_profile_data").on('click', function () {
+    $("#save_profile_dataloader").show();
+    return true;
+})
 
-        if (characterCount >= 740) {
-            maximum.css('color', '#8f0001');
-            current.css('color', '#8f0001');
-            theCount.css('font-weight', 'bold');
-        } else {
-            maximum.css('color', '#666');
-            theCount.css('font-weight', 'normal');
-        }
-    });
-
-    $("form").submit(function (e) {
-        if ($('#utype').val() == 1) {
-            if ($('#firstname').val() == '') {
-                $('#firstname').focus().attr('placeholder', 'This field is required');
-                $('#vld_firstname').show();
-                $('#firstname').focus().css('border', '1px solid red');
-                setTimeout(function () { $("#vld_firstname").hide(); }, 5000)
-                e.preventDefault();
-            }
-            if ($('#lastname').val() == '') {
-                $('#lastname').focus().attr('placeholder', 'This field is required');
-                $('#vld_lastname').show();
-                $('#lastname').focus().css('border', '1px solid red');
-                setTimeout(function () { $("#vld_lastname").hide(); }, 5000)
-                e.preventDefault();
-            }
-            if ($('#gender').val() == '') {
-                $('#gender').focus().attr('placeholder', 'This field is required');
-                $('#vld_gender').show();
-                $('#gender').focus().css('border', '1px solid red');
-                setTimeout(function () { $("#vld_gender").hide(); }, 5000)
-                e.preventDefault();
-            }
-            if ($('#location').val() == '') {
-                $('#location').focus().attr('placeholder', 'This field is required');
-                $('#vld_location').show();
-                $('#location').focus().css('border', '1px solid red');
-                setTimeout(function () { $("#vld_location").hide(); }, 5000)
-                e.preventDefault();
-            }
-            if ($('#short_bio').val() == '') {
-                $('#short_bio').focus().attr('placeholder', 'This field is required');
-                $('#vld_shrtBio').show();
-                $('#short_bio').focus().css('border', '1px solid red');
-                setTimeout(function () { $("#vld_shrtBio").hide(); }, 5000)
-                e.preventDefault();
-            }
-        } else {
-            if ($('#firstname').val() == '') {
-                $('#firstname').focus().attr('placeholder', 'This field is required');
-                $('#vld_firstname').show();
-                $('#firstname').focus().css('border', '1px solid red');
-                setTimeout(function () { $("#vld_firstname").hide(); }, 5000);
-                $("#save_profile_dataloader").hide();
-                $(".Gradient_Back_Color").prop('disabled', false);
-                e.preventDefault();
-            }
-            if ($('#lastname').val() == '') {
-                $('#lastname').focus().attr('placeholder', 'This field is required');
-                $('#vld_lastname').show();
-                $('#lastname').focus().css('border', '1px solid red');
-                setTimeout(function () { $("#vld_lastname").hide(); }, 5000);
-                $("#save_profile_dataloader").hide();
-                $(".Gradient_Back_Color").prop('disabled', false);
-                e.preventDefault();
-            }
-            if ($('#rate_enabled').val() == '') {
-                $('#rate_enabled').focus().attr('placeholder', 'This field is required');
-                $('#vld_rate_enabled').show();
-                $('#rate_enabled').focus().css('border', '1px solid red');
-                setTimeout(function () { $("#vld_rate_enabled").hide(); }, 5000);
-                $("#save_profile_dataloader").hide();
-                $(".Gradient_Back_Color").prop('disabled', false);
-                e.preventDefault();
-            }
-            if ($('#zip').val() == '') {
-                $('#zip').focus().attr('placeholder', 'This field is required');
-                $('#vld_zip').show();
-                $('#zip').focus().css('border', '1px solid red');
-                setTimeout(function () { $("#vld_zip").hide(); }, 5000);
-                $("#save_profile_dataloader").hide();
-                $(".Gradient_Back_Color").prop('disabled', false);
-                e.preventDefault();
-            }
-            if ($('#short_bio').val() == '') {
-                $('#short_bio').focus().attr('placeholder', 'This field is required');
-                $('#vld_shrtBio').show();
-                $('#short_bio').focus().css('border', '1px solid red');
-                setTimeout(function () { $("#vld_shrtBio").hide(); }, 5000);
-                $("#save_profile_dataloader").hide();
-                $(".Gradient_Back_Color").prop('disabled', false);
-                e.preventDefault();
+function deleteImage(id) {
+    $.alert({
+        title: '',
+        content: 'Are you sure you want to delete this file? Once delete it can\'t be undone',
+        animation: 'scale',
+        closeAnimation: 'scale',
+        buttons: {
+            yes: {
+                text: 'Yes',
+                btnClass: 'btn-blue-cstm',
+                keys: ['enter', 'shift'],
+                action: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= base_url('user/dashboard/deletecoverImage')?>",
+                        data: { id: id },
+                        success: function (data) {
+                            res = JSON.parse(data);
+                            if(res.status == 'success'){
+                                $.alert({
+                                    title: '',
+                                    content: res.message,
+                                    animation: 'scale',
+                                    closeAnimation: 'scale',
+                                    buttons: {
+                                        ok: {
+                                            text: 'Ok',
+                                            btnClass: 'btn-blue-cstm',
+                                            keys: ['enter', 'shift'],
+                                            action: function(){
+                                                window.location.reload();
+                                            }
+                                        }
+                                    }
+                                });
+                            } else {
+                                $.alert({
+                                    title: '',
+                                    content: res.message,
+                                    animation: 'scale',
+                                    closeAnimation: 'scale',
+                                    buttons: {
+                                        ok: {
+                                            text: 'Ok',
+                                            btnClass: 'btn-blue-cstm',
+                                            keys: ['enter', 'shift'],
+                                            action: function(){
+                                                window.location.reload();
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    })
+                }
+            },
+            no: {
+                text: 'No',
+                btnClass: 'btn-blue-cstm',
+                keys: ['enter', 'shift'],
+                action: function(){
+                }
             }
         }
     });
-
-    $("#save_profile_data").on('click', function () {
-        $("#save_profile_dataloader").show();
-        return true;
-    })
+}
 </script>
