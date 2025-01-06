@@ -6,7 +6,14 @@ $get_category = $this->Crud_model->GetData('category', '', "status='Active'");
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title> <?php if (!empty(@$title)) { echo $title . " - " . @$get_setting->website_name; } else { echo @$get_setting->website_name; } ?> </title>
+<title>
+    <?php
+    if (!empty(@$title)) {
+        echo $title . " - " . @$get_setting->website_name;
+    } else {
+        echo @$get_setting->website_name;
+    } ?>
+</title>
 <?php if ($this->uri->segment(1) == 'customer_detail') { ?>
 <meta name="description" content="<?php echo @$userdata->short_bio ?>">
 <?php } else if ($this->uri->segment(1) == 'professionals_detail') { ?>
@@ -154,7 +161,7 @@ $(function () {
                                 <?php
                                 $uri = "$_SERVER[REQUEST_URI]";
                                 $uri = explode('/', $uri);
-                                $uri = $uri[2];
+                                $uri = $uri[1];
                                 ?>
                                 <?php
                                 if (!empty(@$_SESSION['afrebay']['userId'])) { ?>

@@ -132,7 +132,6 @@ $route['admin/chat_details/(:any)/(:any)'] = "admin/chat/adminShowMessage_list/$
 $route['admin/deletepostdetail'] = "admin/Post_job/deletepostdetail";
 $route['admin/update-postjob/(:any)'] = "admin/Post_job/update_post_job/$1";
 
-
 //API URLS
 $route['api/registration'] = 'api/Authentication/registration';
 $route['api/login'] = 'api/Authentication/login';

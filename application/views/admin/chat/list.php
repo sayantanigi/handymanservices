@@ -57,7 +57,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Job Title</th>
+                                        <!-- <th>Job Title</th> -->
                                         <th>Customer</th>
                                         <th>Professionals</th>
                                         <th>Initiated Date</th>

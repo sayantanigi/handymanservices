@@ -119,7 +119,7 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                 </div>
                             </div>
                         </div>
-                        <div class="logForm" style="width :48%; margin-top: 10px; display: flex; float: left; margin-right: 20px;">
+                        <div class="logForm" style="width :48%; margin-top: 10px; display: flex; float: left; margin-right: 15px;">
                             <div class="col-lg-12 text-center">
                                 <a href="<?= base_url() ?>login" class="text-primary font-weight-bold">Sign In</a>
                             </div>

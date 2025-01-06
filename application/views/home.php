@@ -1,4 +1,5 @@
 <?php
+$settings = $this->db->query("SELECT * FROM setting WHERE id = '1'")->row();
 function get_time_ago($time) {
     $time_ago = time() - $time;
     if ($time_ago < 60) {
@@ -35,7 +36,7 @@ function displayStars($rating) {
     $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0;
     $emptyStars = 5 - $fullStars - $halfStar;
 
-    $stars = str_repeat('<i class="fas fa-star"></i>', $fullStars) . str_repeat('<i class="fas fa-star-half-alt"></i>', $halfStar) . str_repeat('<i class="far fa-star"></i>', $emptyStars);
+    $stars = str_repeat('<i class="fas fa-star" style="color: #f29a34"></i>', $fullStars) . str_repeat('<i class="fas fa-star-half-alt" style="color: #f29a34"></i>', $halfStar) . str_repeat('<i class="far fa-star" style="color: #f29a34"></i>', $emptyStars);
 
     return $stars;
 }
@@ -72,7 +73,14 @@ function displayStars($rating) {
                                         $profilePic = base_url('uploads/no_pimage.png');
                                     }
                                     ?>
-                                    <a href="<?php if($getUser_details->userType == '1') {echo base_url('professionals_detail/'.base64_encode($getUser_details->userId)); } else{ echo base_url('customer_detail/'.base64_encode($getUser_details->userId)); }?>">
+                                    <a href="
+                                    <?php if($getUser_details->userType == '1') {
+                                        echo base_url('professionals_detail/'.base64_encode($getUser_details->userId));
+                                    } else if($getUser_details->userType == '2') {
+                                        echo base_url('customer_detail/'.base64_encode($getUser_details->userId));
+                                    } else {
+                                        echo 'javascript:void(0)"';
+                                    }?>">
                                         <img src="<?= $profilePic; ?>">
                                     </a>
                                 </div>
@@ -126,16 +134,16 @@ function displayStars($rating) {
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="InfoBlock" style="display: flex; flex-direction: row; height: 70px; align-items: center; justify-content: flex-start;">
                                                 <?php if (!empty($get_user->profilePic) && file_exists('uploads/users/' . $get_user->profilePic)) { ?>
-                                                <a href="<?php if($get_user->userType == '1') {echo base_url('professionals_detail/'.base64_encode($get_user->userId)); } else{ echo base_url('customer_detail/'.base64_encode($get_user->userId)); }?>">
+                                                <a href="<?php if($get_user->userType == '1') {echo base_url('professionals_detail/'.base64_encode($get_user->userId)); } else if ($get_user->userType == '2') { echo base_url('customer_detail/'.base64_encode($get_user->userId)); } else {echo 'onclick="forguestAlert()"'; }?>">
                                                     <img style="width:70px; height: 70px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/users/<?= $get_user->profilePic ?>" alt="">
                                                 </a>
                                                 <?php } else { ?>
-                                                <a href="<?php if($get_user->userType == '1') {echo base_url('professionals_detail/'.base64_encode($get_user->userId)); } else{ echo base_url('customer_detail/'.base64_encode($get_user->userId)); }?>">
+                                                <a href="<?php if($get_user->userType == '1') {echo base_url('professionals_detail/'.base64_encode($get_user->userId)); } else if ($get_user->userType == '2') { echo base_url('customer_detail/'.base64_encode($get_user->userId)); } else {echo 'onclick="forguestAlert()"'; }?>">
                                                     <img style="width: 70px; height: 70px; border-radius: 100%; object-fit: cover;" src="<?= base_url() ?>uploads/no_pimage.png" alt="">
                                                 </a>
                                                 <?php } ?>
                                                 <div class="TextData" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 15px;">
-                                                    <a href="<?php if($get_user->userType == '1') {echo base_url('professionals_detail/'.base64_encode($get_user->userId)); } else{ echo base_url('customer_detail/'.base64_encode($get_user->userId)); }?>">
+                                                    <a href="<?php if($get_user->userType == '1') {echo base_url('professionals_detail/'.base64_encode($get_user->userId)); } else if($get_user->userType == '2'){ echo base_url('customer_detail/'.base64_encode($get_user->userId)); } else {echo 'onclick="forguestAlert()"'; }?>">
                                                         <h3 style="font-size: 20px; font-weight: 600; margin: 0;" class="Primary_Text_Color"><?php echo "@".$get_user->username; ?></h3>
                                                         <?php if($get_user->rate_enabled == '1') { ?>
                                                         <p style="line-height: 0px;margin: 0;font-size: 10px;margin-top: 5px;margin-bottom: 10px;">
@@ -252,28 +260,45 @@ function displayStars($rating) {
                                                     <p style="margin: 0; margin-left: 5px; font-size: 15px; font-weight: 500;"> <?= $getCommentCount->count; ?> </p>
                                                 </a>
                                             </div>
-                                            <ul
-                                                style="margin: 0; display: flex; align-items: center; justify-content: flex-end; flex-direction: row; width: 250px; float: right;">
+                                            <?php if(empty($settings->fb_link) && empty($settings->gmail_link) && empty($settings->tiktok_link) && empty($settings->insta_link) && empty($settings->whatsapp) && empty($settings->telegram) && empty($settings->tw_link) && empty($settings->lnkd_link) && empty($settings->ptrs_link)) {
+                                                $style = "margin: 0; display: none; align-items: center; justify-content: flex-end; flex-direction: row; width: 250px; float: right;";
+                                            } else {
+                                                $style = "margin: 0; display: flex; align-items: center; justify-content: flex-end; flex-direction: row; width: 250px; float: right;";
+                                            } ?>
+                                            <ul style="<?= $style?>">
                                                 <li class="mb-0" onclick="onclickShare(<?= $row->id ?>)">
                                                     <a href="javascript:void(0)" class="shareBtn1"> <i class="fa-solid fa-share"></i> Share</a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div id="shareMenu_<?= $row->id ?>" class="hidden shareMenu">
-                                            <a href="https://www.facebook.com/sharer/sharer.php?u=<?= base_url('workdetail/' . base64_encode($row->id)) ?>"
-                                                target="_blank"><i class="fa-brands fa-facebook"></i></a>
-                                            <a href="https://twitter.com/intent/tweet?text=<?php echo $row->post_title; ?>&url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>"
-                                                target="_blank"><i class="fa-brands fa-square-x-twitter"></i></a>
-                                            <a href="mailto:?subject=<?php echo $row->post_title; ?>&body=<?= 'I found this interesting: ' . base_url('workdetail/' . base64_encode($row->id)) ?>"
-                                                target="_blank"><i class="fa-solid fa-envelope"></i></a>
-                                            <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>"
-                                                target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-                                            <a href="https://www.instagram.com/?url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>"
-                                                target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                                            <a href="https://api.whatsapp.com/send?text=<?php echo $row->post_title; ?> <?= base_url('workdetail/' . base64_encode($row->id)) ?>"
-                                                target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-                                            <a href="https://telegram.me/share/url?url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>&text=<?php echo $row->post_title; ?>"
-                                                target="_blank"><i class="fa-brands fa-telegram"></i></a>
+                                            <?php if(!empty($settings->fb_link)) { ?>
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u=<?= base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                                            <?php } ?>
+                                            <?php if(!empty($settings->gmail_link)) { ?>
+                                            <a href="mailto:?subject=<?php echo $row->post_title; ?>&body=<?= 'I found this interesting: ' . base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-solid fa-envelope"></i></a>
+                                            <?php } ?>
+                                            <?php if(!empty($settings->tiktok_link)) { ?>
+                                            <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+                                            <?php } ?>
+                                            <?php if(!empty($settings->insta_link)) { ?>
+                                            <a href="https://www.instagram.com/?url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                                            <?php } ?>
+                                            <?php if(!empty($settings->whatsapp)) { ?>
+                                            <a href="https://api.whatsapp.com/send?text=<?php echo $row->post_title; ?> <?= base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                                            <?php } ?>
+                                            <?php if(!empty($settings->telegram)) { ?>
+                                            <a href="https://telegram.me/share/url?url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>&text=<?php echo $row->post_title; ?>" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+                                            <?php } ?>
+                                            <?php if(!empty($settings->tw_link)) { ?>
+                                            <a href="https://twitter.com/intent/tweet?text=<?php echo $row->post_title; ?>&url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-brands fa-square-x-twitter"></i></a>
+                                            <?php } ?>
+                                            <?php if(!empty($settings->lnkd_link)) { ?>
+                                            <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                                            <?php } ?>
+                                            <?php if(!empty($settings->ptrs_link)) { ?>
+                                            <a href="http://pinterest.com/pin/create/link/?url=<?= base_url('workdetail/' . base64_encode($row->id)) ?>" target="_blank"><i class="fa-brands fa-pinterest"></i></a>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                     <?php
@@ -321,7 +346,7 @@ function displayStars($rating) {
                                                         <?php } else { ?>
                                                         <a style="color: #000 !important;" href="javascript:void(0)" onclick="likeuserrply(<?= $row->id ?>, <?= $each['id'] ?>)"><i class="fa-regular fa-heart"></i></a>
                                                         <?php } } else { ?>
-                                                        <a style="color: #000 !important;" href="<?= base_url() ?>login"><i class="fa-regular fa-heart"></i></a>
+                                                        <a style="color: #000 !important;" href="javascript:void(0)" onclick="forguestAlert()"><i class="fa-regular fa-heart"></i></a>
                                                         <?php } ?>
                                                     </li>
                                                     <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
@@ -330,7 +355,7 @@ function displayStars($rating) {
                                                     </li>
                                                     <?php } else { ?>
                                                     <li style="margin: 0 !important; font-size: 13px; color: #000 !important; font-weight: 600;">
-                                                        <a style="color: #000 !important;" href="<?= base_url() ?>login"><i class="fa-sharp fa-regular fa-reply-all"></i></a>
+                                                        <a style="color: #000 !important;" href="javascript:void(0)" onclick="forguestAlert()"><i class="fa-sharp fa-regular fa-reply-all"></i></a>
                                                     </li>
                                                     <?php } ?>
                                                 </ul>
@@ -366,19 +391,15 @@ function displayStars($rating) {
                                             <div class="commnetUser">
                                                 <img src="<?= base_url()?>uploads/no_pimage.png">
                                             </div>
-                                            <div class="Comment_Mobile position-relative flex-fill w-100">
-                                                <textarea class="postComment mt-0 form-control f1 emoji_act"
-                                                    type="text" placeholder="Enter your comments"
-                                                    name="comment_<?= $row->id ?>"
-                                                    id="comment_<?= $row->id ?>"></textarea>
+                                            <div class="Comment_Mobile position-relative flex-fill w-100" <?php if (!empty($_SESSION['afrebay']['userType'])) { echo ""; } else {echo 'onclick="forguestAlert()"'; }?>>
+                                                <textarea class="postComment mt-0 form-control f1 emoji_act" type="text" placeholder="Enter your comments" name="comment_<?= $row->id ?>" id="comment_<?= $row->id ?>"></textarea>
                                                 <div>
                                                     <?php if (!empty(@$_SESSION['afrebay']['userType'])) { ?>
-                                                        <a href="javascript:void(0)" class="postCommentbtn Gradient_Back_Color"
-                                                            onclick="postComment(<?= $row->id ?>)">
+                                                        <a href="javascript:void(0)" class="postCommentbtn Gradient_Back_Color" onclick="postComment(<?= $row->id ?>)">
                                                             <span style="color: #fff;">Comment</span>
                                                         </a>
                                                     <?php } else { ?>
-                                                        <a href="<?= base_url() ?>login" class="postCommentbtn Gradient_Back_Color">
+                                                        <a href="javascript:void(0)" class="postCommentbtn Gradient_Back_Color">
                                                             <span style="color: #fff;">Comment</span>
                                                         </a>
                                                     <?php } ?>
@@ -453,7 +474,7 @@ function displayStars($rating) {
                                         <img src="<?= $userProfileImage; ?>">
                                     </a>
                                 </div>
-                                <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else{ echo base_url('customer_detail/'.base64_encode($userData->userId)); }?>">
+                                <a href="<?php if($userData->userType == '1') {echo base_url('professionals_detail/'.base64_encode($userData->userId)); } else if($userData->userType == '2') { echo base_url('customer_detail/'.base64_encode($userData->userId)); } else {echo 'onclick="forguestAlert()"'; }?>">
                                     <h2 style="text-transform: lowercase;" class="Primary_Text_Color"><?= "@".$userData->username; ?></h2>
                                 </a>
                                 <?php if($get_user->rate_enabled == '1') { ?>
@@ -621,7 +642,7 @@ function displayStars($rating) {
                     <div class="card" style=" margin-top: 32px; background: #fff; padding: 20px; text-align: center; border-radius: 30px; margin-bottom: 18px; ">
                         <a href="<?= base_url('career-tips')?>">Career Tips</a>
                     </div>
-                    <div class="add-sidebar1 sticky-top" style="top: 100px !important; <?php if (!empty($_SESSION['afrebay']['userType'])) { echo ""; } else {echo 'display: none'; }?>">
+                    <div class="add-sidebar1 sticky-top" style="top: 100px !important;">
                         <?php
                         $getAdSense = $this->db->query("SELECT * FROM adsense WHERE status = 'Active'")->result_array();
                         if (!empty($getAdSense)) {
@@ -960,6 +981,8 @@ function displayStars($rating) {
     #map{position:relative!important;height:500px!important;max-width:100%!important}
     .hidereplyBox{display:none!important}
     .showreplyBox{display:block!important}
+    .jconfirm .jconfirm-box{overflow: visible !important;}
+    .cross{position: relative; top: -76px; left: 76px; width: 26px; height: 26px; padding: 0px !important; z-index: 9;background: red !important;}
     @media screen and (max-width:425px) {
         .ADD_Sense,.Comment_Mobile textarea,.Rply_Comment_Block ul,.TopBar a,.TopBar ul,.hidereplyBox a,.hidereplyBox textarea{width:100%!important}
         .TopBar ul li,.job-field input{padding:0 20px!important}

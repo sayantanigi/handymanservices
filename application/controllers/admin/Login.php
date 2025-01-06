@@ -31,7 +31,7 @@ class Login extends MY_Controller {
 				$this->session->set_flashdata('message', 'Successfully logged in.');
 				redirect(admin_url('dashboard'));
 			} else {
-				$this->session->set_flashdata('message', 'Incorrect email address and password.');
+				$this->session->set_flashdata('message', 'Incorrect username and password.');
 				redirect(admin_url());
 			}
 		}

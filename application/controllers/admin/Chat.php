@@ -26,11 +26,11 @@ class Chat extends MY_Controller {
 	function ajax_manage_page() {
 		$cond = "1=1";
 		//$GetData = $this->db->query('SELECT `chat`.*, `users`.`username`, CONCAT(users.firstname, " ", users.lastname) as full_name, `users`.`profilePic`, `to_user`.`username` as `to_username`, CONCAT(to_user.firstname, " ", to_user.lastname) as to_fullname FROM `chat` JOIN `users` ON `users`.`userId`=`chat`.`userfrom_id` JOIN `users` `to_user` ON `to_user`.`userId`=`chat`.`userto_id` order by id DESC')->result_array();
-		$GetData = $this->db->query('SELECT `chat`.* FROM `chat` JOIN `users` ON `users`.`userId`=`chat`.`userfrom_id` JOIN `users` `to_user` ON `to_user`.`userId`=`chat`.`userto_id` order by id DESC')->result_array();
+		$GetData = $this->db->query('SELECT `chat`.* FROM `chat` JOIN `users` ON `users`.`userId`=`chat`.`userfrom_id` JOIN `users` `to_user` ON `to_user`.`userId`=`chat`.`userto_id` GROUP BY chat_between order by id DESC')->result_array();
 		$no=0;
 		$data = array();
 		foreach ($GetData as $row) {
-			$btn = '<span class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#viewModal" onclick="view_data(3)" data-placement="right"><i class="far fa-eye mr-1"></i><a href="'.admin_url('chat_details/'.$row['userfrom_id'].'/'.$row['userto_id']).'">View Chat</a></span>';
+			$btn = '<span class="btn btn-sm bg-success-light mr-2"><i class="far fa-eye mr-1"></i><a href="'.admin_url('chat_details/'.$row['userfrom_id'].'/'.$row['userto_id']).'">View Chat</a></span>';
 			$getFromUser = $this->db->query("SELECT * FROM `users` WHERE userId = '".$row['userfrom_id']."'")->result_array();
 			//if($getFromUser[0]['userType'] == '1') {
 				if(!empty($getFromUser[0]['firstname'])) {
@@ -47,12 +47,12 @@ class Chat extends MY_Controller {
 					$fullname1 = $gettoUser[0]['companyname'];
 				}
 			//}
-			$getJobtitle = $this->db->query("SELECT * FROM `postjob` WHERE id = '".$row['postjob_id']."'")->result_array();
-			$post_title = $getJobtitle[0]['post_title'];
+			//$getJobtitle = $this->db->query("SELECT * FROM `postjob` WHERE id = '".$row['postjob_id']."'")->result_array();
+			//$post_title = $getJobtitle[0]['post_title'];
 			$no++;
 			$nestedData = array();
 			$nestedData[] = $no;
-			$nestedData[] = ucwords($post_title);
+			//$nestedData[] = ucwords($post_title);
 			$nestedData[] = ucwords($fullname);
 			$nestedData[] = ucwords($fullname1);
 			$nestedData[] = date('d-m-Y',strtotime($row['created_date']));
@@ -80,25 +80,26 @@ class Chat extends MY_Controller {
 		} else {
 			$userpic = '<img src="' . base_url('uploads/users/user.png') . '" alt="" />';
 		}
-		$getFromUser = $this->db->query("SELECT * FROM `users` WHERE userId = '".$fromid."'")->result_array();
-		if(!empty($getFromUser[0]['firstname'])) {
-			$fromName = $getFromUser[0]['firstname'].' '.$getFromUser[0]['lastname'];
+		$getFromUser = $this->db->query("SELECT * FROM `users` WHERE userId = '".$fromid."'")->row();
+		if(!empty($getFromUser->firstname)) {
+			$fromName = $getFromUser->firstname.' '.$getFromUser->lastname;
 		} else {
-			$fromName = $getFromUser[0]['companyname'];
+			$fromName = $getFromUser->companyname;
 		}
-		$gettoUser = $this->db->query("SELECT * FROM `users` WHERE userId = '".$toid."'")->result_array();
-		if(!empty($gettoUser[0]['firstname'])) {
-			$toName = $gettoUser[0]['firstname'].' '.$gettoUser[0]['lastname'];
+		$gettoUser = $this->db->query("SELECT * FROM `users` WHERE userId = '".$toid."'")->row();
+		if(!empty($gettoUser->firstname)) {
+			$toName = $gettoUser->firstname.' '.$gettoUser->lastname;
 		} else {
-			$toName = $gettoUser[0]['companyname'];
+			$toName = $gettoUser->companyname;
 		}
 		$html_data = '';
 		//echo $fromid. "" .$toid; echo "<pre>"; print_r($get_data); die;
 		//echo "<pre>"; print_r($get_data); die;
 		if (!empty($get_data)) {
 			$html_data .= '<div class="chat-details">Message details of <b>'.ucwords($fromName).'</b> and <b>'.ucwords($toName).'</b></div>';
-			$getPostjobDetails = $this->db->query("SELECT * FROM postjob WHERE id = '".$get_data[0]->postjob_id."'")->result_array();
-			$html_data .= '<div class="chat-post-title"><b>Job Title: </b>'.$getPostjobDetails[0]['post_title'].'</div><hr>';
+			//$getPostjobDetails = $this->db->query("SELECT * FROM postjob WHERE id = '".$get_data[0]->postjob_id."'")->result_array();
+			//$html_data .= '<div class="chat-post-title"><b>Job Title: </b>'.$getPostjobDetails[0]['post_title'].'</div><hr>';
+            $html_data .= '';
 			foreach ($get_data as $key) {
 				if (@$key->profilePic && file_exists('uploads/users/' . @$key->profilePic)) {
 					$from_pic = '<img src="' . base_url('uploads/users/' . @$key->profilePic) . '" alt="" />';

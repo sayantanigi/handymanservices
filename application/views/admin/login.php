@@ -6,7 +6,7 @@ $get_setting=$this->Crud_model->get_single('setting');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Handyman Services</title>
+    <title><?= $get_setting->website_name; ?></title>
     <link rel="shortcut icon" href="<?=base_url(); ?>uploads/logo/<?= $get_setting->favicon?>">
     <link rel="stylesheet" href="<?=base_url(); ?>dist/assets/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?=base_url(); ?>dist/assets/css/admin.css">
@@ -28,15 +28,15 @@ $get_setting=$this->Crud_model->get_single('setting');
                         <h3>Login <span><?= $get_setting->website_name;?></span></h3>
                         <p class="text-muted">Access Admin Dashboard</p>
                     </div>
-                    <span class="msghide">
-                    <?php if($this->session->flashdata('error')) {
-                        echo $this->session->flashdata('error');
-                        unset($_SESSION['error']);
+                    <span class="msghide" style="text-align: center; color:red;">
+                    <?php if($this->session->flashdata('message')) {
+                        echo $this->session->flashdata('message');
+                        unset($_SESSION['message']);
                     } ?>
                     </span>
                     <form class="pt-3" method="post" action="<?=admin_url(); ?>Login/actionLogin" onsubmit="return validation()">
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-lg" id="email_id" name="email_id" placeholder="Email Address">
+                            <input type="text" class="form-control form-control-lg" id="email_id" name="email_id" placeholder="Username">
                             <span class="error" id="error_email"><?php echo form_error('email_id'); ?></span>
                         </div>
                         <div class="form-group">

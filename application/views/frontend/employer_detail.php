@@ -7,9 +7,9 @@ function displayStars($rating)
     $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0;
     $emptyStars = 5 - $fullStars - $halfStar;
 
-    $stars = str_repeat('<i class="fas fa-star"></i>', $fullStars) .
-        str_repeat('<i class="fas fa-star-half-alt"></i>', $halfStar) .
-        str_repeat('<i class="far fa-star"></i>', $emptyStars);
+    $stars = str_repeat('<i class="fas fa-star" style="color: #f29a34"></i>', $fullStars) .
+        str_repeat('<i class="fas fa-star-half-alt" style="color: #f29a34"></i>', $halfStar) .
+        str_repeat('<i class="far fa-star" style="color: #f29a34"></i>', $emptyStars);
 
     return $stars;
 }

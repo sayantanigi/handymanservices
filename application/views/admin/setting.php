@@ -72,13 +72,44 @@
 															<textarea placeholder="Footer About" name="fabout" class="form-control" style="resize:none;" rows="4" cols="4"><?php if(!empty($row->fabout)) { echo $row->fabout;} ?></textarea>
 														</div>
 													</div>
+
 													<div class="col-md-12">
 														<div class="form-group">
 															<label>Facebook Link</label>
 															<input type="text" class="form-control" name="fb_link" placeholder="Facebook Link" value="<?php if(!empty($row->fb_link)){echo $row->fb_link; }?>">
 														</div>
 													</div>
-													<div class="col-md-12">
+                                                    <div class="col-md-12">
+														<div class="form-group">
+															<label>Gmail</label>
+															<input type="text" class="form-control" name="gmail_link" placeholder="Gmail" value="<?php if(!empty($row->gmail_link)){echo $row->gmail_link; }?>">
+														</div>
+													</div>
+                                                    <div class="col-md-12">
+														<div class="form-group">
+															<label>Tiktok Link</label>
+															<input type="text" class="form-control" name="tiktok_link" placeholder="Tiktok Link" value="<?php if(!empty($row->tiktok_link)){echo $row->tiktok_link; }?>">
+														</div>
+													</div>
+                                                    <div class="col-md-12">
+														<div class="form-group">
+															<label>Instagram Link</label>
+															<input type="text" class="form-control" name="insta_link" placeholder="Instagram Link" value="<?php if(!empty($row->insta_link)){echo $row->insta_link; }?>">
+														</div>
+													</div>
+                                                    <div class="col-md-12">
+														<div class="form-group">
+															<label>WhatsApp</label>
+															<input type="text" class="form-control" name="whatsapp" placeholder="WhatsApp" value="<?php if(!empty($row->whatsapp)){echo $row->whatsapp; }?>">
+														</div>
+													</div>
+                                                    <div class="col-md-12">
+														<div class="form-group">
+															<label>Telegram Link</label>
+															<input type="text" class="form-control" name="telegram" placeholder="Telegram Link" value="<?php if(!empty($row->telegram)){echo $row->telegram; }?>">
+														</div>
+													</div>
+                                                    <div class="col-md-12">
 														<div class="form-group">
 															<label>Twitter Link</label>
 															<input type="text" class="form-control" name="tw_link" placeholder="Twitter Link" value="<?php if(!empty($row->tw_link)){echo $row->tw_link; }?>">
@@ -90,7 +121,14 @@
 															<input type="text" class="form-control" name="lnkd_link" placeholder="LinkedIn Link" value="<?php if(!empty($row->lnkd_link)){echo $row->lnkd_link; }?>">
 														</div>
 													</div>
-													<div class="col-md-4">
+                                                    <div class="col-md-12">
+														<div class="form-group">
+															<label>Pinterest Link</label>
+															<input type="text" class="form-control" name="ptrs_link" placeholder="Pinterest Link" value="<?php if(!empty($row->ptrs_link)){echo $row->ptrs_link; }?>">
+														</div>
+													</div>
+                                                    
+                                                    <div class="col-md-4">
 														<div class="form-group">
 															<label>Header Logo</label>
 															<div class="uploader">

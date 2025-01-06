@@ -294,11 +294,11 @@ function forguestAlert() {
                     window.location.href = '<?= base_url()?>';
                 }
             },
-            somethingElse: {
-                text: 'Close',
-                btnClass: 'btn-blue',
-                keys: ['enter', 'shift'],
-                action: function(){
+            cross: {
+                text: '&times;', // Use HTML entity for the cross (×) symbol
+                btnClass: 'btn-blue1 cross', // Custom class for styling
+                action: function () {
+                    // Close the alert or do nothing
                 }
             }
         }
