@@ -64,6 +64,7 @@
                                     <option value="Career Tips">Career Tips Page</option>
                                     <option value="Cookie Policy">Cookie Policy Page</option>
                                     <option value="Member Agreement">Member Agreement Page</option>
+                                    <option value="Ads Info">Ads Info</option>
                                 </select>
                             </div>
                             <!-- <div class="form-group">
@@ -113,6 +114,7 @@
                                     <option value="Career Tips">Career Tips Page</option>
                                     <option value="Cookie Policy">Cookie Policy Page</option>
                                     <option value="Member Agreement">Member Agreement Page</option>
+                                    <option value="Ads Info">Ads Info</option>
                                 </select>
                             </div>
                             <!-- <div class="form-group">

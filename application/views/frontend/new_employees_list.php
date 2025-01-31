@@ -254,15 +254,19 @@ if (!empty($get_banner->image) && file_exists('uploads/banner/' . $get_banner->i
                                     </div> -->
                                 </div>
                             </div>
+                            <?php if(isset($_POST['category_id'])) {
+                                $category_id = $_POST['category_id'];
+                            } else {
+                                $category_id = $_GET['category_id'];;
+                            }?>
                             <div class="widget">
                                 <h3 class="sb-title open">Category</h3>
                                 <div class="specialism_widget">
-                                    <select class="chosen" name="category_id" id="category_id"
-                                        onchange="getsubcategory(this.value);">
+                                    <select class="chosen" name="category_id" id="category_id" onchange="getsubcategory(this.value);">
                                         <option value="">Select Category</option>
                                         <?php if (!empty($getcategory)) {
                                             foreach ($getcategory as $item) { ?>
-                                                <option value="<?= $item->id ?>" <?php if (@$item->category_name == @$_POST['category_id']) {
+                                                <option value="<?= $item->id ?>" <?php if (@$item->category_name == @$category_id) {
                                                       echo "selected";
                                                   } ?>>
                                                     <?= ucfirst($item->category_name) ?></option>

@@ -269,10 +269,15 @@ function displayStars($rating)
                                                         <textarea placeholder="Enter review" name="review"
                                                             style="border-radius: 10px; height: 132px !important;"></textarea>
                                                     </div>
+                                                    <?php if (!is_numeric($afrebay['userId'])) { ?>
                                                     <div class="col-lg-12 col-md-12 col-sm-12 Form_Btn">
-                                                        <button class="submit btn btn-info Gradient_Back_Color"
-                                                            style="background: #2892ff;border-radius: 30px;min-height: 30px;min-width: 52px;">Submit</button>
+                                                        <button class="submit btn btn-info Gradient_Back_Color" style="background: #2892ff;border-radius: 30px;min-height: 30px;min-width: 52px;" onclick="forguestAlert()">Submit</button>
                                                     </div>
+                                                    <?php } else { ?>
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 Form_Btn">
+                                                        <button class="submit btn btn-info Gradient_Back_Color" style="background: #2892ff;border-radius: 30px;min-height: 30px;min-width: 52px;">Submit</button>
+                                                    </div>
+                                                    <?php } ?>
                                                 </div>
                                             </form>
                                         </div>
@@ -1037,5 +1042,22 @@ function displayStars($rating)
         #dots-con2 {
             display: none;
         }
+    }
+    .cross {
+        position: relative;
+        top: -76px;
+        left: 76px;
+        width: 26px;
+        height: 26px;
+        padding: 0px !important;
+        z-index: 9;
+        background: red !important;
+    }
+    .jconfirm .jconfirm-box {
+        overflow: visible !important;
+    }
+    .jconfirm .jconfirm-box {
+        padding: 20px !important;
+        border-radius: 15px !important;
     }
 </style>

@@ -59,6 +59,7 @@ class Adsense extends MY_Controller {
 			$no++;
 			$nestedData = array();
 			$nestedData[] = $no;
+            $nestedData[] = ucwords($row->position);
 			$nestedData[] = $img.' '.ucwords($row->title);
 			$nestedData[] = $link;
 			$nestedData[] = date('d-m-Y',strtotime($row->created_date));
@@ -98,6 +99,7 @@ class Adsense extends MY_Controller {
 			$data=array(
 				'title'=>$_POST['title'],
 				'link'=>$_POST['link'],
+                'position'=>$_POST['position'],
 				'image'=>$image,
 				'created_date'=>date('Y-m-d H:i:s'),
 			);
@@ -124,13 +126,14 @@ class Adsense extends MY_Controller {
 			'id'=>$adsense_data->id,
 			'title'=>$adsense_data->title,
 			'link'=>$adsense_data->link,
+            'position'=>$adsense_data->position,
 			'image'=>$img,
 			'old_image'=>$adsense_data->image,
 		);
 		echo json_encode($data);exit;
 	}
 	function update_action() {
-		if(isset($_FILES['image']['name'])!='' ) {
+        if(isset($_FILES['image']['name'])!='' ) {
 			$_POST['image']= rand(0000,9999)."_".$_FILES['image']['name'];
 			$config2['image_library'] = 'gd2';
 			$config2['source_image'] =  $_FILES['image']['tmp_name'];
@@ -155,6 +158,7 @@ class Adsense extends MY_Controller {
 			$data = array(
 				'title'=> $_POST['title'],
 				'link'=>$_POST['link'],
+                'position'=>$_POST['position'],
 				'image'=>$image,
 				'update_date'=>date('Y-m-d H:i:s'),
 			);

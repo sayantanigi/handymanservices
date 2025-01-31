@@ -68,6 +68,7 @@
                                     <thead class="sticky ">
                                         <tr>
                                             <th>#</th>
+                                            <th style="max-width: 100px !important;">Position</th>
                                             <th>Title</th>
                                             <th style="max-width: 100px !important;">Link</th>
                                             <th>Created Date</th>
@@ -109,6 +110,14 @@
                                 <label>AdSense Image <span style="color:red;">*</span> <span id="img_err"></span></label>
                                 <input class="form-control" type="file" name="image" id="image" required>
                             </div>
+                            <div class="form-group">
+                                <label>AdSense Position <span id="position_err"></span></label>
+                                <select class="form-control" name="position" id="position" required>
+                                    <option value="">Choose One</option>
+                                    <option value="right">Right</option>
+                                    <option value="left">Left</option>
+                                </select>
+                            </div>
                             <div class="mt-4">
                                 <button class="btn btn-primary" type="button" onclick="return create_adsense();">Add AdSense</button>
                                 <a href="#" class="btn btn-link" data-dismiss="modal">Cancel</a>
@@ -146,6 +155,14 @@
                                 <input class="form-control" type="file" name="image" id="edit_image">
                             </div>
                             <div id="show_img"> </div>
+                            <div class="form-group">
+                                <label>AdSense Position <span id="position_err"></span></label>
+                                <select class="form-control" name="position" id="edit_position" required>
+                                    <option value="">Choose One</option>
+                                    <option value="right">Right</option>
+                                    <option value="left">Left</option>
+                                </select>
+                            </div>
                             <input type="hidden" name="old_image" id="old_image">
                             <input type="hidden" name="id" id="id">
                             <div class="mt-4">

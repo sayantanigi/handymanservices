@@ -21,7 +21,7 @@ class Home extends MY_Controller {
         } else {
             $data['get_post'] = $this->Crud_model->GetData('postjob', 'id, post_title, description, user_id, created_date', "status = 'Active' AND visibility = 1", '', '(id)desc', '');
         }*/
-        $data['get_post'] = $this->Crud_model->GetData('postjob', 'id, post_title, description, user_id, category_id, created_date', "status = 'Active' AND visibility IN(1,2)", '', '(id)desc', '');
+        $data['get_post'] = $this->Crud_model->GetData('postjob', 'id, post_title, description, user_id, category_id, created_date', "status = 'Active' AND is_delete = '0' AND visibility IN(1,2)", '', '(id)desc', '');
 		$data['countries']=$this->Crud_model->GetData('countries',"","");
 		$data['get_freelancerspost'] = $this->Crud_model->GetData('postjob', '', "is_delete='0'", '', '', '8');
 		$data['get_career'] = $this->Crud_model->GetData('career_tips', '', "status='Active'", '', '', '3');
@@ -162,6 +162,15 @@ class Home extends MY_Controller {
 		$data['description'] = 'Discover our recruitment company\'s terms and conditions. Learn about our policies, expectations, and commitments.';
 		$this->load->view('header', $data);
 		$this->load->view('frontend/term_and_conditions', $data);
+		$this->load->view('footer');
+	}
+    public function ads_info() {
+		$data['get_cms'] = $this->Crud_model->get_single('manage_cms', "id='6'");
+		$data['get_banner'] = $this->Crud_model->get_single('banner', "page_name='Ads Info'");
+		$data['title'] = 'Ads Info';
+		$data['description'] = 'Discover our recruitment company\'s terms and conditions. Learn about our policies, expectations, and commitments.';
+		$this->load->view('header', $data);
+		$this->load->view('frontend/ads_info', $data);
 		$this->load->view('footer');
 	}
 	function getVisIpAddr() {

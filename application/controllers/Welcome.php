@@ -26,7 +26,7 @@ class Welcome extends CI_Controller {
 			$data['states']= '';
 			$data['cities']= '';
 		}
-		$data['getcategory']=$this->Crud_model->GetData('category');
+        $data['getcategory']=$this->Crud_model->GetData('category');
 		$data['get_banner'] = $this->Crud_model->get_single('banner', "page_name='Search'");
 		$data1['title'] = "Search Result";
 		$this->load->view('header', $data1);
